@@ -1,0 +1,261 @@
+var
+Declares a variable, optionally initializing it to a value.
+var keyword means the identifier can be both local and global variables depending on the execution.
+example:if (true) {
+  var x = 5;
+}
+console.log(x); // x is 5
+
+when let decleared but not initailaized it is just undefined,
+var-declared variables are hoisted, meaning you can refer to the variable anywhere in its scope, even if its declaration isn't reached yet. 
+example console.log(x === undefined); // true
+var x = 3;
+
+(function () {
+  console.log(x); // undefined
+  var x = "local value";
+})();
+
+let
+
+Declares a block-scoped, local variable, optionally initializing it to a value.
+if (Math.random() > 0.5) {
+  const y = 5;
+}
+console.log(y); 
+when let decleared but not initailaized it is just undefined,
+hoisting doesn't work here
+
+const
+
+Declares a block-scoped, read-only named constant.
+if (Math.random() > 0.5) {
+  const y = 5;
+}
+console.log(y); 
+const have to be initailized when decleared otherwise it cause an error.
+hoisting doesn't work here
+
+hoisting work for function.
+
+Global variables
+
+Global variables are in fact properties of the global object.
+In web pages, the global object is window, so you can read and set global variables using the window.variable syntax. In all environments, the globalThis variable (which itself is a global variable) may be used to read and set global variables. This is to provide a consistent interface among various JavaScript runtimes.
+Consequently, you can access global variables declared in one window or frame from another window or frame by specifying the window or frame name. For example, if a variable called phoneNumber is declared in a document, you can refer to this variable from an iframe as parent.phoneNumber.
+
+data types
+
+primitives : Boolean,null,undefined,Number,BigInt,String,Symbol
+refernces: Objects
+
+Converting strings to numbers
+
+parseInt()
+parseFloat()
+Number()
+
+unary:
+example : "1.1" + "1.1"; // '1.11.1'
+(+"1.1") + (+"1.1"); // 2.2
+// Note: the parentheses are added for clarity, not required.
+
+Literals
+
+Literals represent values in JavaScript. These are fixed values—not variables—that you literally provide in your script. This section describes the following types of literals:
+
+Array literals
+If you put two commas in a row in an array literal, the array leaves an empty slot for the unspecified element. The following example creates the fish array:
+example: const fish = ["Lion", , "Angel"];
+
+const myList = [, "home", , "school"];
+example, the length of the array is four, and myList[0] and myList[2] are missing.
+
+Boolean literals
+The Boolean type has two literal values: true and false.
+
+Numeric literals
+ FLOATTING-POINT LITERALS
+ INTEGER LITERALS
+
+Object literals
+ An object literal is a list of zero or more pairs of property names and associated values of an object, enclosed in curly braces ({}).
+ Object property names can be any string, including the empty string. If the property name would not be a valid JavaScript identifier or number, it must be enclosed in quotes.
+ Property names that are not valid identifiers cannot be accessed as a dot (.) property.
+  instead we can access it like this 
+  Example:
+  console.log(unusualPropertyNames[""]); // An empty string these way to acces these kind of objects
+  console.log(unusualPropertyNames["!"]); // Bang!
+Enhanced Object literals
+   Object literals support a range of shorthand syntaxes that include setting the prototype at construction, shorthand for foo: foo assignments, defining methods, making super calls, and computing property names with expressions.
+   Together, these also bring object literals and class declarations closer together, and allow object-based design to benefit from some of the same conveniences.
+
+RegExp literals
+  A regex literal is a pattern enclosed between slashes. The following is an example of a regex literal.
+   Example: const re = /ab+c/;
+String literals
+  You should use string literals unless you specifically need to use a String object. See String for details on String objects.
+  You can call any of the String object's methods on a string literal value. JavaScript automatically converts the string literal to a temporary String object, calls the method, then discards the temporary String object. You can also use the length property with a string literal:
+  Example:
+  console.log("Joyo's cat".length); // In this case, 10.
+  Template literals
+    are enclosed by the back-tick provide syntactic sugar for constructing strings. (This is similar to string interpolation features in Perl, Python, and more.)
+  Tagged templates
+     are a compact syntax for specifying a template literal along with a call to a "tag" function for parsing it. A tagged template is just a more succinct and semantic way to invoke a function that processes a string and a set of relevant values. The name of the template tag function precedes the template literal — as in the following example, where the template tag function is named print. The print function will interpolate the arguments and serialize any objects or arrays that may come up, avoiding the pesky [object Object].
+     Example:
+      const formatArg = (arg) => {
+  if (Array.isArray(arg)) {
+    // Print a bulleted list
+    return arg.map((part) => `- ${part}`).join("\n");
+  }
+  if (arg.toString === Object.prototype.toString) {
+    // This object will be serialized to "[object Object]".
+    // Let's print something nicer.
+    return JSON.stringify(arg);
+  }
+  return arg;
+};
+
+const print = (segments, ...args) => {
+  // For any well-formed template literal, there will always be N args and
+  // (N+1) string segments.
+  let message = segments[0];
+  segments.slice(1).forEach((segment, index) => {
+    message += formatArg(args[index]) + segment;
+  });
+  console.log(message);
+};
+
+const todos = [
+  "Learn JavaScript",
+  "Learn Web APIs",
+  "Set up my website",
+  "Profit!",
+];
+
+const progress = { javascript: 20, html: 50, css: 10 };
+
+print`I need to do:
+${todos}
+My current progress is: ${progress}
+`;
+
+// I need to do:
+// - Learn JavaScript
+// - Learn Web APIs
+// - Set up my website
+// - Profit!
+// My current progress is: {"javascript":20,"html":50,"css":10}
+  Since tagged template literals are just sugar of function calls, you can re-write the above as an equivalent function call:
+   example 
+     print(["I need to do:\n", "\nMy current progress is: ", "\n"], todos, progress);
+  This may be reminiscent of the console.log-style interpolation:
+    example
+     console.log("I need to do:\n%o\nMy current progress is: %o\n", todos, progress);
+  Escaping characters
+    example 
+     const quote = "He read \"The Cremation of Sam McGee\" by R.W. Service.";
+     console.log(quote);
+
+
+ about data types
+typeof(null) returns no objects(the object is empty) but undefined returns no value
+null is a keyword but undefined is identifier.
+
+NaN 
+It is also the only value in JavaScript that is not equal to itself.
+
+Properties
+In JavaScript, objects can be seen as a collection of properties. With the object literal syntax, a limited set of properties are initialized; then properties can be added and removed. Object properties are equivalent to key-value pairs. Property keys are either strings or symbols. When other types (such as numbers) are used to index objects, the values are implicitly converted to strings. Property values can be values of any type, including other objects, which enables building complex data structures.
+
+There are two types of object properties: The data property and the accessor property. Each property has corresponding attributes. Each attribute is accessed internally by the JavaScript engine, but you can set them through Object.defineProperty(), or read them through Object.getOwnPropertyDescriptor(). You can read more about the various nuances on the Object.defineProperty() page.
+
+Data property
+Data properties associate a key with a value. It can be described by the following attributes:
+
+value
+The value retrieved by a get access of the property. Can be any JavaScript value.
+
+writable
+A boolean value indicating if the property can be changed with an assignment.
+
+enumerable
+A boolean value indicating if the property can be enumerated by a for...in loop. See also Enumerability and ownership of properties for how enumerability interacts with other functions and syntaxes.
+
+configurable
+A boolean value indicating if the property can be deleted, can be changed to an accessor property, and can have its attributes changed.
+
+Accessor property
+Associates a key with one of two accessor functions (get and set) to retrieve or store a value.
+
+Note: It's important to recognize it's accessor property — not accessor method. We can give a JavaScript object class-like accessors by using a function as a value — but that doesn't make the object a class.
+
+An accessor property has the following attributes:
+
+get
+A function called with an empty argument list to retrieve the property value whenever a get access to the value is performed. See also getters. May be undefined.
+
+set
+A function called with an argument that contains the assigned value. Executed whenever a specified property is attempted to be changed. See also setters. May be undefined.
+
+enumerable
+A boolean value indicating if the property can be enumerated by a for...in loop. See also Enumerability and ownership of properties for how enumerability interacts with other functions and syntaxes.
+
+configurable
+A boolean value indicating if the property can be deleted, can be changed to a data property, and can have its attributes changed.
+
+The prototype of an object points to another object or to null — it's conceptually a hidden property of the object, commonly represented as [[Prototype]]. Properties of the object's [[Prototype]] can also be accessed on the object itself.
+
+Objects are ad-hoc key-value pairs, so they are often used as maps. However, there can be ergonomics, security, and performance issues. Use a Map for storing arbitrary data instead. The Map reference contains a more detailed discussion of the pros & cons between plain objects and maps for storing key-value associations.
+
+Dates
+JavaScript provides two sets of APIs for representing dates: the legacy Date object and the modern Temporal object. Date has many undesirable design choices and should be avoided in new code if possible.
+
+Indexed collections: Arrays and typed Arrays
+Arrays are regular objects for which there is a particular relationship between integer-keyed properties and the length property.
+
+Additionally, arrays inherit from Array.prototype, which provides a handful of convenient methods to manipulate arrays. For example, indexOf() searches a value in the array and push() appends an element to the array. This makes Arrays a perfect candidate to represent ordered lists.
+
+Typed Arrays present an array-like view of an underlying binary data buffer, and offer many methods that have similar semantics to the array counterparts. "Typed array" is an umbrella term for a range of data structures, including Int8Array, Float32Array, etc. Check the typed array page for more information. Typed arrays are often used in conjunction with ArrayBuffer and DataView.
+
+Keyed collections: Maps, Sets, WeakMaps, WeakSets
+These data structures take object references as keys. Set and WeakSet represent a collection of unique values, while Map and WeakMap represent a collection of key-value associations.
+
+You could implement Maps and Sets yourself. However, since objects cannot be compared (in the sense of < "less than", for instance), neither does the engine expose its hash function for objects, look-up performance would necessarily be linear. Native implementations of them (including WeakMaps) can have look-up performance that is approximately logarithmic to constant time.
+
+Usually, to bind data to a DOM node, one could set properties directly on the object, or use data-* attributes. This has the downside that the data is available to any script running in the same context. Maps and WeakMaps make it easy to privately bind data to an object.
+
+WeakMap and WeakSet only allow garbage-collectable values as keys, which are either objects or non-registered symbols, and the keys may be collected even when they remain in the collection. They are specifically used for memory usage optimization.
+
+Structured data: JSON
+JSON (JavaScript Object Notation) is a lightweight data-interchange format, derived from JavaScript, but used by many programming languages. JSON builds universal data structures that can be transferred between different environments and even across languages. See JSON for more details.
+ 
+
+example 
+
+"" + 1 + 0 = "10" // (1)
+"" - 1 + 0 = -1 // (2)
+true + false = 1
+6 / "3" = 2
+"2" * "3" = 6
+4 + 5 + "px" = "9px"
+"$" + 4 + 5 = "$45"
+"4" - 2 = 2
+"4px" - 2 = NaN
+"  -9  " + 5 = "  -9  5" // (3)
+"  -9  " - 5 = -14 // (4)
+null + 1 = 1 // (5)
+undefined + 1 = NaN // (6)
+" \t \n" - 2 = -2 // (7)
+The addition with a string "" + 1 converts 1 to a string: "" + 1 = "1", and then we have "1" + 0, the same rule is applied.
+The subtraction - (like most math operations) only works with numbers, it converts an empty string "" to 0.
+The addition with a string appends the number 5 to the string.
+The subtraction always converts to numbers, so it makes " -9 " a number -9 (ignoring spaces around it).
+null becomes 0 after the numeric conversion.
+undefined becomes NaN after the numeric conversion.
+Space characters are trimmed off string start and end when a string is converted to a number. Here the whole string consists of space characters, such as \t, \n and a “regular” space between them. So, similarly to an empty string, it becomes 0.
+
+
+to use localStrorage
+
+localStrorage 

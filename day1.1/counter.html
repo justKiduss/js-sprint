@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter App</title>
+    <style>
+    .container{
+display:flex;
+justify-content:center;
+align-items:center;
+    }
+    .size{
+       
+        text-align: center;
+    }
+    .buttons{
+        display:flex;
+        gap:20px;
+        justify-content: center;
+    }
+    button{
+        font-size: 20px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="size">
+          <h1>Counter App</h1>
+          <h1 class="value">0</h1>
+    <div class="buttons">
+         <button class="increment">+</button>
+         <button class="decrement">-</button>
+    </div><br/>
+    <div>
+        <button id="reset">Reset</button>
+    </div>
+    </div>
+    </div>
+<script>
+const increment=document.querySelector(".increment");
+const decrement=document.querySelector(".decrement");
+const reset=document.querySelector("#reset")
+const value=document.querySelector(".value");
+
+let count=Number(localStorage.getItem("count"))||0;
+value.textContent=Number(count)||0;
+
+increment.addEventListener("click",()=>{
+    count++;
+    function storage(type){
+        try{
+        let test=window[type];
+          test.setItem(auth,"kidus")
+          test.removeItem(auth);
+           return true
+          }catch(error){
+            return "user you turn off private mode";
+          }
+    }
+    storage(localStorage);
+    localStorage.setItem("count",count);
+    value.textContent=count;
+    })
+
+decrement.addEventListener("click",()=>{
+    if(count>0){
+    count--;
+      function storage(type){
+        try{
+        let test=window[type];
+          test.setItem(auth,"kidus")
+          test.removeItem(auth);
+           return true
+          }catch(error){
+            return "user you turn off private mode";
+          }
+    }
+    storage(localStorage);
+    localStorage.setItem("count",count)
+    value.textContent=count;
+     }
+})
+reset.addEventListener("click",()=>{
+    if(count !== 0 ){
+        count=0;
+     localStorage.removeItem("count");
+     value.textContent=0;
+    }
+})
+
+
+
+
+</script>
+</body>
+</html>
+
+

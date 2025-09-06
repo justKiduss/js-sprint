@@ -1,0 +1,120 @@
+array are primitve data types and contain differebt datatypes.typed arrays are an array but contain the same type of datatypes these types of array are good when it comes to speed.
+arrays have two different types of copy operation shallow copies and deep copies.
+ shallow copy it mess the original value of when it is object and reference value,but it doesn't mess around when it is object are primitive you can the values it this i can say it acts like splice when it gets reference(objects) types of value 
+   example:ingredientsListCopy[1].list = ["rice flour", "water"];
+            console.log(ingredientsList[1].list);
+             // Array [ "rice flour", "water" ]
+
+             let arr = [{a:1}, {b:2}];
+             let copy = arr.slice();
+             copy[0].a = 99;
+             console.log(arr[0].a); // 99  -> original changed!
+ deep copy of an object whose propeties donot share the same references or point to the same underlying values i could it acts like slice.
+    example: let arr = [{a:1}, {b:2}];
+             let deep = JSON.parse(JSON.stringify(arr));
+             deep[0].a = 99;
+             console.log(arr[0].a); // 1 -> original safe
+  JSON.stringify converts your objects or arrays into JSON string(json form ) like 
+    example: let obj = { a: 1, b: { c: 2 } };
+             let str = JSON.stringify(obj);
+             console.log(str); // '{"a":1,"b":{"c":2}}'
+  JSON.parse converts the json back into objects. 
+ 
+Array methods and how they treat an empty spot:
+  concat(): Creates a new array The original array (and any arrays/objects passed as arguments) are not modified.
+          It returns a shallow copy that contains elements from the original array and the arguments. Shallow copy behavior
+          If the array contains objects or nested arrays, the references are preserved. Modifying nested objects in the new array will affect the original objects.
+  every(): Checks if all elements satisfy a condition. and doesnot modify the array.
+          example: let arr = [2, 4, 6];
+                   console.log(arr.every(x => x % 2 === 0)); // true
+  filter(): creates a new array with elemnts that satisfy a condition.do not modify the original array.
+          example: let arr = [1, 2, 3, 4];
+                   let evens = arr.filter(x => x % 2 === 0);
+                   console.log(evens); // [2, 4]
+  copyWithin(): copies a portion of the array to another location in the same array.(it chnages position).
+                and modifies the original array.
+                example: let arr = [1, 2, 3, 4, 5];
+                          arr.copyWithin(0, 3); 
+                          // copy elements starting at index 3 to index 0
+                          console.log(arr); // [4, 5, 3, 4, 5]
+                         Explanation: Start copying from index 3 → [4, 5].
+                            Paste at index 0 → replaces first two elements.
+                            The array keeps remaining elements as is.
+                            Use when: You want in-place duplication of parts of an array, without creating a new array.
+
+  flat(): this flattens nesetd arrays up to a specific depth. and it return the original array.
+          example: let arr = [1, [2, [3, 4], 5], 6];
+                   console.log(arr.flat());    // [1, 2, [3, 4], 5, 6]
+                   console.log(arr.flat(2));   // [1, 2, 3, 4, 5, 6]
+          we use this when we want to have single leven array for easier processing.
+  flatMap(): this applies like first it applies function (like map) then it flattens the result by one level. and returns a new array.
+            example:let arr = [1, 2, 3];
+                    let result = arr.flatMap(x => [x, x*2]);
+                    console.log(result); // [1, 2, 2, 4, 3, 6]
+  forEach(): itrates,for side effects.this execute something on each element(side-effect).can modify inside the callback. returns undefined.
+           example:let arr = [1,2,3,4];
+                   arr.forEach((x,i,a) => a[i] = x*2);  // modify original -> [2,4,6,8]
+  map(): transforms each element inti a new array.returns new array.it doesn't modify the original array.
+         example:let arr = [1,2,3,4];         
+                let squares = arr.map(x => x*x);  // [1,4,9,16]
+  filter(): keep elements that meet a condition. return new array, doesn't modify the original array.select subset.
+          example:let arr = [1,2,3,4];
+                  let evens   = arr.filter(x => x%2===0); // [2,4]
+  reduce(): reduce the function to a single value using a function. reduceRight() works from right to left.
+          example:let arr = [1,2,3,4];
+                  let sum = arr.reduce((acc, x) => acc + x, 0);      // 10  the 0 tells where to start the counting if you say 10 it becomes 20.
+                  let sumRight = arr.reduceRight((acc, x) => acc + x, 0); // 10, same for sum
+         used when summing,multiplying or combining in to single result.
+  splice(): adding and removing or replacing the element in place. it is shallow and it modifes the original value.
+  slice(): updatting and moving the element in place it is shallow and it doesn't modify the original value.
+  some():true if atleast one element satisfies the condition.
+  every():true it all elements satisfy condition.
+          example:let arr = [1,2,3];
+                  arr.some(x => x>2);  // true
+                  arr.every(x => x>0); // true
+  reverse(): reverse the position from right to left.
+  sort(): sorts in place,  can use comparator function.
+         example:let arr = [3,1,2];
+                  arr.reverse(); // [2,1,3]
+                  arr.sort((a,b)=>a-b); // [1,2,3]
+               used when you want order maoniplation.
+
+
+loops 
+   for statement :repeats until a condtion evaluaets to false. if the condition is omitted, defaults to true.
+                 example: for (let i=0; i<5; i++) {
+                          console.log(i);
+                          }
+   while statement: repeats as long as the condition is true.condition tested before each iteration.
+                    example: let i = 0;
+                             while (i < 5) {
+                             console.log(i);
+                             i++;
+                             }
+   do...while statement: repeats like while but executes at least once because condtion is checked after.
+                         example:let i = 0;
+                                 do {
+                                   console.log(i);
+                                   i++;
+                                 } while (i < 5);
+
+    labeled statement: adds label to a statement, sou can break/ continue outer loops.
+                     example:outer: for (let i=0; i<3; i++) {
+                            for (let j=0; j<3; j++) {
+                            if (j === 1) break outer; // break outer loop
+                              }
+                             }
+            
+   break statment : end the lop (or the labeled block) immediately.
+   continue statement: skips the rest of the current itration , goes to the loop cycle.
+   
+   for...in statement: itrates over keys(property names) of an object.use with objects, not arrays(order not guaranteed).
+                     example:let obj = {a:1, b:2, c:3};
+                             for (let key in obj) {
+                              console.log(key, obj[key]);
+                              }
+  for...of statement: itrates over values of itrable objects(array,string, maps,sets).
+                    example:let arr = [10, 20, 30];
+                            for (let value of arr) {
+                            console.log(value);
+                            }

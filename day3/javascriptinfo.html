@@ -1,0 +1,194 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <style>
+        .container{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+        .list1{
+            justify-content: center;
+        }
+        .lists{
+            width:600px;
+        }
+        .button{
+            display:flex;
+            color:white;
+            height:20px;
+        }
+        .head{
+            display:flex;
+            justify-content: space-between;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lists">
+            <ul class="animalList">
+                <li>
+                    <span class="head">
+                <h1>Horse</h1>
+                <button class="button">[X]</button>
+                </span>
+<p>The horse is one of two extant subspecies of Equus ferus. It is an odd-toed ungulate mammal belonging to the taxonomic family Equidae. The horse has evolved over the past 45 to 55 million years from a small multi-toed creature, Eohippus, into the large, single-toed animal of today.</p>
+                
+                </li>
+               <li>
+
+                    <span class="head">
+              <h1>Donkey</h1>
+                <button class="button">[X]</button>
+</span>
+                   <p>The donkey or ass (Equus africanus asinus) is a domesticated member of the horse family, Equidae. The wild ancestor of the donkey is the African wild ass, E. africanus. The donkey has been used as a working animal for at least 5000 years.</p>
+                </li>
+                        <li>
+                    <span class="head">
+                        <h1>Cat</h1>
+                <button class="button">[X]</button>
+</span>
+                    <p>The domestic cat (Latin: Felis catus) is a small, typically furry, carnivorous mammal. They are often called house cats when kept as indoor pets or simply cats when there is no need to distinguish them from other felids and felines. Cats are often valued by humans for companionship and for their ability to hunt vermin.</p>
+                </li>
+
+                
+            </ul>
+        </div>
+    </div>
+    <script>
+ let list=document.getElementsByClassName("animalList")[0];
+ list.addEventListener("click",(event)=>{
+event.target.closest("li").remove();
+ })
+    </script>
+</body>
+</html>  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<style>
+
+    ul{
+        display:block;  
+        cursor: pointer;
+    }
+    li ul{
+        display:block;
+    }
+    li.close > ul{
+        display: none;
+    }
+</style>
+
+<ul class="list">
+    <li>
+        <span>Animal</span>
+        <ul>
+            <li>
+                <span>Mammals</span>
+                <ul>
+                    <li>Cows</li>
+                    <li>Donkeys</li>
+                    <li>Dogs</li>
+                    <li>Tigers</li>
+                </ul>
+            </li>
+            <li>
+                <span>Other</span>
+                <ul>
+                    <li>Snakes</li>
+                    <li>Birds</li>
+                    <li>Lizards</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <span>Fishes</span>
+        <ul>
+            <li>
+                <span>Aquarium</span>
+                <ul>
+                    <li>Guppy</li>
+                    <li>Angelfish</li>
+                </ul>
+            </li>
+            <li>
+                <span>Sea</span>
+                <ul>
+                    <li>Sea trout</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
+<script>
+    let list=document.getElementsByClassName("list")[0];
+    list.addEventListener("click",(e)=>{
+        if(e.target.tagName==="SPAN"){
+let lists=e.target.parentElement;
+lists.classList.toggle("close");
+        }
+
+    })
+</script>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tables</title>
+</head>
+  <style>
+        .nw{
+         color:red;
+         cursor: pointer;
+        }
+    </style>
+<body>
+  <table class="table">
+  <tr>
+    <th colspan="3"><em>Bagua</em> Chart: Direction, Element, Color, Meaning</th>
+  </tr>
+  <tr>
+    <td class="nw"><strong>Northwest</strong><br>Metal<br>Silver<br>Elders</td>
+    <td class="n">...</td>
+    <td class="ne">...</td>
+  </tr>
+  <tr>...2 more lines of this kind...</tr>
+  <tr>...2 more lines of this kind...</tr>
+</table>  
+<script>
+let table=document.querySelector(".table");
+
+table.addEventListener("click",(e)=>{
+    let selector=e.target;
+    if(selector.tagName!=="TD"){
+        return;
+    }
+    highlight(selector);
+})
+function highlight(selector){
+selector.classList.toggle("nw");
+
+}
+</script>
+</body>
+</html>

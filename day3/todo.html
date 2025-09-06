@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+</head>
+<style>
+    body{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+  .lists{
+    padding:0; 
+  }
+    li{
+        list-style-type: none;
+        margin:5px 0;
+    }
+    li button{
+        margin-left:10px;
+    }
+    
+</style>
+<body>
+    <div>
+        <h1>Todo App</h1>
+        <input class="input" minlength="1" placeholder="add tasks"/>
+        <button class="add">Add</button>
+        <ul class="lists">
+            
+        </ul>
+    </div>
+<script>
+    let input=document.querySelector(".input");
+    let add=document.querySelector(".add");
+    let lists=document.querySelector(".lists");
+    
+   let tasks=JSON.parse(localStorage.getItem("tasks")) || [];
+
+   function saveTasks(){
+    localStorage.setItem("tasks",JSON.stringify(tasks))
+   }
+    
+   function renderTasks(){
+    lists.innerHTML="";
+    tasks.forEach((task,index)=>{
+        const li=document.createElement("li");
+        li.textContent=task;
+        const delBtn=document.createElement("button");
+        delBtn.textContent="Delete";
+        delBtn.onclick=()=>{
+            tasks.splice(index,1);
+            saveTasks();
+            renderTasks();
+        };
+        li.appendChild(delBtn);
+        lists.appendChild(li);
+
+    })
+   }
+    
+   add.addEventListener("click",()=>{
+    const text=input.value.trim();
+    if(!text){
+        error.textContent="Task cannot be empty";
+        setTimeout(()=>error.textContent="",3000);
+        return;
+    }
+    tasks.push(text);
+    saveTasks();
+    renderTasks();
+    input.value="";
+   })
+    renderTasks();
+</script>
+</body>
+</html>

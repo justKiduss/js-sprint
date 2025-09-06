@@ -1,0 +1,301 @@
+Parameters are essentially passed to functions by value — so if the code within the body of a function assigns a completely new value to a parameter that was passed to the function, the change is not reflected globally or in the code which called that function.
+
+function expression
+these functions can be anonymous because it donesn't have a name
+example:
+const square = function (number) {
+  return number * number;
+};
+
+console.log(square(4)); // 16
+
+when the name is provided it allows it to refer it self, it make easier to identify the function in debugger's stack traces
+example
+
+const factorial = function fac(n) {
+  return n < 2 ? 1 : n * fac(n - 1);
+};
+
+console.log(factorial(3)); // 6
+
+
+the difference between function and function expresstion .
+function it is hoisted or it can be called before the function.
+function expression is not hoisted you can assign it to array,objects,varibales.
+
+A function can call itself. For example, here is a function that computes factorials recursively:
+function factorial(n) {
+  if (n === 0 || n === 1) {
+    return 1;
+  }
+  return n * factorial(n - 1);
+}
+
+Immediately Invoked Function Expressions
+example:
+(function () {
+  // Do something
+})();
+
+const value = (function () {
+  // Do something
+  return someValue;
+})();
+it is away that make a function immediately created and then called
+uses:
+it uses when Everything inside the IIFE is private, so it doesn’t interfere with other code.
+uses:
+It creates an extra scope of variables, which helps to confine variables to the place where they are useful.
+It is now an expression instead of a sequence of statements. This allows you to write complex computation logic when initializing variables.
+
+scope:
+this means variables defined inside a function cannot be accessed from anywhere outside the function. The function scope inherits from all the upper scopes. For example, a function defined in the global scope can access all variables defined in the global scope. A function defined inside another function can also access all variables defined in its parent function, and any other variables to which the parent function has access. On the other hand, the parent function (and any other parent scope) does not have access to the variables and functions defined inside the inner function. This provides a sort of encapsulation for the variables in the inner function.
+
+🔹 What is a Closure?
+A closure happens when a function "remembers" the variables from the scope in which it was created, even after that scope has finished executing.
+👉 In simpler words:
+If a function is defined inside another function, the inner function keeps access to the outer function’s variables — even if the outer function is done running.
+
+The key ingredients for a useful closure are the following:
+
+A parent scope that defines some variables or functions. It should have a clear lifetime, which means it should finish execution at some point. Any scope that's not the global scope satisfies this requirement; this includes blocks, functions, modules, and more.
+An inner scope defined within the parent scope, which refers to some variables or functions defined in the parent scope.
+The inner scope manages to survive beyond the lifetime of the parent scope. For example, it is saved to a variable that's defined outside the parent scope, or it's returned from the parent scope (if the parent scope is a function).
+Then, when you call the function outside of the parent scope, you can still access the variables or functions that were defined in the parent scope, even though the parent scope has finished execution.
+
+example:
+function createCounter() {
+    let count = 0; // private variable
+
+    return {
+        increment: function() {
+            count++;
+            return count;
+        },
+        decrement: function() {
+            count--;
+            return count;
+        },
+        reset: function() {
+            count = 0;
+            return count;
+        }
+    };
+}
+
+const counter = createCounter();
+console.log(counter.increment()); // 1
+console.log(counter.increment()); // 2
+console.log(counter.decrement()); // 1
+console.log(counter.reset());     // 0
+
+🔑 1. Closures Recap
+
+A closure happens when an inner function remembers variables from its outer function’s scope, even after the outer function has finished running.
+
+👉 This is why we can “encapsulate” data (keep it private) and only expose it via functions.
+
+Example (your getCode one):
+const getCode = (function () {
+  const apiCode = "0]Eal(eh&2"; // private
+  return function () {
+    return apiCode;  // closure here
+  };
+})();
+
+console.log(getCode()); // "0]Eal(eh&2"
+
+
+Explanation:
+
+The outer IIFE ((function(){...})()) runs immediately.
+
+It creates a private variable apiCode.
+
+It returns a function that remembers apiCode.
+
+No one outside can touch apiCode, except by calling getCode().
+This is exactly what closures are for: data privacy.
+
+🔑 2. Multiply-Nested Functions (Scope Chain)
+function A(x) {
+  function B(y) {
+    function C(z) {
+      console.log(x + y + z);
+    }
+    C(3);
+  }
+  B(2);
+}
+A(1); // Logs 6
+
+
+A defines x = 1
+
+B is nested inside A, so B can access x.
+
+C is nested inside B, so C can access both y (from B) and x (from A).
+👉 This is scope chaining: C → B → A → global.
+But A cannot access C, because the chain only works inward, not outward.
+
+🔑 3. Name Conflicts
+function outside() {
+  const x = 5;
+  function inside(x) {
+    return x * 2;
+  }
+  return inside;
+}
+
+console.log(outside()(10)); // 20
+
+
+Outer scope: x = 5
+
+Inner scope: parameter x = 10
+
+When you do return x * 2, the inner x shadows the outer x.
+
+So it multiplies 10 * 2 instead of 5 * 2.
+
+👉 Rule: Innermost scope wins if variable names clash.
+
+🔑 4. The arguments Object
+
+The arguments object is special:
+
+It exists in every regular function (not arrow functions).
+
+It contains all arguments passed in, regardless of the number of parameters declared.
+
+Example:
+
+function myConcat(separator) {
+  let result = "";
+  for (let i = 1; i < arguments.length; i++) {
+    result += arguments[i] + separator;
+  }
+  return result;
+}
+
+console.log(myConcat(", ", "red", "orange", "blue"));
+// "red, orange, blue, "
+
+
+The function is declared with 1 parameter (separator).
+
+But we can still pass more arguments (red, orange, blue).
+
+arguments lets us capture them dynamically.
+
+⚠️ arguments is array-like (has indices and .length), but it’s not an array. You can’t use map, filter, etc. (For modern JS we often prefer the rest operator ...args instead).
+
+🔹 1. Shorter Syntax
+
+Arrow functions were partly introduced to make code cleaner.
+
+Example:
+
+const numbers = [1, 2, 3, 4];
+
+// Regular function
+const squares1 = numbers.map(function (n) {
+  return n * n;
+});
+
+// Arrow function
+const squares2 = numbers.map(n => n * n);
+
+console.log(squares1); // [1, 4, 9, 16]
+console.log(squares2); // [1, 4, 9, 16]
+
+
+✅ Same result, but the arrow function is much shorter.
+
+🔹 2. this Binding Problem
+
+The biggest difference is about this.
+
+With a normal function:
+function Person() {
+  this.age = 0;
+
+  setInterval(function growUp() {
+    this.age++; // ❌ 'this' refers to global object, not Person
+    console.log(this.age);
+  }, 1000);
+}
+
+const p = new Person();
+
+
+Here, the inner growUp function defines its own this, which doesn’t point to the Person instance. Instead, in non-strict mode it’s the window (global object).
+So the counter won’t work as expected.
+
+Fix 1: Use a self variable
+function Person() {
+  const self = this; // capture the outer 'this'
+  self.age = 0;
+
+  setInterval(function growUp() {
+    self.age++; // ✅ now 'self' refers to Person
+    console.log(self.age);
+  }, 1000);
+}
+
+Fix 2: Use .bind(this)
+function Person() {
+  this.age = 0;
+
+  setInterval(function growUp() {
+    this.age++;
+    console.log(this.age);
+  }.bind(this), 1000); // ✅ explicitly bind Person's 'this'
+}
+
+Fix 3 (Best): Use an arrow function
+function Person() {
+  this.age = 0;
+
+  setInterval(() => {
+    this.age++; // ✅ arrow function uses outer 'this'
+    console.log(this.age);
+  }, 1000);
+}
+
+const p = new Person();
+
+
+➡️ Here’s the magic:
+Arrow functions don’t have their own this. Instead, they inherit the this from the scope where they are created (the surrounding function or object).
+
+So in this case, the arrow function inside setInterval uses the same this as the Person constructor, which means it correctly refers to the Person object.
+
+🔹 3. Arrow functions cannot be used everywhere
+
+❌ They cannot be used as constructors (new PersonArrow() will throw an error).
+
+❌ They don’t have their own arguments object (but you can use rest parameters ...args instead).
+
+✅ They are amazing for callbacks, array methods, and event handlers where you don’t want a new this.
+
+✅ Summary:
+
+Arrow functions → shorter syntax + capture outer this.
+
+Regular functions → create their own this.
+
+Use arrow functions when you want this to refer to the surrounding context.
+
+- Function expressions are not hoisted; can be assigned to arrays, objects, or variables.
+- IIFEs create a private scope to avoid global pollution.
+- Use ...args over arguments for modern JS (supports array methods like map).
+
+REFELECTION
+
+i learned that i don't know js enought, i learned about closure how to use the value for different if you want you can copy and using the copied variable it is good concept to knoe,scope how variables work how functions can access their parent varibale but not the vise versal ,IIFE how i can use this if intialize a function with out needing to call them and things like that 
+
+Struggles of using and undertsanding the work this, fixing the git errors.
+Plan: Day 3 - Arrays, loops, to-do list app.
+
+

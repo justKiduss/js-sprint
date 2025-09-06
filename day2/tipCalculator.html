@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+.container{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+#input{
+width:300px;
+height:300px;
+}
+#cal{
+text-align: center;
+width:100px;
+height:30px;
+margin:30px 0px 0px 70px;
+}
+#result{
+    margin:30px 0px 0px 70px;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+    <div id="input">
+        <h1>Tip Calculator</h1>
+        <label>Bill Amount:</label>
+        <input id="bill" type="number" placeholder="Enter bill"/><br/><br/>
+        <label>Tip %:</label>
+        <input id="tip" type="number" placeholder="Enter tip %"/><br/>
+        <button id="cal">Calculate</button>
+        <p id="result"></p>
+    </div>
+    </div>
+    <script>
+        let billAmount=document.querySelector("#bill");
+        let tipAmount=document.querySelector("#tip");
+        let calculate=document.querySelector("#cal");
+        let result=document.querySelector("#result");
+calculate.addEventListener("click",()=>{
+    let bill=Number(billAmount.value);
+    let tip=Number(tipAmount.value);
+        if(bill <= 0 || tip <= 0 ){
+    result.textContent="the input you enterd is not valid please try again"
+         }else{
+    result.textContent=`Tip: $ ${(bill*(tip/100)).toFixed(2)}`;
+}
+})
+
+
+    </script>
+</body>
+</html>

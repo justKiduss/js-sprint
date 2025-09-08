@@ -118,3 +118,11 @@ loops
                             for (let value of arr) {
                             console.log(value);
                             }
+
+
+ Event Delegation : the idea is that if we have alot of elements handled in a similar way, then instead of assigning a handler to each of them- we put a single handler on their common ancestor.
+             in the handler we get event.target to see where the event actually happend and handle it. the closeest() return the nearest ancestir that matches the selector. 
+   delegation: action in markup Let’s say, we want to make a menu with buttons “Save”, “Load”, “Search” and so on. And there’s an object with methods save, load, search… How to match them?
+              The first idea may be to assign a separate handler to each button. But there’s a more elegant solution. We can add a handler for the whole menu and data-action attributes for buttons that has the method to call:
+          
+    

@@ -11,7 +11,7 @@
         justify-content: center;
         align-items: center;
     }
-  .lists{
+    .lists{
     padding:0; 
   }
     li{
@@ -35,62 +35,64 @@
     </div>
     <script>
         let textInput=document.querySelector(".input");
-        let addTask=document.querySelector(".add");
+        let addBtn=document.querySelector(".add");
         let taskList=document.querySelector(".lists");
-        let error=document.querySelector(".error");
 
         let tasks=JSON.parse(localStorage.getItem("tasks"))||[];
 
         function saveTasks(){
-            localStorage.setItem("tasks",JSON.stringify(tasks));
+          localStorage.setItem("tasks",JSON.stringify(tasks));
         }
+       
+        function addTasks(){
+        let text=textInput.value.trim();
 
-        function displayTasks(){
-taskList.innerHTML="";
-
-         tasks.forEach((task,index)=>{
-     let li=document.createElement("li");
-     let check=document.createElement("input");
-     let span=document.createElement("span");
-     let delbtn=document.createElement('button');
-
-         check.type="checkbox";
-         check.checked=task.done;
-         li.appendChild(check);
-
-         span.textContent=task.text;
-         li.appendChild(span);
-         delbtn.textContent="delete";
-        
-          check.onchange = () => {
-          tasks[index].done = check.checked;  // ✅ update done state
-           saveTasks();
-          };
-
-         li.appendChild(delbtn);
-         delbtn.onclick=()=>{
-        tasks.splice(index,1);
-        saveTasks();
-         displayTasks()
-         }
-         
-         taskList.appendChild(li);
-         })
+        if(!text){
+           document.querySelector(".error").textContent = "Task must be added!";
+            return; 
         }
-        function add(){
-            let text=textInput.value.trim();
-            if(text===""){
-                error.textContent='text needed';
-                setTimeout(()=>error.textContent="",3000);
-                return;
+        setTimeout(()=>document.querySelector(".error").textContent = "",3000)
+        tasks.push({text,done:false});
+            textInput.value="";
+
+        }
+        function renderTasks(){
+            taskList.innerHTML=""
+            tasks.forEach((task,index)=>{
+            let li=document.createElement("li");
+            let span=document.createElement('span');
+            let delbtn=document.createElement('button');
+            let check=document.createElement("input");
+            check.type="checkbox"
+            check.checked=task.done;
+if(task.done) span.style.textDecoration="line-through"
+            check.onchange=()=>{
+            tasks[index].done=check.checked;
+            saveTasks();
+            renderTasks();
             }
-           tasks.push({text:text,done:false});
-           saveTasks();
-           displayTasks();
-           textInput.value="";
+
+            delbtn.textContent="Delete";
+            
+            span.textContent=task.text;
+            delbtn.onclick=()=>{
+                tasks.splice(index,1);
+                saveTasks();
+                renderTasks();
+            }
+            li.appendChild(check)
+            li.appendChild(span);
+            li.appendChild(delbtn);
+            taskList.appendChild(li);
+            
+            })
         }
-    addTask.onclick=add;
-     displayTasks();
+          addBtn.onclick=()=>{
+            addTasks();
+            saveTasks();
+            renderTasks();
+        }
+       renderTasks();
     </script>
 </body>
 </html>

@@ -125,4 +125,8 @@ loops
    delegation: action in markup Let’s say, we want to make a menu with buttons “Save”, “Load”, “Search” and so on. And there’s an object with methods save, load, search… How to match them?
               The first idea may be to assign a separate handler to each button. But there’s a more elegant solution. We can add a handler for the whole menu and data-action attributes for buttons that has the method to call:
           
+
+REELECTION
+ while doing this i have noticed i had gap that i need to fill about dom,about event delegation and the other topic so i think doing this is the right choice.
+ in loop i had n't had any knowlegde about for... in and for... of diference and their use now i am good.
     

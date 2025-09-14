@@ -32,15 +32,18 @@
         width:300px;
         height:30px
        }
+       .error{
+        color:red;
+       }
     </style>
 </head>
 <body>
 <div class="container">
   <h1 class="title">Contact Form</h1>
     <form class="form">
-      <input type="text" placeholder="Name" minlength="3" class="textInput"/><br/>
+      <input type="text" placeholder="Name" minlength="2" class="textInput"/><br/>
       <input type="email" placeholder="Email" class="emailInput"/><br/>
-      <textarea placeholder="Message" class="textareaInput">
+      <textarea placeholder="Message" class="textareaInput" minlength="5">
 
       </textarea>
       <button type="submit">Submit</button>
@@ -60,38 +63,76 @@
        let error=document.querySelector(".error");
        let lists=document.querySelector(".lists")
 
-       let Data=JSON.parse(localStorage.getItem("datas"))||[];
+       let Data;
+       try{
+        Data=JSON.parse(localStorage.getItem("datas"))||[];
+       }catch(e){
+        console.error("corrupted localstorage data resetting ..",e);
+        Data=[];
+        localStorage.removeItem("datas");
+       }
 
      form.addEventListener("submit",(e)=>{
         e.preventDefault();
-        validateForm();
-            const submission = `${text.value} - ${email.value} - ${textarea.value}`;
-             Data.push(submission);
+        if(!validateForm()) return;
+        const submission = `${text.value} - ${email.value} - ${textarea.value}`;
+            Data.push(submission);
         renderData();
         saveToLocalstorage();
         form.reset();
        })
 
        function saveToLocalstorage(){
+        if(!localStorage){
+        console.log("invalid");
+        }else{
         localStorage.setItem("datas",JSON.stringify(Data))
+        }
        }
 
        function renderData(){
+         lists.innerHTML="";
          Data.forEach((data,index)=>{
          let li=document.createElement("li");
-         lists.appendChild(li);
-         li.textContent=data;
+         let delBtn=document.createElement("button");
+         let span=document.createElement("span");
+         span.textContent=data;
+         delBtn.textContent="Delete";
+
+        delBtn.onclick=()=>{
+            Data.splice(index,1);
+            saveToLocalstorage();
+            renderData();
+        }
+        
+        li.appendChild(span);
+        li.appendChild(delBtn);
+        lists.appendChild(li);
          })
        }
        function validateForm(){
        const emailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
        if(!emailPattern.test(email.value)){
        error.textContent="The email must fulfill the requirement";
        setTimeout(()=>error.textContent="",3000)
+       return false;
        }
 
+       if(text.value.trim().length<2){
+        error.textContent="The name must fulfill the requirement greater than 2 characters";
+       setTimeout(()=>error.textContent="",3000)
+       return false;
        }
-       renderData();
+
+       if(textarea.value.trim().length <5){
+       error.textContent="The message must fulfill the requirement greater than 5 characters";
+       setTimeout(()=>error.textContent="",3000)
+       return false;
+       }
+        return true;
+       }
+       
     </script>
 </body>
 </html>

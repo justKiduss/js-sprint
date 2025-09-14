@@ -72,3 +72,7 @@ when you want to have spaces in the keys you must use quotation ("") for the key
 
 delete properties from a javascript Object
 delete ourDog.bark;
+
+reflection 
+in the day4 project is more easier than the previous day may be because of the day3 todo project it is good to understand it now i am ready for day5
+

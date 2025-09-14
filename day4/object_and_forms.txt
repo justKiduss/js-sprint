@@ -1,0 +1,74 @@
+javascript is designed on an object-based paradigm.an object is a collection of properties and this property is an association etween a name(or key) and a value.when a prorty value is a function is called a method.
+example : const obj = {
+               property1: value1, // property name may be an identifier
+               2: value2, // or a number
+              "property n": value3, // or a string
+};
+Objects created with initializers are called plain objects, because they are instances of Object, but not any other object type. Some object types have special initializer syntaxes — for example, array initializers and regex literals.
+
+Using a constructor function
+
+function Car(make, model, year) {
+  this.make = make;
+  this.model = model;
+  this.year = year;
+}
+
+const myCar = new Car("Eagle", "Talon TSi", 1993);
+This statement creates myCar and assigns it the specified values for its properties. Then the value of myCar.make is the string "Eagle", myCar.model is the string "Talon TSi", myCar.year is the integer 1993, and so on. The order of arguments and parameters should be the same.
+YOU can always add a property to a perviously defined objects. example : car1.color = "black";
+
+using the object.create() method this is useull because it allows you to choose prototype objects you want to createwithout having to deine a constructor function.
+
+// Animal properties and method encapsulation
+const Animal = { // animal is just an object
+  type: "Invertebrates", // Default value of properties
+  displayType() {
+    // Method which will display type of Animal
+    console.log(this.type);
+  },
+};
+
+// Create new animal type called `animal`
+
+const animal = Object.create(Animal);
+animal.displayType(); // Logs: Invertebrates
+
+// Create new animal type called fish
+const fish = Object.create(Animal);
+fish.type = "Fishes";
+fish.displayType(); // Logs: Fishes
+
+Nonexistent properties of an object have value undefined(not null).
+
+Objects as data structures
+in javascript objects are liek containers that group related data together using key-value pairs.
+Unlike arrays (which use numeric indexes like 0,1,2...), objects let you use named keys ("name", "age") to store and retrieve data.
+This makes objects better suited when the data has different types of information rather than just a list of items.
+Arrays are best for ordered lists, objects are best for structured entities with properties.
+
+objects are mutable meaning they contents can be changed even they are declared with const.
+
+form validation 
+regex (regular expression) is like a pattern langauge for text.
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+^ → start of string.
+[^\s@]+ → one or more characters that are NOT whitespace (\s) and NOT @. (So: username part)
+@ → literal @ must appear.
+[^\s@]+ → one or more characters again (the domain name).
+\. → a dot (escaped because . in regex means “any char”).
+[^\s@]+ → one or more characters again (the top-level domain, like .com).
+$ → end of string. so concpcually it is saying match text that look like someText@someText.someText
+
+form 
+Click = about the button only.
+Submit = about the form’s intention to send data (bigger scope).
+e.preventDefault() doesn’t mean “reload after sending”.
+It means “stop the browser from sending/reloading at all.”
+
+summary
+Objects are similar to arrays, except that instead of using indexes to access and modify their data, you access the data in objects through what are called properties.
+when you want to have spaces in the keys you must use quotation ("") for the keys and you have to access it using [""] not dot.
+
+delete properties from a javascript Object
+delete ourDog.bark;

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <style>
+        body{
+            display:flex;
+            justify-content: center;
+            padding: 100px;
+            align-items: center;
+        }
+        .form{
+            color:green;
+        }
+        .title{
+            color:green;
+        }
+        .container{
+            padding:100px;
+        }
+        .textInput{
+             width:300px;
+            height:30px;
+        }
+        .emailInput{
+            width:300px;
+            height:30px;
+        }
+       .textareaInput{
+        width:300px;
+        height:30px
+       }
+    </style>
+</head>
+<body>
+<div class="container">
+  <h1 class="title">Contact Form</h1>
+    <form class="form">
+      <input type="text" placeholder="Name" minlength="3" class="textInput"/><br/>
+      <input type="email" placeholder="Email" class="emailInput"/><br/>
+      <textarea placeholder="Message" class="textareaInput">
+
+      </textarea>
+      <button type="submit">Submit</button>
+    </form>
+    <p class="error"></p>
+    <ul class="lists">
+        
+    </ul>
+</div>
+
+
+    <script>
+       let form=document.querySelector(".form")
+       let text=document.querySelector(".textInput");
+       let email=document.querySelector(".emailInput");
+       let textarea=document.querySelector(".textareaInput");
+       let error=document.querySelector(".error");
+       let lists=document.querySelector(".lists")
+
+       let Data=JSON.parse(localStorage.getItem("datas"))||[];
+
+     form.addEventListener("submit",(e)=>{
+        e.preventDefault();
+        validateForm();
+            const submission = `${text.value} - ${email.value} - ${textarea.value}`;
+             Data.push(submission);
+        renderData();
+        saveToLocalstorage();
+        form.reset();
+       })
+
+       function saveToLocalstorage(){
+        localStorage.setItem("datas",JSON.stringify(Data))
+       }
+
+       function renderData(){
+         Data.forEach((data,index)=>{
+         let li=document.createElement("li");
+         lists.appendChild(li);
+         li.textContent=data;
+         })
+       }
+       function validateForm(){
+       const emailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+       if(!emailPattern.test(email.value)){
+       error.textContent="The email must fulfill the requirement";
+       setTimeout(()=>error.textContent="",3000)
+       }
+
+       }
+       renderData();
+    </script>
+</body>
+</html>

@@ -100,17 +100,25 @@
          span.textContent=data;
          delBtn.textContent="Delete";
 
-        delBtn.onclick=()=>{
-            Data.splice(index,1);
-            saveToLocalstorage();
-            renderData();
-        }
+        // delBtn.onclick=()=>{
+        //     Data.splice(index,1);
+        //     saveToLocalstorage();
+        //     renderData();
+        // }
         
         li.appendChild(span);
         li.appendChild(delBtn);
         lists.appendChild(li);
          })
        }
+       lists.addEventListener("click",(e)=>{
+if(e.target.tagName==="BUTTON"){
+    const index=[...lists.children].indexOf(e.target.parentElement);
+    Data.splice(index,1);
+    saveToLocalstorage();
+    renderData();
+}
+       })
 renderData();
 
        function validateForm(){

@@ -114,7 +114,9 @@ calculations.push({result,num2:n2,num1:n1,operation});
     calculations.forEach((calc) => {
         const li = document.createElement("li");
         li.className = "result";
+        if(n2!=0){
         li.textContent = `${calc.num1} ${calc.operation} ${calc.num2} = ${calc.result}`;
+        }
         ul.appendChild(li);
     });
 }

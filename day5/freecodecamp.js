@@ -43,34 +43,45 @@
 // Setup
 
 // exercise 3
-// const recordCollection = {
-//   2548: {
-//     albumTitle: 'Slippery When Wet',
-//     artist: 'Bon Jovi',
-//     tracks: ['Let It Rock', 'You Give Love a Bad Name']
-//   },
-//   2468: {
-//     albumTitle: '1999',
-//     artist: 'Prince',
-//     tracks: ['1999', 'Little Red Corvette']
-//   },
-//   1245: {
-//     artist: 'Robert Palmer',
-//     tracks: []
-//   },
-//   5439: {
-//     albumTitle: 'ABBA Gold'
-//   }
-// };
+const recordCollection = {
+  2548: {
+    albumTitle: 'Slippery When Wet',
+    artist: 'Bon Jovi',
+    tracks: ['Let It Rock', 'You Give Love a Bad Name']
+  },
+  2468: {
+    albumTitle: '1999',
+    artist: 'Prince',
+    tracks: ['1999', 'Little Red Corvette']
+  },
+  1245: {
+    artist: 'Robert Palmer',
+    tracks: []
+  },
+  5439: {
+    albumTitle: 'ABBA Gold'
+  }
+};
 
 // Only change code below this line
-// function updateRecords(records, id, prop, value) {
-// //   return records;
-// record
-// console.log(records);
-// }
+function updateRecords(records, id, prop, value) {
+  if (value === "") {
+    // delete the property
+    delete records[id][prop];
+  } else if (prop === "tracks") {
+    // if tracks doesn’t exist, create an empty array
+    records[id][prop] = records[id][prop] || [];
+    // then add the new track
+    records[id][prop].push(value);
+  } else {
+    // update or create the property
+    records[id][prop] = value;
+  }
 
-// updateRecords(recordCollection, 5439, 'artist', 'ABBA');
+  return records;
+}
+
+console.log(updateRecords(recordCollection, 5439, 'artist', 'ABBA'));
 
 // exrecise 4
 // Setup

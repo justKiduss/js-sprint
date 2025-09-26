@@ -1,0 +1,131 @@
+Document object model in short DOM connects web pages to scripts or programming languages by representing the structure of the document -such as HTML representing a web page - in memory.
+The DOM represents a document with a logical tree. Each branch of the tree ends in a node, and each node contains objects. DOM methods allow programmatic access to the tree. With them, you can change the document's structure, style, or content.
+HTML DOM A document containing HTML is described using the Document interface, which is extended by the HTML specification to include various HTML-specific features. In particular, the Element interface is enhanced to become HTMLElement and various subclasses, each representing one of (or a family of closely related) elements.
+SVG DOM Similarly, a document containing SVG is also described using the Document interface, which is extended by the SVG specification to include various SVG-specific features. In particular, the Element interface is enhanced to become SVGElement and various subclasses, each representing an element or a family of closely related elements. These interfaces are discussed further in the SVG API documentation.
+
+DOM EVENTS
+
+Events are fired to notify code of "interesting changes" that may affect code execution. These can arise from user interactions such as using a mouse or resizing a window, changes in the state of the underlying environment (e.g., low battery or media events from the operating system), and other causes.
+event types
+Animation related to the Web Animation API. used to respond to change in animation status(eg when an animation starts or ends). example:Document,Window,HTMLElement
+Asynchronous data fetching used to event related to the fetching data. example : Events fired on AbortSignal,XMLHttpRequest,FileReader.
+Clipboard Event related to the Clipboard API used to notify when content is cut,copied,or pasted. example : Document,Element,Window.
+Composition Events related to composition; entering text "indirectly" (rather than using normal keyboard presses).
+For example, text entered via a speech to text engine, or using special key combinations that modify keyboard presses to represent new characters in another language. example Element.
+CSS transition Events related to CSS Transitions. Provides notification events when CSS transitions start, stop, are cancelled, etc. example Document,HTMLElement,Window.
+DataBase Events related to database operations: opening, closing, transactions, errors, etc. example IDBDatabase, IDBOpenDBRequest, IDBRequest, IDBTransaction.
+DOM mutation Events related to modifications to the Document Object Model (DOM) hierarchy and nodes.
+Drag'n'drop, Wheel Events related to using the HTML Drag and Drop API and wheel events.Drag and Wheel events are derived from mouse events. While they are fired when using mouse wheel or drag/drop, they may also be used with other appropriate hardware. example:Drag events fired on Document, Wheel events fired on Element.
+Focus Events related to elements gaining and losing focus. example : Events fired on Element, Window.
+Form Events related to forms being constructed, reset and submitted. example : Events fired on HTMLFormElement.
+Fullscreen	Events related to the Fullscreen API. Used to notify when the transitioning between full screen and windowed modes, and also of errors occurring during this transition. example : Events fired on Document, Element.
+
+CREATING AND DISPATCHING EVENTS
+in addition of built in events you can create and dispatch DOM events your self and such events are called synthetic events.
+creating custom events events can be created with the Event constructor example.
+
+ const event = new Event("build");
+
+// Listen for the event.
+elem.addEventListener("build", (e) => {
+  /* … */
+});
+
+// Dispatch the event.
+elem.dispatchEvent(event);
+
+Adding custom data – CustomEvent()
+
+To add more data to the event object, the CustomEvent interface exists and the detail property can be used to pass custom data. For example, the event could be created as follows: 
+example : const event = new CustomEvent("build", { detail: elem.dataset.time });
+This will then allow you to access the additional data in the event listener:
+function eventHandler(e) {
+  console.log(`The time is: ${e.detail}`);
+}
+
+and you can add custom data - subclassing Event
+The Event interface can also be subclassed. This is particularly useful for reuse, or for more complex custom data, or even adding methods to the event.
+
+class BuildEvent extends Event {
+  #buildTime;
+
+  constructor(buildTime) {
+    super("build");
+    this.#buildTime = buildTime;
+  }
+
+  get buildTime() {
+    return this.#buildTime;
+  }
+}
+This code example defines a BuildEvent class with a read-only property and a fixed event type.
+The event could then be created as follows:
+const event = new BuildEvent(elem.dataset.time);
+The additional data can then be accessed in the event listeners using the custom properties:
+function eventHandler(e) {
+  console.log(`The time is: ${e.buildTime}`);
+}
+
+Creating and dispatching events dynamically
+
+const form = document.querySelector("form");
+const textarea = document.querySelector("textarea");
+
+form.addEventListener("awesome", (e) => console.log(e.detail.text()));
+
+textarea.addEventListener("input", function () {
+  // Create and dispatch/trigger an event on the fly
+  // Note: Optionally, we've also leveraged the "function expression" (instead of the "arrow function expression") so "this" will represent the element
+  this.dispatchEvent(
+    new CustomEvent("awesome", {
+      bubbles: true,
+      detail: { text: () => textarea.value },
+    }),
+  );
+});
+
+Triggering built-in events
+
+This example demonstrates simulating a click (that is programmatically generating a click event) on a checkbox using DOM methods. View the example in action.
+function simulateClick() {
+  const event = new MouseEvent("click", {
+    view: window,
+    bubbles: true,
+    cancelable: true,
+  });
+  const cb = document.getElementById("checkbox");
+  const cancelled = !cb.dispatchEvent(event);
+
+  if (cancelled) {
+    // A handler called preventDefault.
+    alert("cancelled");
+  } else {
+    // None of the handlers called preventDefault.
+    alert("not cancelled");
+  }
+}
+
+Registering Event Handlers (Short Form)
+
+1. Using onevent properties
+Assign handler directly:
+btn.onclick = greet;
+Only one handler per event (new one replaces old).
+2. Using addEventListener() ✅ (recommended)
+Allows multiple handlers for the same event.
+Handlers can be removed with removeEventListener.
+Example:
+btn.addEventListener("click", greet);
+3. With AbortSignal
+Add many handlers tied to one signal → remove them all at once.
+const controller = new AbortController();
+btn.addEventListener("click", greet, { signal: controller.signal });
+controller.abort(); // removes all linked
+4. Inline HTML attributes (⚠️ not recommended)
+<button onclick="greet()"> → makes markup messy & hard to debug.
+Notes on Event Flow
+Events travel capture → target → bubble.
+By default, listeners run in bubble phase.
+Use { capture: true } to listen in capture phase.
+stopPropagation() → stops going up/down DOM.
+stopImmediatePropagation() → also stops other handlers on same element.

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator App</title>
+    <style>
+        body{
+            display:flex;
+            align-items:center;
+            justify-content: center;
+            min-height: 100vh; 
+            margin: 0; 
+            background-color: #f0f0f0;
+            font-family: Arial,sans-serif;
+        }
+        input, select, button { 
+            width: 100%; 
+            padding: 10px; 
+            margin: 5px 0; 
+            font-size: 16px; 
+        }
+        #results{
+            list-style: none;
+            padding:0;
+        }
+        .container{
+            width: 90%; 
+            max-width: 500px; 
+            text-align: center;
+        }
+        .result{
+          padding: 10px; 
+          margin: 5px 0; 
+          border-radius: 5px; 
+          text-align: left;
+          color:black;
+          background:white;
+        }
+        .error{
+            color:red;
+            margin:10px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Calculator</h1>
+<form class="form" id="calcForm">
+    <input type="number" placeholder="First number" class="num1" id="num1"/>
+    <input type="number" placeholder="Second number" class="num2" id="num2"/>
+<select aria-label="Operation" id="operation" class="opInput">
+    <option value='+'>+</option>
+    <option value='-'>-</option>
+    <option value='/'>/</option>
+    <option value='*'>*</option>
+</select>
+<button class="calculate" type="submit">Calculate</button>
+<button class="clear" id="clear" type="button">Clear</button>
+<p id="error" class="error"></p>
+<ul id="results">
+</ul>
+</form>
+</div>
+
+
+<script>
+let num1=document.querySelector(".num1");
+let num2=document.querySelector(".num2");
+let opInput=document.querySelector(".opInput");
+let calculate=document.querySelector(".calculate");
+let clear=document.querySelector(".clear");
+let result=document.querySelector(".result");
+let form=document.querySelector(".form");
+let error=document.querySelector(".error");
+let ul=document.querySelector("#results");
+let li=document.createElement("li");
+let calculations=[];
+form.addEventListener("submit",(e)=>{
+    e.preventDefault();
+    let n1=Number(num1.value);
+    let n2=Number(num2.value);
+    let operation=opInput.value;
+  if(isNaN(n1)||isNaN(n2)){
+  forError("Please enter valid numbers");
+  return;
+  }
+//   let result;
+switch(operation){
+    case '+':
+     result=n1+n2;
+    break;
+    case '-':
+     result=n1-n2;
+    break;
+    case '*':
+     result=n1*n2;
+    break;
+    case '/':
+        if(n2==0){
+           forError("Division by zero not allowed");
+        }else{
+     result=n1/n2;
+     }
+    break;
+}
+renderResults(result,n2,n1,operation);
+})
+
+///////////////// unfinished code 
+function renderResults(result,n2,n1,operation){
+calculations.push({result,num2:n2,num1:n1,operation});
+     ul.innerHTML = "";
+    calculations.forEach((calc) => {
+        const li = document.createElement("li");
+        li.className = "result";
+        li.textContent = `${calc.num1} ${calc.operation} ${calc.num2} = ${calc.result}`;
+        ul.appendChild(li);
+    });
+}
+//////////////////
+clear.addEventListener("click",(e)=>{
+    e.preventDefault();
+    form.reset();
+    result.innerHTML="";
+})
+function forError(msg){
+     error.textContent=msg;
+            setTimeout(()=>error.textContent="",3000);
+            return;
+}
+// renderResults();
+</script>
+</body>
+</html>

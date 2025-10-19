@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter App</title>
+    <style>
+    .container{
+display:flex;
+justify-content:center;
+align-items:center;
+min-height: 100vh;
+    }
+    .size{
+        padding: 20px;
+        text-align: center;
+    }
+    .buttons{
+        display:flex;
+        gap:20px;
+        justify-content: center;
+    }
+    button{
+        font-size: 20px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+     
+    <div class="container">
+        <div class="size">
+          <h1>Counter App</h1>
+          <h1 id="value">0</h1>
+    <div class="buttons">
+         <button id="increment">+</button>
+         <button id="decrement">-</button>
+    </div>
+    <div>
+        <button id="reset">Reset</button>
+    </div>
+    </div>
+    </div>
+
+<script>
+let increment=document.querySelector("#increment");
+let decrement=document.querySelector("#decrement");
+let counter=document.querySelector("#value");
+let reset =document.querySelector("#reset");
+
+let count;
+function render(){
+    try{
+count=Number(localStorage.getItem("counter"))||0;
+}catch(e){
+    count=0;
+}
+console.log(count);
+counter.textContent=Number(count);
+}
+increment.addEventListener("click",(e)=>{
+   count++;
+   localStorage.setItem("counter",count);
+   render();
+})
+decrement.addEventListener("click",(e)=>{
+if(count<0) return;
+    count--;
+    localStorage.setItem("counter",count);
+    render();
+})
+reset.addEventListener("click",(e)=>{
+    count=0;
+    localStorage.removeItem("counter");
+    render();
+})
+render();
+</script>    
+</body>
+</html>

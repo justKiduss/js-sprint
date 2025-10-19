@@ -9,6 +9,8 @@
     display:flex;
     justify-content: center;
     align-items: center;
+    max-width: 500px; 
+    width: 90%;
 }
 #input{
 width:300px;
@@ -35,6 +37,7 @@ margin:30px 0px 0px 70px;
         <input id="tip" type="number" placeholder="Enter tip %"/><br/>
         <button id="cal">Calculate</button>
         <p id="result"></p>
+        <p id="error"></p>
     </div>
     </div>
     <script>
@@ -42,11 +45,15 @@ margin:30px 0px 0px 70px;
         let tipAmount=document.querySelector("#tip");
         let calculate=document.querySelector("#cal");
         let result=document.querySelector("#result");
+        let error=document.querySelector("#error");
 calculate.addEventListener("click",()=>{
     let bill=Number(billAmount.value);
     let tip=Number(tipAmount.value);
-        if(bill <= 0 || tip <= 0 ){
-    result.textContent="the input you enterd is not valid please try again"
+        if(isNaN(bill) || isNaN(tip)||bill <= 0 || tip <= 0 ){
+    error.textContent="Invalid Input";
+    setTimeout(()=>
+        error.textContent="",
+    1000)
          }else{
     result.textContent=`Tip: $ ${(bill*(tip/100)).toFixed(2)}`;
 }

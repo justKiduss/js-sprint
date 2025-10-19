@@ -111,6 +111,7 @@
         lists.appendChild(li);
          })
        }
+       // USING EVENT DELEGATION
        lists.addEventListener("click",(e)=>{
 if(e.target.tagName==="BUTTON"){
     const index=[...lists.children].indexOf(e.target.parentElement);

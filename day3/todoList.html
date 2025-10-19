@@ -75,17 +75,24 @@ if(task.done) span.style.textDecoration="line-through"
             delbtn.textContent="Delete";
             
             span.textContent=task.text;
-            delbtn.onclick=()=>{
-                tasks.splice(index,1);
-                saveTasks();
-                renderTasks();
-            }
+            // delbtn.onclick=()=>{
+            //     tasks.splice(index,1);
+            //     saveTasks();
+            //     renderTasks();
+            // }
             li.appendChild(check)
             li.appendChild(span);
             li.appendChild(delbtn);
             taskList.appendChild(li);
             
             })
+          taskList.addEventListener("click",(e)=>{
+            if(e.target.tagName==="BUTTON");
+            let index=[...taskList.children].indexOf(e.target.parentElement)
+            tasks.splice(index,1);
+            saveTasks();
+            renderTasks();
+          })
         }
           addBtn.onclick=()=>{
             addTasks();

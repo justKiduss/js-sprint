@@ -1,13 +1,14 @@
 # Day 1: Counter App
 ## Description
-A counter app with increment/decrement buttons. Saves count to localStorage.
+App with increment/decrement/reset buttons, localStorage persistence.
 ## Features
-- Shows current count.
-- "+" increases count by 1.
-- "-" decreases count by 1 (prevents negatives).
-- Persists count on refresh.
+- Increment/decrement count.
+- Reset to 0.
+- Persists on refresh.
 ## Challenges
-- localStorage returned strings; fixed with `Number()`.
-- Initial display was 0; added `value.textContent = count`.
+- validation.
+## Exercises
+- freeCodeCamp: Variables, operators.
+- LeetCode: Arguments Length, Map.
 ## Live Demo
-[GitHub Pages URL]
+[https://justkiduss.github.io/js-sprint/day1.1/counter.html]

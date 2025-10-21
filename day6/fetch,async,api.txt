@@ -1,0 +1,149 @@
+The Fetch API provides a JavaScript interface for making HTTP requests and processing the responses.it is modern replacement for XMLHttpRequest(uses callbacks), Fetch is promise-based and have modern web such as service workers and CROS.
+With the Fetch API, you make a request by calling fetch(), fetch function returns a Promise which is fulfilled with a Response object representing the server's response.You can then check the request status and extract the body of the response in various formats, including text and JSON, by calling the appropriate method on the response.
+
+Making request
+
+setting the method
+by default makes a GET but you can use the method to use a different request method(post,put);
+example:const response = await fetch("https://example.org/post", {
+               method: "POST",
+              // …
+              });
+If the mode option is set to no-cors, then method must be one of GET, POST or HEAD.
+
+setting a body
+The request body is the payload of the request: it's the thing the client is sending to the server you cannot include a body with get request.
+example:
+const response = await fetch("https://example.org/post", {
+  method: "POST",
+  body: JSON.stringify({ username: "example" }),
+  // …
+});
+You can supply the body as an instance of any of the following types:
+a string
+ArrayBuffer
+TypedArray
+DataView
+Blob
+File
+UrlSearchParamsFormData
+ReadableStream
+and other object are converted to string using their toString() method.
+Note that just like response bodies, request bodies are streams, and making the request reads the stream, so if a request contains a body, you can't make it twice.
+example:
+const request = new Request("https://example.org/post", {
+  method: "POST",
+  body: JSON.stringify({ username: "example" }),
+});
+
+const response1 = await fetch(request);
+console.log(response1.status);
+
+// Will throw: "Body has already been consumed."
+const response2 = await fetch(request);
+console.log(response2.status);
+
+instead you need to send a request before using it like this 
+example :
+const request2=request1.clone();
+
+Setting headers
+
+Request headers give the server information about the request: for example, in a POST request, the Content-Type header tells the server the format of the request's body.
+Alternatively, you can construct a Headers object, add headers to that object using Headers.append(), then assign the Headers object to the headers option:
+example:
+const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+const response = await fetch("https://example.org/post", {
+  method: "POST",
+  headers: myHeaders,
+  body: JSON.stringify({ username: "example" }),
+  // …
+});
+
+Sending data in a GET request
+GET requests don't have a body, but you can still send data to the server by appending it to the URL as a query string. This is a common way to send form data to the server. You can do this by using URLSearchParams to encode the data, and then appending it to the URL:
+example:
+const params = new URLSearchParams();
+params.append("username", "example");
+
+// GET request sent to https://example.org/login?username=example
+const response = await fetch(`https://example.org/login?${params}`);
+
+Making cross-origin requests
+1. mode: "same-origin"
+You can only make requests to your own origin
+(same protocol + domain + port).
+The browser blocks any request to a different origin.
+👉 Think of it as “lock this down to my own backend only.”
+For fetch requests the default value of mode is cors, meaning that if the request is cross-origin then it will use the Cross-Origin Resource Sharing (CORS) mechanism.
+2. mode: "cors"
+You can make requests to other domains (cross-origin).
+But the browser will only let your JS read the response
+if the server explicitly allows it via:
+Access-Control-Allow-Origin: https://yourdomain.com
+So, the request is sent, but whether your JS can see the data depends on the server’s CORS settings.
+👉 Think of it as “I can talk to other domains, but only if they trust me.”
+Setting mode to same-origin disallows cross-origin requests completely.
+3. mode: "no-cors"
+The request is sent, even to other domains.
+But your JS can’t access most of the response —
+you’ll only know it succeeded or failed.
+This mode is used for things like tracking pixels, analytics beacons, etc.
+👉 Think of it as “send this, but I don’t need to see the data.”
+
+Including credentials
+In the context of the Fetch API, a credential is an extra piece of data sent along with the request that the server may use to authenticate the user.
+these items are considered to be credentials:
+HTTP cookies
+TLS client certificates
+The Authorization and Proxy-Authorization headers.
+by default credentials are only included in the same origin.
+but their are 
+omit : never send credentials in the request or include credentials in the response.
+same-origin :(the default): only send and include credentials for same-origin requests.
+include: always include credentials, even cross-origin.
+if SameSite attribute is set strict or lax then cookie will not be sent cross-site even credential is set to include
+
+Creating a Request object
+
+The Request() constructor takes the same arguments as fetch() itself. This means that instead of passing options into fetch(), you can pass the same options to the Request() constructor, and then pass that object to fetch().
+example:
+const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+const myRequest = new Request("https://example.org/post", {
+  method: "POST",
+  body: JSON.stringify({ username: "example" }),
+  headers: myHeaders,
+});
+
+const response = await fetch(myRequest);
+
+This also means that you can create a request from another request, while changing some of its properties using the second argument:
+example:
+async function post(request) {
+  try {
+    const response = await fetch(request);
+    const result = await response.json();
+    console.log("Success:", result);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+const request1 = new Request("https://example.org/post", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ username: "example1" }),
+});
+
+const request2 = new Request(request1, {
+  body: JSON.stringify({ username: "example2" }),
+});
+
+post(request1);
+post(request2);

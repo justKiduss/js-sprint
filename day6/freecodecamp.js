@@ -1,36 +1,56 @@
-// Declare JavaScript Variables
-var myName;
-//Storing Values with the Assignment Operator
-var a;
-a=7;
-//Assigning the Value of One Variable to Another
-var a;
-a = 7;
-var b;
-b=a;
-//Initializing Variables with the Assignment Operator
-var a = 9;
-//Understanding Uninitialized Variables
-// Only change code below this line
-var a=5;
-var b=10;
-var c="I am a";
-// Only change code above this line
+// Create a JavaScript Promise
+// const makeServerRequest=new Promise((resolve,reject)=>{
+  
+// })
+// Complete a Promise with resolve and reject
+const makeServerRequest = new Promise((resolve, reject) => {
+  // responseFromServer represents a response from a server
+  let responseFromServer;
+    
+  if(responseFromServer) {
+    // Change this line
+    resolve("We got the data");
+  } else {  
+    // Change this line
+    reject("Data not received");
+  }
+});
+// Handle a Fulfilled Promise with then
+const makeServerRequest = new Promise((resolve, reject) => {
+  // responseFromServer is set to true to represent a successful response from a server
+  let responseFromServer = true;
+    
+  if(responseFromServer) {
+    resolve("We got the data");
+  } else {  
+    reject("Data not received");
+  }
+  makeServerRequest.then(result=>{
+    console.log(result);
+  })
+});
+// Handle a Rejected Promise with catch
+const makeServerRequest = new Promise((resolve, reject) => {
+  // responseFromServer is set to false to represent an unsuccessful response from a server
+  let responseFromServer = false;
+    
+  if(responseFromServer) {
+    resolve("We got the data");
+  } else {  
+    reject("Data not received");
+  }
+});
 
-a = a + 1;
-b = b + 5;
-c = c + " String!";
-//Understanding Case Sensitivity in Variables
-// Variable declarations
-var studlyCapVar;
-var properCamelCase;
-var titleCaseOver;
+makeServerRequest.then(result => {
+  console.log(result);
+});
+makeServerRequest.catch(error => {
+  console.log(error);
+});
+// Use the await Operator with a Promise
 
-// Variable assignments
-studlyCapVar = 10;
-properCamelCase = "A String";
-titleCaseOver = 9000;
-//Add Two Numbers with JavaScript
-const sum = 10 + 10;
-//Subtract One Number from Another with JavaScript
-const difference = 45 - 33;
+// Use the async Keyword to Turn a Function into an Async Function
+
+// Use the fetch Method to Make a Request
+
+// Use the JSON.parse Method to Parse JSON

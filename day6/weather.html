@@ -82,10 +82,12 @@
             return;
         }
         const data=await response.json();
-        weather.innerHTML=`<h1>${data.name}</h1><p>weather condition</p><p>${data.weather[0].main}</p> <p>${data.weather[0].description}</p><p>${data.main.temp} c</p>  `;
+        weather.innerHTML=`<h1>${data.name}</h1><p>weather condition</p><p>${data.weather[0].main}</p> <p>${data.weather[0].description}</p><p>${data.main.temp} C</p>  `;
         console.log(data);
         }catch(error){
         error.textContent="Network is not working";
+        setTimeout(()=>error.textContent="",3000);
+        
         }
     }
   

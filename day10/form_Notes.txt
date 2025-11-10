@@ -1,0 +1,179 @@
+React Input & Class Component Study Sheet
+
+Controlled Inputs
+React controls the value through state.
+
+Required:
+
+value or checked
+
+onChange handler updates state
+
+Example:
+
+const [text, setText] = useState("");
+
+<input
+  value={text}
+  onChange={(e) => setText(e.target.value)}
+/>
+
+
+Use when:
+
+You need validation
+
+You need to know the current value
+
+Uncontrolled Inputs
+Browser controls the value (React does not track it).
+
+Props:
+
+defaultValue
+
+defaultChecked
+
+Use when:
+
+Live value tracking is not required
+
+Example:
+
+<input defaultValue="Hello" />
+
+
+formAction
+Only for type="submit" or type="image"
+
+Overrides form action.
+
+Example:
+
+<input type="submit" formAction="/save" />
+
+
+Use when:
+
+Multiple submit buttons with different actions
+
+If using value or checked
+You must use onChange
+Avoid controlled/uncontrolled warnings.
+
+Useful Input Props Reference
+
+File inputs (type="file"):
+
+accept, multiple, capture
+
+Validation:
+
+pattern, required, min, max, minLength, maxLength, step
+
+Text behavior:
+
+placeholder, autoComplete, autoFocus, name
+
+Form behavior:
+
+disabled, form, formAction
+
+Props Basics
+
+Default props:
+
+MyComponent.defaultProps = { count: 0 };
+
+
+Prop type checking:
+
+MyComponent.propTypes = {
+  count: PropTypes.number.isRequired
+};
+
+
+Access props in class component:
+
+this.props.name
+
+
+State Basics (Class Components)
+
+Define state in constructor:
+
+this.state = { name: "Kidus" };
+
+
+Update state:
+
+this.setState({ name: "New" });
+
+
+Updating State Using Previous State
+Use the functional form:
+
+this.setState(state => ({
+  counter: state.counter + 1
+}));
+
+
+Binding Event Handlers in Class Components
+
+Inside constructor:
+
+this.handleClick = this.handleClick.bind(this);
+
+
+Counter Example (Concept Practice)
+
+class Counter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+
+    this.increment = this.increment.bind(this);
+    this.decrement = this.decrement.bind(this);
+    this.reset = this.reset.bind(this);
+  }
+
+  increment() { this.setState(state => ({ count: state.count + 1 })); }
+  decrement() { this.setState(state => ({ count: state.count - 1 })); }
+  reset() { this.setState({ count: 0 }); }
+
+  render() {
+    return (
+      <>
+        <button onClick={this.increment}>+</button>
+        <button onClick={this.decrement}>-</button>
+        <button onClick={this.reset}>Reset</button>
+        <h1>{this.state.count}</h1>
+      </>
+    );
+  }
+}
+
+
+JSX Basics
+
+JSX stores UI in variables:
+
+const JSX = <h1>Hello JSX!</h1>;
+
+
+Allows JavaScript in {}.
+
+Component Types
+
+Stateless functional:
+
+const MyComponent = () => <div>Hello</div>;
+
+
+Class component:
+
+class MyComponent extends React.Component {
+  render() {
+    return <div>Hello</div>;
+  }
+}

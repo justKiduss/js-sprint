@@ -6,24 +6,28 @@ const [email, setEmail] = useState("");
 const [message, setMessage] = useState("");
 const [errors, setErrors] = useState("");
 // const [formDate,setFormData]=useState();
+function showError(msg){
+    setErrors(msg);
+    setTimeout(()=>setErrors(""),3000);
+}
 function handleSubmit(e){
     e.preventDefault();
     if(!name||!email||!message){
-    setErrors(()=>"All fields are required",3000)
-        
+    showError("All fields are required")
+      return;  
     }
 if(name.length<2){
-    setErrors(()=>"name must be geater than 2 letter",3000)
-    
+    showError("name must be geater than 2 letter")
+    return;
 }
 if(message.length<5){
-    setErrors(()=>"message must be geater than 5 letter",3000)
-    
+    showError("message must be geater than 5 letter")
+    return;
 }
 const regex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 if(!regex.test(email)){
-    setErrors(()=>"email doesn't fulfill regex format",3000);
-    
+    showError("email doesn't fulfill regex format");
+    return;
 }
 console.log("name :"+name+"email :"+email+"message :"+message)
 setEmail("");
@@ -37,7 +41,7 @@ setMessage("");
             <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)}/><br/>
             <textarea type="text" onChange={(e)=>setMessage(e.target.value)} value={message}/><br/>
             <button type="submit">Submit</button>
-            <p>{errors}</p>
+            {errors && <p style={{ color: "red" }}>{errors}</p>}
            </form>
         </div>
     )

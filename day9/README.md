@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+Day 9: Tip Calculator & Memoization
+Description
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React tip calculator app that allows users to enter a bill amount, select a tip percentage, and calculate the total including the tip. Input validation ensures the bill is positive and numeric. The project also includes a JavaScript memoization function to practice caching function results.
 
-## Available Scripts
+Features
 
-In the project directory, you can run:
+Input bill amount (number).
 
-### `npm start`
+Select tip percentage (10%, 15%, 20%).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Calculate total (bill + (bill * tip / 100)) on form submission.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Validate bill input (reject negative or non-numeric values).
 
-### `npm test`
+Show error message for invalid input (disappears after a few seconds).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Memoization function caches results of expensive computations for repeated arguments.
 
-### `npm run build`
+Challenges
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Using useState to manage multiple state variables (bill, tip, total, error).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Handling form submission and input validation.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Conditional rendering of results and error messages.
 
-### `npm run eject`
+Implementing a caching mechanism for function calls using JavaScript objects.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Serializing arguments (JSON.stringify) for memoization cache.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Exercises
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+React Practice:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+useState for managing state variables.
 
-## Learn More
+onSubmit and onChange event handling.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Conditional rendering for totals and error messages.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+JavaScript Practice:
 
-### Code Splitting
+Memoize
+ (caching function results).
+2622. Cache With Time Limit
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Live Demo
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+https://justkiduss.github.io/js-sprint/day9/tipCalculator.html

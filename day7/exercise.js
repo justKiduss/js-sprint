@@ -12,17 +12,42 @@
 // arr.last(); // 3
  
 
-function arrr(){
-    let con=[];
-let arr=[1,2,3,4,5,6,7,8,9,10];
-for(let i=0;i<arr.length;i++){
-    if(arr[i]>5){
-        con.push(JSON.parse(true,i));
-    }else{
-        con.push(JSON.parse(false,i))
+
+/**
+ * @param {Function} fn
+ * @return {Object}
+ */
+Array.prototype.groupBy = function(fn) {
+    let con={}
+    // for(let i=0;i<this.length;i++){
+    //     let key=fn(i);
+    //     if(!con[key]) con[key]=[];
+    //         con[key].push(this[i]);
+    //    }
+    for(const i of this){
+        let key=fn(i);
+        if(!con[key]) con[key]=[];
+            con[key].push(i);
     }
+    return con;
+
+};
+
+/**
+ * [1,2,3].groupBy(S) // {"1":[1],"2":[2],"3":[3]}
+ */
+
+const fn = function (list) { 
+  return String(list[0]); 
 }
-return con;
+const fn1 = function (n) { 
+  return String(n > 5);
 }
-const ar=arrr();
-console.log(ar);
+const fn2 = function (item) { 
+  return item.id; 
+}
+const aw=[  {"id":"1"},
+  {"id":"1"},
+  {"id":"2"}].groupBy(fn) // {"1":[1],"2":[2],"3":[3]}
+
+ console.log(aw);

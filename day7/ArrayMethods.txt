@@ -1,0 +1,172 @@
+source https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+Array methods and empty slots
+Array methods have different behaviors when encountering empty slots in sparse 
+arrays. In general, older methods (e.g., forEach) treat empty slots differently from 
+indices that contain undefined.
+forEach don't visit empty slots at all. Other methods, such as concat, 
+copyWithin, etc., preserve empty slots when doing the copying, so in the end the 
+array is still sparse.
+example : 
+const colors = ["red", "yellow", "blue"];
+colors[5] = "purple";
+colors.forEach((item, index) => {
+  console.log(`${index}: ${item}`);
+});
+// Output:
+// 0: red
+// 1: yellow
+// 2: blue
+// 5: purple
+
+colors.reverse(); // ['purple', empty × 2, 'blue', 'yellow', 'red']
+
+Newer methods (e.g., keys) do not treat empty slots specially and treat them as if 
+they contain undefined. Methods that conflate empty slots with undefined elements include the following:
+entries(), fill(), find(), findIndex(), findLast(), findLastIndex(), includes(), join(), keys(), toLocaleString(), toReversed(), toSorted(), toSpliced(), values(), and with().
+example :
+const colors = ["red", "yellow", "blue"];
+colors[5] = "purple";
+const iterator = colors.keys();
+for (const key of iterator) {
+  console.log(`${key}: ${colors[key]}`);
+}
+// Output
+// 0: red
+// 1: yellow
+// 2: blue
+// 3: undefined
+// 4: undefined
+// 5: purple
+
+const newColors = colors.toReversed(); // ['purple', undefined, undefined, 'blue', 'yellow', 'red']
+
+Non-Mutating array
+methods that do not change the original array.Create a new array.Copy elements (or references) from the old one.Return the new array.
+example : slice but their are also mutating array method like splice;
+
+Shallow copy vs Deep copy
+A shallow copy means:
+Only the top-level structure is copied — but nested objects or arrays inside are still referenced (shared).
+So if the inner data is modified, both copies see the change.
+example :
+const todos = [
+  { text: "learn JS", done: false },
+  { text: "build app", done: false }
+];
+const copy = todos.slice(); // shallow copy (non-mutating)
+copy[0].done = true;
+console.log(todos[0].done); // true 😬 both point to same inner object
+
+A deep copy means:
+It copies everything, including nested objects — creating completely independent data.
+🌱 1. What Are “Iterative Methods” ?
+These are array methods that automatically loop through each element for you — and call a function (called a callback) for every element.
+example : forEach,map
+Each iterative method passes three arguments to the callback.
+example : callbackFn(element, index, array)
+const arr = ["a", "b", "c"];
+arr.forEach((element, index, array) => {
+  console.log(element, index, array);  //3x a 0 ["a", "b", "c"]
+});
+element: the current value
+index: position in the array
+array: the full array itself (rarely used, but handy)
+
+thisArg :
+example : 
+const obj = { multiplier: 2 };
+[1, 2, 3].map(function(num) {
+return num * this.multiplier;
+}, obj);
+
+some methods stop early because they found the result.
+example : some(),every(),find();
+
+
+there are come internal behaviors under the iterative methods like(forEach,map).
+example :
+function method(callbackFn, thisArg) {
+  const length = this.length;
+  for (let i = 0; i < length; i++) {
+    if (i in this) {
+      const result = callbackFn.call(thisArg, this[i], i, this);
+      // method-specific logic here (e.g., push to new array, return early, etc.)
+    }
+  }
+}
+
+
+
+🧩 1️⃣ What is a prototype?
+
+Every object in JavaScript has an internal link to another object called its prototype.
+
+👉 That prototype acts like a “blueprint” or “shared bag of methods.”
+If you try to access a property or method on an object and it doesn’t exist there, JS automatically looks it up in the prototype.
+
+Example:
+
+const arr = [1, 2, 3];
+console.log(arr.length); // 3
+
+
+Here, arr doesn’t directly have a length property — but its prototype (Array.prototype) does.
+
+🧠 2️⃣ Array.prototype
+
+This is where all built-in array methods live:
+
+console.log(Array.prototype);
+// has map(), forEach(), filter(), etc.
+
+
+So if you do:
+
+Array.prototype.hello = function() {
+  console.log("Hi from array!");
+};
+
+[1, 2, 3].hello(); // "Hi from array!"
+
+
+✅ You just added a new method to all arrays in JavaScript.
+Any array you create now inherits that function.
+
+🧱 3️⃣ How to extend Array.prototype
+
+You add a method like this:
+
+Array.prototype.methodName = function() {
+  // "this" refers to the array that called it
+};
+
+Example:
+Array.prototype.first = function() {
+  return this[0];
+};
+console.log([10, 20, 30].first()); // 10
+
+this inside the function → refers to the array using the method
+You can access elements by index like this[this.length - 1]
+You can check if the array is empty (this.length === 0)
+
+
+Use Arrow Functions to Write Concise Anonymous Functions
+
+In JavaScript, we often don't need to name our functions.We don't need to name these functions because we do not reuse them anywhere else.
+example :
+const myFunc = function() {
+  const myVar = "value";
+  return myVar;
+}
+ES6 provides us with the syntactic sugar to not have to write anonymous functions this way. Instead, you can use arrow function syntax:
+example:
+const myFunc = () => {
+  const myVar = "value";
+  return myVar;
+}
+When there is no function body, and only a return value, arrow function syntax allows you to omit the keyword return as well as the brackets surrounding the code.
+example:
+const myFunc = () => "value";
+

@@ -1,0 +1,177 @@
+useState
+useState is a React Hook that lets you add a state variable to your component.
+example : 
+const [state, setState] = useState(initialState).
+
+Parameters 
+
+initialState: The value you want the state to be initially. It can be a value of any type, but there is a special behavior for functions. This argument is ignored after the initial render.
+If you pass a function as initialState, it will be treated as an initializer function. It should be pure, should take no arguments, and should return a value of any type. React will call your initializer function when initializing the component, and store its return value as the initial state.
+
+Returns 
+
+useState returns an array with exactly two values:
+The current state. During the first render, it will match the initialState you have passed.
+The set function that lets you update the state to a different value and trigger a re-render.
+
+Caveats 
+
+useState is a Hook, so you can only call it at the top level of your component or your own Hooks. You can’t call it inside loops or conditions. If you need that, extract a new component and move the state into it.
+In Strict Mode, React will call your initializer function twice in order to help you find accidental impurities. This is development-only behavior and does not affect production. If your initializer function is pure (as it should be), this should not affect the behavior. The result from one of the calls will be ignored
+
+Parameters 
+nextState: The value that you want the state to be. It can be a value of any type, but there is a special behavior for functions.
+If you pass a function as nextState, it will be treated as an updater function. It must be pure, should take the pending state as its only argument, and should return the next state. React will put your updater function in a queue and re-render your component. During the next render, React will calculate the next state by applying all of the queued updaters to the previous state. See an example below.
+
+Returns 
+set functions do not have a return value.
+
+Caveats 
+
+React batches state updates. It updates the screen after all the event handlers have run and have called their set functions. This prevents multiple re-renders during a single event. In the rare case that you need to force React to update the screen earlier, for example to access the DOM, you can use flushSync.
+
+The set function’s identity is stable
+🧩 What does that mean?
+
+When you call useState, like this:
+
+const [count, setCount] = useState(0);
+
+
+React gives you two things:
+
+count → the current value (changes between renders)
+
+setCount → the function to update the state (❗ never changes)
+
+🔁 Normally, React re-creates variables every render
+
+When a component re-renders, everything inside the function body runs again, so new variables and new functions are created:
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  const sayHi = () => console.log("Hi");
+
+  // 👇 Every render:
+  // - new `sayHi` function created
+  // - new `count` value
+  // - but SAME `setCount` function reference
+}
+
+
+So even though the component re-renders multiple times:
+
+sayHi changes identity every render (new function each time)
+
+setCount stays the exact same function in memory
+
+🧠 Why React keeps setCount stable
+
+Because React doesn’t want to break memoization or effects every time you re-render.
+
+If setCount kept changing, this would trigger unnecessary re-runs:
+
+useEffect(() => {
+  console.log("Effect runs");
+}, [setCount]); // would re-run on every render if setCount changed
+
+
+But since setCount never changes, React knows:
+
+“This dependency will always be the same — no need to re-run the effect.”
+
+That’s why React’s linter (ESLint plugin for hooks) doesn’t complain when you omit setSomething from dependency arrays — it’s a stable identity.
+
+useEffect
+useEffect is a React Hook that lets you synchronize a component with an external system.
+
+What useEffect Actually Does
+
+useEffect lets you synchronize your component with external systems — things that exist outside of React’s declarative UI flow.
+
+Examples of external systems:
+
+A WebSocket or API connection
+
+A timer (setInterval)
+
+A DOM event listener (addEventListener)
+
+A third-party library (like a chart, animation, or map library)
+
+React manages UI → you use Effects to connect React’s world to the outside world.
+
+🧩 Basic Syntax
+useEffect(setup, dependencies?)
+
+
+setup → a function that runs your side effect logic.
+
+dependencies → a list of all the reactive values (state, props, variables from component body) that your effect uses.
+
+If setup returns a function, React treats it as a cleanup function — React will call it before re-running the effect or when the component unmounts.
+
+⚙️ Example: Connecting and Cleaning Up
+useEffect(() => {
+  const connection = createConnection(serverUrl, roomId);
+  connection.connect();
+
+  // Cleanup
+  return () => {
+    connection.disconnect();
+  };
+}, [serverUrl, roomId]);
+
+
+🧩 How React handles this:
+
+Component mounts → runs the setup (connects).
+
+If serverUrl or roomId change → runs cleanup (disconnect old) → runs setup again (connect new).
+
+Component unmounts → runs cleanup one final time.
+
+⚡ Dependency Behavior
+Dependencies	Description
+[dep1, dep2]	Effect runs when any listed dependency changes.
+[]	Effect runs only once after the first render (like componentDidMount).
+(none)	Effect runs after every render — can cause infinite loops if not careful.
+🧹 Cleanup Function (Very Important)
+
+The cleanup function should “undo” what your setup did.
+
+Example:
+
+useEffect(() => {
+  const id = setInterval(() => {
+    console.log("tick");
+  }, 1000);
+
+  return () => clearInterval(id);
+}, []);
+
+
+If you forget cleanup → you get memory leaks or duplicate side effects (like multiple intervals running).
+
+🧩 Strict Mode Behavior (Development Only)
+
+React intentionally runs:
+
+setup → cleanup → setup
+
+
+once in development mode to help you catch missing cleanup logic.
+If your effect breaks because of that, it means your cleanup isn’t fully undoing your setup.
+
+🚫 Common Mistakes
+
+❌ Running effects that don’t need to exist:
+
+useEffect(() => {
+  setCount(count + 1); // just updating state — no external system
+});
+
+
+→ This re-renders infinitely.
+
+✅ Do this only for syncing with something external.

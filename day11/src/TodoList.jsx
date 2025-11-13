@@ -20,14 +20,14 @@ function TodoList(){
        formCheck("task that are already in can't be written again");
         return; 
      }
-     setData(...datas,{text:todo,done:false,id:Date.now()}); // using spread operator to expand the data array
+     setData([...datas,{text:todo,done:false,id:Date.now()}]); // using spread operator to expand the data array
      setTodo("");
     }
 
     function handleDelete(index){
-        datas.filter((_,i)=>
+        setData(datas.filter((_,i)=>
            i!==index
-        )
+        ));
     }
     
     function handleCheck(index){

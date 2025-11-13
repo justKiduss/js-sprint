@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState} from "react";
 
 function ContactForm(){
 const [name, setName] = useState("");
@@ -17,11 +17,11 @@ function handleSubmit(e){
       return;  
     }
 if(name.length<2){
-    showError("name must be geater than 2 letter")
+    showError("name must be greater than 2 letter")
     return;
 }
 if(message.length<5){
-    showError("message must be geater than 5 letter")
+    showError("message must be greater than 5 letter")
     return;
 }
 const regex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;

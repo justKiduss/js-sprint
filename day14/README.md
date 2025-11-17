@@ -1,70 +1,141 @@
-# Getting Started with Create React App
+Day 14: Algorithms + React Todo Application + Signup Form
+Description
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project includes three parts:
 
-## Available Scripts
+LeetCode algorithms
+You implemented:
 
-In the project directory, you can run:
+412. FizzBuzz
 
-### `npm start`
+Length of Last Word
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Remove Duplicates from Sorted Array
+These cover string manipulation, array rewriting, and two-pointer style iteration.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+React Todo Application
+A functional Todo app that supports adding tasks, toggling completion, persisting data through localStorage, and counting completed tasks. The app uses controlled inputs, clean state updates, and proper immutability.
 
-### `npm test`
+React Signup Form
+A form with validation for username, email, and password. Errors auto-clear after 3 seconds. Successful submission displays a message and resets fields.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This day focuses on strengthening core algorithm skills while applying React fundamentals such as state, effects, controlled forms, and updating nested data.
 
-### `npm run build`
+Features
+Algorithms
+412. FizzBuzz
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Handles divisibility logic cleanly.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Pushes formatted strings into an array.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Straight O(n) loop.
 
-### `npm run eject`
+58. Length of Last Word
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Uses trim() and .split(" ").
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Returns length of the final word efficiently.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+26. Remove Duplicates from Sorted Array
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Correct two-pointer rewrite technique.
 
-## Learn More
+Rewrites nums in-place.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Tracks unique values using pos.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Prints the final non-duplicate length.
 
-### Code Splitting
+React Todo App
+Core Features
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Add todos with unique IDs.
 
-### Analyzing the Bundle Size
+Prevent empty submissions.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Toggle completion using checkboxes.
 
-### Making a Progressive Web App
+Persistent storage using localStorage (load on mount, save on change).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Completion counter via a separate component.
 
-### Advanced Configuration
+Clean immutable state updates.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+State Management
 
-### Deployment
+todos stored in TodoApp.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+handleSubmit adds items.
 
-### `npm run build` fails to minify
+handleCheck toggles the done value using map.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Additional Behaviors
+
+Auto resets input after submit.
+
+Smart hydration from storage.
+
+Responsive layout (centered container).
+
+Signup Form
+Features
+
+Username, email, and password fields.
+
+Validation:
+
+Username ≥ 3 characters.
+
+Email must match regex.
+
+Password ≥ 6 characters.
+
+Error messages auto-clear after 3 seconds.
+
+Displays success message.
+
+Controlled inputs with proper state.
+
+Challenges Faced
+
+Implementing two-pointer patterns in the array problems.
+
+Understanding how in-place rewriting differs from creating new arrays.
+
+Managing localStorage hydration correctly.
+
+Keeping React updates immutable (map, spreading, etc.).
+
+Handling multiple state values in the form while keeping validation clean.
+
+Using regex correctly for email and palindrome-style cleaning.
+
+LeetCode Exercises Completed
+
+412. FizzBuzz
+Practiced clean looping and condition ordering.
+
+58. Length of Last Word
+Practiced string trimming and splitting.
+
+26. Remove Duplicates from Sorted Array
+Practiced in-place array rewriting with a write pointer.
+
+Files
+
+src/FizzBuzz.js — FizzBuzz solution.
+
+src/LastWordLength.js — Length of Last Word solution.
+
+src/RemoveDuplicates.js — Remove Duplicates solution.
+
+src/TodoApp.jsx — Main Todo logic, storage, toggling.
+
+src/CompletedCount.jsx — Shows completed/total count.
+
+src/SignupForm.jsx — Validation and user creation form.
+
+Live Demo
+
+Will be added after deployment.

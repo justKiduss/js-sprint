@@ -4,14 +4,14 @@ function TodoApp(){
     const [todos,setTodos]=useState([]);
     
       useEffect(()=>{
-        localStorage.setItem("todos",JSON.stringify(todos))
-        },[todos])
-      useEffect(()=>{
           const tasks=localStorage.getItem("todos");
           if(tasks){
           setTodos(JSON.parse(tasks));
           }
         },[])
+      useEffect(()=>{
+        localStorage.setItem("todos",JSON.stringify(todos))
+        },[todos])
     function handleSubmit(e){
      e.preventDefault();
        
@@ -26,7 +26,7 @@ function TodoApp(){
     }
     function handleCheck(id){
        setTodos(todos.map((todo)=>(
-        todo.id=todo?{...todo,done:!todo.done}:todo
+        todo.id===id?{...todo,done:!todo.done}:todo
        ))
     )
     }
@@ -39,13 +39,12 @@ function TodoApp(){
            </form>
            <ul>
               {todos.map((todo)=>(
-                <div key={Date.now()}>
-                    <li>
-                        <input type="checkbox" onChange={()=>handleCheck()} checked={todo.done}/>
+                
+                    <li key={todo.id}>
+                        <input type="checkbox" onChange={()=>handleCheck(todo.id)} checked={todo.done}/>
                         <span style={{margin:"10px"}}>{todo.text}</span>
-                        <button type="button">Delete</button>
                         </li>
-                </div>
+        
               ))}
            </ul>
            <CompeletedCount todos={todos}/>

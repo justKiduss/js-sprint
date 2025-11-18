@@ -1,70 +1,179 @@
-# Getting Started with Create React App
+Day 15: React Todo Application (CRUD + LocalStorage Persistence)
+Description
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project focuses on building a fully functional React Todo Application with complete CRUD operations, persistent storage, controlled inputs, and clean state management.
 
-## Available Scripts
+It strengthens React fundamentals such as:
 
-In the project directory, you can run:
+Component composition
 
-### `npm start`
+State lifting
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Controlled inputs
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+useEffect side effects
 
-### `npm test`
+Immutable state updates
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Editing and rewriting specific items in an array
 
-### `npm run build`
+The project consists of two components:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+TodoApp.jsx
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+TodoItem.jsx
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Features
+Core Todo Behaviors
 
-### `npm run eject`
+Add Todos
+Uses a controlled form input to add todos with unique IDs.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Edit Todos
+Clicking Edit switches a todo into "edit mode", allowing text modification.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Save Updated Todo
+The edited text is applied using clean immutable updates via map.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Delete Todos
+Removes specific items using filter.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Toggle Completion
+Uses checkboxes to flip done between true/false.
 
-## Learn More
+Persistence with localStorage
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Loads todos from localStorage on app mount (useEffect with empty deps)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Saves todos automatically whenever the list changes
 
-### Code Splitting
+State Management
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+todos is stored in TodoApp
 
-### Analyzing the Bundle Size
+newText holds temporary edit text
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+editingId determines which todo is being edited
 
-### Making a Progressive Web App
+The app follows immutable update rules:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+map() for rewrites
 
-### Advanced Configuration
+filter() for deletions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+array spreads ([...]) for additions
 
-### Deployment
+Form Behavior
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Prevents adding empty tasks (trim() check)
 
-### `npm run build` fails to minify
+Resets the input field after submitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Controlled input for editing a todo inside TodoItem
+
+Challenges Faced
+
+Managing edit mode per-item using editingId
+
+Updating a single todo without mutating the array directly
+
+Keeping newText isolated so edits don’t leak into other items
+
+Using useEffect correctly for storage hydration
+
+Handling (e) => handleEdit(id) and avoiding execution during render
+
+Ensuring correct value behavior for controlled inputs
+
+Files
+File	Description
+src/TodoApp.jsx	Main logic, adding todos, localStorage effects
+src/TodoItem.jsx	Editing, saving, deleting, toggling logic for each todo
+File Overview
+src/TodoApp.jsx
+
+Handles:
+
+App-level state (todos, newText)
+
+Adding items
+
+Persisting todos to localStorage
+
+Rendering the TodoItem list
+
+Uses:
+
+useEffect(() => {
+  let tasks = localStorage.getItem("todos");
+  setTodos(JSON.parse(tasks));
+}, []);
+
+useEffect(() => {
+  localStorage.setItem("todos", JSON.stringify(todos));
+}, [todos]);
+
+src/TodoItem.jsx
+
+Handles:
+
+Edit mode activation (editingId)
+
+Controlled edit input
+
+Save logic (map)
+
+Delete logic (filter)
+
+Checkbox toggle for completion
+
+Key logic:
+
+function handleEdit(id, text) {
+  seteditingId(id);
+  setNewText(text);
+}
+
+function handleSave(id) {
+  setTodos(
+    todos.map((todo) =>
+      todo.id === id ? { ...todo, text: newText } : todo
+    )
+  );
+  seteditingId("");
+  setNewText("");
+}
+
+How It Works
+Adding a Todo
+
+Reads input
+
+Checks for empty string
+
+Creates a todo object:
+
+{ id: Date.now(), text: value, done: false }
+
+
+Saves to state → automatically saved to localStorage
+
+Editing a Todo
+
+Sets active edit ID
+
+Prefills input with existing todo text
+
+Updates on Save using map
+
+Deleting a Todo
+
+Removes from array with filter
+
+Checking/Unchecking a Todo
+
+Flips boolean using map
+
+Live Demo
+
+To be added after deployment.

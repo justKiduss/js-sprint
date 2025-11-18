@@ -21,7 +21,7 @@ function TodoApp(){
         return;
     }
 
-    setTodos([...todos,{id:Date.now(),text:value,newText:newText,done:false}])
+    setTodos([...todos,{id:Date.now(),text:value,done:false}])
     e.target.reset();
     }
     return(

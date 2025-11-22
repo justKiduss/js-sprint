@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Analyzer</title>
+</head>
+<style>
+    body{
+   
+    }
+    #lists{
+        display: flex;
+        list-style: none;
+    }
+    #form{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: auto;
+        width:90%;
+        margin: 70px 0px 30px 0px;
+    }
+    #content{
+       text-align: center;
+    }
+    #error{
+        color:red;
+    }
+</style>
+<body>
+    <div id="form">
+        <form>
+        <input type="text" id="inputField"/>
+        <button id="addBtn">Add</button>
+        </form>
+    </div>
+
+    <div id="content">
+        
+        <h3>Current Numbers :</h3>
+        <div id="lists"></div>
+        <h3>Stats:</h3>
+        <p>Count: <span id="count"></span></p>
+        <p>Sum: <span id="sum"></span></p>
+        <p>Average: <span id="average"></span></p>
+        <p>Minimum: <span id="min"></span></p>
+        <p>Maximum: <span id="max"></span></p>
+        <h3 id="error"></h3>
+    </div>
+</body>
+<script>
+    let numbers=[];
+    let inputField=document.getElementById("inputField");
+    let addBtn=document.getElementById("addBtn");
+    let lists=document.getElementById("lists");
+    let count=document.getElementById("count");
+    let sum=document.getElementById("sum");
+    let average=document.getElementById("average")
+    let min=document.getElementById("min");
+    let max=document.getElementById("max")
+    let error=document.getElementById("error");
+    function renderNumbers(){
+            lists.innerHTML="";
+            numbers.forEach((nums)=>{
+            let li=document.createElement("li")
+            li.textContent=nums+", ";
+            lists.appendChild(li);
+    })
+            count.textContent=numbers.length;
+            sum.textContent=sumOfArr();
+            average.textContent=Average();
+            min.textContent=minimum();
+            max.textContent=maximum();
+    }
+
+    function checkError(msg){
+         error.textContent=msg;
+         setTimeout(() =>error.textContent="", 3000);
+    }
+
+    addBtn.addEventListener("click",(e)=>{
+        e.preventDefault();
+        let raw=inputField.value.trim();
+        if(raw===""){
+            checkError("empty fields are not allowed")
+            return;
+        }
+         let num = Number(raw);
+         if (Number.isNaN(num)) {
+        checkError("only numbers allowed");
+        return;
+    }
+        numbers.push(num);
+        inputField.value="";
+        renderNumbers();
+    })
+
+    function sumOfArr(){
+       let total=0;
+       for(let i=0;i<numbers.length;i++){
+        total+=numbers[i]
+       }
+       return total;
+    }
+    function Average(){
+        if (numbers.length === 0) return "";
+        return (sumOfArr()/numbers.length).toFixed(2);
+    }
+    function minimum(){
+        if (numbers.length === 0) return "";
+        let min=numbers[0];
+        for(let i=1;i<numbers.length;i++){
+            if(numbers[i]<min){
+                min=numbers[i];
+            }  
+        }
+        return min;
+    }
+    function maximum(){
+        if (numbers.length === 0) return "";
+        let max=numbers[0];
+        for(let i=1;i<numbers.length;i++){
+            if(numbers[i]>max){
+                max=numbers[i];
+            }
+        }
+        return max;
+    }
+</script>
+</html>

@@ -22,7 +22,7 @@ function TodoApp(){
      setTodos(
         [...todos,{id:Date.now(),text:newTodo,done:false,category:category}]
      )
-     setNewTodo("")
+     setNewTodo("");
  }   
     return(
        <div style={{height:"100vh",weight:"90%"}}>

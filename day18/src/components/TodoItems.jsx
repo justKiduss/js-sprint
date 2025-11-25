@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-    function TodoItems({todos,setTodos}){
+    function TodoItems({todos,setTodos,newTodo,setNewTodo}){
 
         const [selectCategory,setSelectCategory]=useState("all");
         const [editId,setEditId]=useState("");
@@ -25,12 +25,19 @@ import { useState } from "react";
             )
         }
 
-        // function setEditId(){
-            
-        // }
-        // function handleEdit(){
-
-        // }
+        function handleSave(id){
+            setTodos(
+                todos.map((todo)=>(
+                    todo.id===id?{...todo,text:editText}:todo
+                ))
+            )
+            setEditText("")
+            setEditId("")
+        }
+        function handleEdit(todo){
+           setEditId(todo.id);
+           setEditText(todo.text) 
+        }
         return(
             <div>
             <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -48,8 +55,13 @@ import { useState } from "react";
 
                         <input type="checkbox" style={{padding:"10px"}} onChange={()=>handleCheck(todo.id)}  checked={todo.done}/>
                         <span>{todo.text}</span>
-                        <button style={{margin:"10px"}}>Edit</button>
-                        {}
+                        {editId==todo.id? <>
+                        <input type="text" onChange={(e)=>setEditText(e.target.value)}/>
+                        <button onClick={()=>handleSave(todo.id)}>save</button></>  :
+                        <>
+                        <button style={{margin:"10px"}} onClick={()=>handleEdit(todo)}>Edit</button>
+                        </>
+                        }
                         <button onClick={()=>handleDeleteTask(todo.id)}>Delete</button>
                     </li>
                 ))}

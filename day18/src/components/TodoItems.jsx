@@ -5,6 +5,7 @@ import { useState } from "react";
         const [selectCategory,setSelectCategory]=useState("all");
         const [editId,setEditId]=useState("");
         const [editText,setEditText]=useState("");
+        const [search,setSearch]=useState("");
         console.log(todos);
         const filtered=selectCategory==="all"? todos :
         todos.filter((t)=>(t.category===selectCategory))
@@ -38,10 +39,15 @@ import { useState } from "react";
            setEditId(todo.id);
            setEditText(todo.text) 
         }
+        function filteringByText(){
+            return filtered.filter((todo)=>(
+            todo.text.toLowerCase().includes(search.toLowerCase())  
+            ))
+        }
         return(
             <div>
             <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <input type="search" placeholder="search your todo"/> 
+                <input type="search" placeholder="search your todo" onChange={(e)=>setSearch(e.target.value)} value={search}/> 
                 <select value={selectCategory} onChange={(e)=>setSelectCategory(e.target.value)}>
                     <option value="all">all</option>
                     <option value="work">work</option>
@@ -50,21 +56,58 @@ import { useState } from "react";
                 </select>
             </div>
             <div>
-                {filtered.map((todo)=>(
-                    <li key={todo.id} style={{listStyle:"none",padding:"15px"}}>
+                {search ? (
+    filteringByText().map(todo => (
+        <li key={todo.id} style={{listStyle:"none",padding:"15px"}}>
+            <input
+                type="checkbox"
+                style={{padding:"10px"}}
+                onChange={() => handleCheck(todo.id)}
+                checked={todo.done}
+            />
+            <span>{todo.text}</span>
+            {editId === todo.id ? (
+                <>
+                    <input
+                        type="text"
+                        onChange={(e) => setEditText(e.target.value)}
+                        value={editText}
+                    />
+                    <button onClick={() => handleSave(todo.id)}>Save</button>
+                </>
+            ) : (
+                <button style={{margin:"10px"}} onClick={() => handleEdit(todo)}>Edit</button>
+            )}
+            <button onClick={() => handleDeleteTask(todo.id)}>Delete</button>
+        </li>
+    ))
+) : (
+    filtered.map(todo => (
+        <li key={todo.id} style={{listStyle:"none",padding:"15px"}}>
+            <input
+                type="checkbox"
+                style={{padding:"10px"}}
+                onChange={() => handleCheck(todo.id)}
+                checked={todo.done}
+            />
+            <span>{todo.text}</span>
+            {editId === todo.id ? (
+                <>
+                    <input
+                        type="text"
+                        onChange={(e) => setEditText(e.target.value)}
+                        value={editText}
+                    />
+                    <button onClick={() => handleSave(todo.id)}>Save</button>
+                </>
+            ) : (
+                <button style={{margin:"10px"}} onClick={() => handleEdit(todo)}>Edit</button>
+            )}
+            <button onClick={() => handleDeleteTask(todo.id)}>Delete</button>
+        </li>
+    ))
+)}
 
-                        <input type="checkbox" style={{padding:"10px"}} onChange={()=>handleCheck(todo.id)}  checked={todo.done}/>
-                        <span>{todo.text}</span>
-                        {editId==todo.id? <>
-                        <input type="text" onChange={(e)=>setEditText(e.target.value)}/>
-                        <button onClick={()=>handleSave(todo.id)}>save</button></>  :
-                        <>
-                        <button style={{margin:"10px"}} onClick={()=>handleEdit(todo)}>Edit</button>
-                        </>
-                        }
-                        <button onClick={()=>handleDeleteTask(todo.id)}>Delete</button>
-                    </li>
-                ))}
             </div>
             </div>
 )

@@ -5,7 +5,7 @@ function TodoApp(){
  const [newTodo,setNewTodo]=useState("");
  const [todos,setTodos]=useState([]);
  const [error,setError]=useState("")
- const [category,setCategory]=useState("");
+ const [category,setCategory]=useState("work");
  function checkForm(msg){
      setError(msg);
      setTimeout(()=>"",3000);
@@ -29,7 +29,7 @@ function TodoApp(){
         <form onSubmit={handleSubmit}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"30vh",weight:"90%",margin:"50px"}}>
         <input type="text" value={newTodo} onChange={(e)=>setNewTodo(e.target.value)}/>
-        <select value={category?category:setCategory("work")} onChange={(e)=>setCategory(e.target.value)}>
+        <select value={category} onChange={(e)=>setCategory(e.target.value)}>
             <option value="work">work</option>
             <option value="social">social</option>
             <option value="school">school</option>

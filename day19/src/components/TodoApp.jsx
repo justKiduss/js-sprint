@@ -1,4 +1,3 @@
-import React from "react";
 import { useReducer,useState } from "react";
 import TodoItems from "./TodoItems";
 import TaskReducers from "../reducers/TaskReducers"
@@ -6,7 +5,8 @@ function TodoApp(){
     const initialTasks=[]; 
     const [tasks,dispatch]=useReducer(TaskReducers,initialTasks);
     const [newTask,setNewTask]=useState("");
-
+    const [category,setCategory]=useState("all") 
+    
     function handleAddtask(e){
      e.preventDefault();
 
@@ -16,6 +16,7 @@ function TodoApp(){
        type:"added",
        id:Date.now(),
        text:newTask,
+       category:category
      })
      setNewTask("");
     }
@@ -26,11 +27,17 @@ function TodoApp(){
                     <form onSubmit={handleAddtask}>
                         <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
                             <input type="text" value={newTask} onChange={(e)=>setNewTask(e.target.value)}/>
+                            <select onChange={(e)=>setCategory(e.target.value)}>
+                                <option value="all">All</option>
+                                <option value="work">work</option>
+                                <option value="social">social</option>
+                                <option value="school">school</option>
+                            </select>
                             <button type="submit">Add Tasks</button>
                         </div>
                     </form>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"center",textAlign:"center"}}>
-                    <TodoItems tasks={tasks} dispatch={dispatch}/>
+                    <TodoItems tasks={tasks} dispatch={dispatch} newTask={newTask}/>
                     </div>
                </div>
         )

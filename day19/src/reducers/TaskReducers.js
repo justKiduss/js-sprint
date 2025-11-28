@@ -6,6 +6,7 @@ export default function TaskReducers(tasks,action){
              {
                 id:action.id,
                 text:action.text,
+                category:action.category,
                 done:false
              },
             ];
@@ -19,6 +20,11 @@ export default function TaskReducers(tasks,action){
             return tasks.map((task)=>(
               task.id===action.id? {...task,done:!task.done}:task
             ))
+        }
+        case "edited":{
+          return tasks.map((task)=>(
+            task.id===action.id?{...task,text:action.text}:task
+          ))
         }
             default:
               return tasks;

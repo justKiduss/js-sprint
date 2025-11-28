@@ -1,70 +1,128 @@
-# Getting Started with Create React App
+Day 19 – Todo Application Refactored with useReducer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Overview
+Day 19 focused on restructuring the Todo application by replacing scattered state logic with a centralized reducer using the useReducer hook. The goal was to enforce predictable state transitions, reduce component complexity, and follow a scalable architecture used in production React applications.
 
-## Available Scripts
+Project Goals
 
-In the project directory, you can run:
+Replace useState Todo management with useReducer.
 
-### `npm start`
+Centralize all mutations into a reducer function.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Handle core actions:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Add Task
 
-### `npm test`
+Delete Task
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Toggle Completion
 
-### `npm run build`
+Edit Task
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Maintain clean, predictable state flow through dispatch actions.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Keep filtering and search behavior inside the component as optional UI state.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Reducer Implementation
+State transitions are handled inside TaskReducers.js.
+Each action returns a new immutable version of the tasks array.
 
-### `npm run eject`
+export default function TaskReducers(tasks, action) {
+    switch (action.type) {
+        case "added":
+            return [...tasks, {
+                id: action.id,
+                text: action.text,
+                category: action.category,
+                done: false
+            }];
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+        case "deleted":
+            return tasks.filter(task => task.id !== action.id);
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+        case "check":
+            return tasks.map(task =>
+                task.id === action.id ? { ...task, done: !task.done } : task
+            );
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+        case "edited":
+            return tasks.map(task =>
+                task.id === action.id ? { ...task, text: action.text } : task
+            );
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+        default:
+            return tasks;
+    }
+}
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Component Refactor
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+TodoApp.js
 
-### Code Splitting
+Replaced:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+const [tasks, setTasks] = useState([]);
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+with:
 
-### Making a Progressive Web App
+const [tasks, dispatch] = useReducer(TaskReducers, []);
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+All writes now flow through dispatch.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+The component handles only user input and passes mutations down to the reducer.
 
-### Deployment
+TodoItems.js
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Dispatches actions for edit, delete, toggle done.
 
-### `npm run build` fails to minify
+Uses local state for search, category filter, and edit UI handling.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Filtering and search remain view-layer logic.
+
+Features Implemented
+
+Centralized State Management
+
+All task modifications occur inside the reducer.
+
+Predictable, trackable state transitions.
+
+Action-Based Dispatch Flow
+
+dispatch({ type: "added", id, text, category });
+dispatch({ type: "deleted", id });
+dispatch({ type: "check", id });
+dispatch({ type: "edited", id, text });
+
+
+UI-Level Filtering
+
+Category selection and search implemented through useState in TodoItems.
+
+The reducer remains clean and focused on mutations only.
+
+Edit Workflow
+
+Local state tracks which task is in edit mode.
+
+Save triggers the reducer to persist changes.
+
+Skills Improved
+
+Reducer pattern and state immutability.
+
+Building scalable component architecture.
+
+Separating UI state from application state.
+
+Designing clean action-based state flows.
+
+Using useReducer to replace complex useState logic.
+
+Status
+Day 19 complete.
+The Todo app now follows a professional reducer-based structure.
+Ready for Day 20.

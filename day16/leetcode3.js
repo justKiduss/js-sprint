@@ -1,5 +1,5 @@
 // 2980. Check if Bitwise OR Has Trailing Zeros
-// this also work for some cases but not for all
+// this also work for all cases but not optimal
 /**
 //  * @param {number[]} nums
 //  * @return {boolean}

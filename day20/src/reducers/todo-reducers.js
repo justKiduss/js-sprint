@@ -10,6 +10,16 @@ export default function TodoReducers(todos,action){
             }
            ];
         }
+        case "deleted":{
+          return todos.filter((todo)=>(
+            todo.id!==action.id
+          ))
+        }
+        case "edited":{
+          return todos.map((todo)=>(
+             todo.id===action.id?{...todo,text:action.text}:todo
+          ))
+        }
         default :{
             return todos
         }

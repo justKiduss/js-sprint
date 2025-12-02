@@ -8,9 +8,9 @@ export default function Todoitems({todos,dispatch}){
             id:id
          })
     }
-    function handleEdit(id){
-      setEditId(id)
-      setEditText(todos.text)
+    function handleEdit(todo){
+      setEditId(todo.id)
+      setEditText(todo.text)
     }
     function handleSave(){
         dispatch({
@@ -20,6 +20,12 @@ export default function Todoitems({todos,dispatch}){
         })
         setEditId("");
         setEditText("");
+    }
+    function handleCheck(checkedid){
+        dispatch({
+            type:"checked",
+            id:checkedid
+        })
     }
     return(
         <div style={{textAlign:"center"}}>
@@ -35,15 +41,14 @@ export default function Todoitems({todos,dispatch}){
             <ul style={{listStyle:"none"}}>
                 {todos.map((todo)=>(
                     <li key={todo.id}>
-                        <input type="checkbox" checked={todo.done}/>
+                        <input type="checkbox" checked={todo.done} onChange={()=>handleCheck(todo.id)}/>
                         <span>{todo.text}</span>
-                        <button onClick={()=>handleEdit(todo.id)}>Edit</button>
                         {editId==todo.id?(<>
                               <input type="text" value={editText} onChange={(e)=>setEditText(e.target.value)}/>
                               <button type="submit" onClick={()=>handleSave()}>save</button>
                         </>
                         ):(
-                        ""
+                        <button onClick={()=>handleEdit(todo)}>Edit</button>
                         )}
                         <button onClick={()=>handleDelete(todo.id)}>Delete</button>
                     </li>

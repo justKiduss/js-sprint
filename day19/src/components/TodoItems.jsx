@@ -57,15 +57,18 @@ export default function TodoItems({tasks,dispatch,newTask}){
                 <li key={task.id} style={{display:"flex",gap:"10px",alignItems: "center"}} >
                   <input type="checkbox" checked={task.done} onChange={()=>handleCheck(task.id)}/>
                   <span>{task.text}</span>
-                  <button onClick={()=>handleEdit(task.id)}>Edit</button>
-                  {editId===task.id?(
+                  {editId==task.id?(
                      <>
                         <input type='text' value={editText} onChange={(e)=>setEditText(e.target.value)}/> 
                         <button onClick={()=>handleSave()}>Save</button>
-                     </>):(
+                        </>
+                     ):(
                         // <span>{task.text}</span>
                         ""
-                     )}
+                     )}:
+                     <>
+                     <button onClick={()=>handleEdit(task.id)}>Edit</button>
+                     </>
                   <button onClick={()=>handleDelete(task.id)} style={{height:"30px"}}>Delete</button>
                 </li>
              ))}

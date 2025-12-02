@@ -20,6 +20,11 @@ export default function TodoReducers(todos,action){
              todo.id===action.id?{...todo,text:action.text}:todo
           ))
         }
+        case "checked":{
+          return todos.map((todo)=>(
+            todo.id===action.id?{...todo,done:!todo.done}:todo
+          ))
+        }
         default :{
             return todos
         }

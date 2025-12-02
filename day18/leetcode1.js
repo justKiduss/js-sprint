@@ -30,22 +30,16 @@ var generate = function (numRows) {
     for (let i = 0; i < numRows; i++) {
         let row = [];
         for (let j = 0; j <= i; j++) {
-            if (i==0) {
-                row.push(1);
-                sum.push(row);
+            if(j==0||j==i){
+                row.push(1)
             }
-            // if(j==0&&j==i){
-            //     row.push(1)
-            //     sum.push(row);
-            // }
-            // else {
-            //     row.push([i - 1][j - 1] +[i - 1][j])
-            //     sum.push(row);
-            // }
-            // sum.push(row);
+            else {
+                row.push(sum[i - 1][j - 1] +sum[i - 1][j])
+            }
         }
-        return sum;
+        sum.push(row);
     }
+    return sum
 };
 const gh=generate(1);
 console.log(gh);

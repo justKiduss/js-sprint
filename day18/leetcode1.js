@@ -1,3 +1,4 @@
+// 118. Pascal's Triangle
 // var generate = function(numRows) {
 //     let sum=[];
 //     for(let i=0;i<numRows;i++){  
@@ -41,5 +42,5 @@ var generate = function (numRows) {
     }
     return sum
 };
-const gh=generate(1);
+const gh=generate(3);
 console.log(gh);

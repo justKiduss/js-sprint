@@ -1,37 +1,37 @@
-import React,{useState,useReducer,useEffect} from "react";
-import TaskReducer from "../reducers/taskReducer";
-import {loadTasks,saveTasks} from "./persistence"
-import TaskItems from "./TaskItems";
-function TaskManager(){
-    const [todo,setTodo]=useState("");
-    const [todos,dispatch]=useReducer(TaskReducer,loadTasks())
-    const [category,setCategory]=useState("all")
+import {useState,useEffect, useReducer} from "react"
+import {initialState} from "./Persistence"
+import { reducer } from "../reducers/Reducer";
+export function TaskManager(){
+const [newTask,setNewTask]=useState("");
+const [category,setCategory]=useState("");
+const [categories,dispatch]=useReducer(reducer,initialState)
 
-    useEffect(()=>{
-      saveTasks(todos);
-    },[todos])
-    
 function handleSubmit(e){
-    e.preventDefault();
-    if(!todo.trim()) return;
-
-    dispatch({
-        type:"add",
+e.preventDefault();
+dispatch({
+    type:"addTask",
+    payload:{
         id:Date.now(),
-        text:todo,
+        text:newTask,
         category:category,
         done:false
-    })
-    setTodo("")
+    }
+})}
+console.log(categories)
+    return(
+        <>
+        <div>
+            <form onSubmit={handleSubmit}>
+                <input type="text" value={newTask} onChange={(e)=>setNewTask(e.target.value)}/>
+                <select onChange={(e)=>setCategory(e.target.value)}>
+                    <option value="all">All</option>
+                    <option value="work">Work</option>
+                    <option value="school">School</option>
+                    <option value="social">Social</option>
+                </select>
+                <button type="submit">Add Task</button>
+            </form>
+        </div>
+        </>
+    )
 }
-return(
-    <div>
-        <form onSubmit={handleSubmit} style={{display:"flex",alignItems:"center",justifyContent:"center",margin:"120px 0px 40px 0px"}}>
-            <input type="text" onChange={(e)=>setTodo(e.target.value)} value={todo}/>
-            <button>Add Tasks</button>
-        </form>
-        <TaskItems todos={todos} dispatch={dispatch}/>
-    </div>
-)
-}
-export default TaskManager;

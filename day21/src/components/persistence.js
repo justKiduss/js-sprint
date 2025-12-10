@@ -1,18 +1,26 @@
-export function loadTasks(){
+export function loadState(){
     try{
-       let seterailize=localStorage.getItem("todos");
-       if(!seterailize){
-          return [];
-       }
-       return JSON.parse(seterailize);
+        const seterilized=localStorage.getItem('tasks');
+        if(!seterilized) return []
+        return JSON.parse(seterilized);
+    }catch(err){        
+        return [];
+        }
+    }
+
+export function saveState(Tasks){
+    try{
+        localStorage.setItem('tasks',JSON.stringify(Tasks));
     }catch(err){
-        return []
+        return "error during saving the state"
     }
 }
-export function saveTasks(todos){
-    try{
-       localStorage.setItem("todos",JSON.stringify(todos));
-    }catch(err){
-        return err
+
+export const initialState={
+    items:{
+        all:[],
+        work:[],
+        school:[],
+        social:[]
     }
 }

@@ -1,70 +1,95 @@
-# Getting Started with Create React App
+Day 21 – Task Manager with Reducer and Persistence
+Project Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project implements a task management system in React that allows users to manage tasks across multiple categories (Work, School, Social, All). It demonstrates advanced state management using useReducer, local persistence via localStorage, and dynamic task operations including add, edit, delete, and completion toggling. The project also includes utilities for Pascal’s Triangle generation.
 
-## Available Scripts
+Features
+Task Management
 
-In the project directory, you can run:
+Add Task: Create tasks with a selected category.
 
-### `npm start`
+Edit Task: Modify tasks inline.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Check/Uncheck Task: Toggle task completion.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Delete Task: Remove tasks from all categories.
 
-### `npm test`
+Category Filtering: Filter tasks by All, Work, School, Social.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Persistent Storage: Tasks are saved in localStorage.
 
-### `npm run build`
+Pascal’s Triangle Utilities
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Full Triangle (generate): Returns the triangle up to a given number of rows.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Specific Row (getRow): Returns a single row at a specified index.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Folder Structure
+src/
+├── components/
+│   ├── TaskManager.jsx       # Main component with task form
+│   └── TaskItems.jsx         # Displays task list with edit/check/delete functionality
+├── reducers/
+│   └── Reducer.js            # Handles add, edit, check, delete actions
+├── utils/
+│   └── Persistence.js        # loadState, saveState, initialState
+└── algorithms/
+    ├── PascalTriangle.js     # generate(numRows)
+    └── PascalRow.js          # getRow(rowIndex)
 
-### `npm run eject`
+Installation and Running
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Install dependencies
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+npm install
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Start the application
 
-## Learn More
+npm start
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+How to Use
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Adding Tasks
 
-### Code Splitting
+Enter task text in the input field.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Select a category from the dropdown.
 
-### Analyzing the Bundle Size
+Click Add Task.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Editing Tasks
 
-### Making a Progressive Web App
+Click the Edit button next to a task.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Update the text in the input field and click Save.
 
-### Advanced Configuration
+Check/Uncheck Tasks
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Toggle the checkbox to mark a task as completed or incomplete.
 
-### Deployment
+Deleting Tasks
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Click Delete to remove a task.
 
-### `npm run build` fails to minify
+Category Filtering
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Use the dropdown to filter tasks by category.
+
+Pascal’s Triangle Utilities
+
+import { generate } from './algorithms/PascalTriangle';
+import { getRow } from './algorithms/PascalRow';
+
+console.log(generate(5)); // Full triangle
+console.log(getRow(3));   // Specific row
+
+Notes
+
+Task IDs are generated using Date.now().
+
+Reducer maintains consistency by mapping over all categories.
+
+Task state is automatically persisted in localStorage on every update.
+
+The project demonstrates combining reducers with local persistence for scalable task management.

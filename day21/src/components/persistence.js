@@ -2,7 +2,16 @@ export function loadState(){
     try{
         const seterilized=localStorage.getItem('tasks');
         if(!seterilized) return []
-        return JSON.parse(seterilized);
+        const parsed=JSON.parse(seterilized);
+
+        if(!parsed.items||
+            !parsed.items.all ||
+            !parsed.items.work ||
+            !parsed.items.school ||
+            !parsed.items.social){
+                return initialState;
+            }
+        return parsed;
     }catch(err){        
         return [];
         }

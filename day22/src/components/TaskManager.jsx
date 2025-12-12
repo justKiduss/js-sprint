@@ -39,7 +39,6 @@ console.log(state);
         <div style={{margin:"50px"}}>
             <form  onSubmit={handleSubmit} style={{display:"flex",alignItems:"center",justifyContent:"center",gap:"5px"}}>
                 <input type="text" value={newTask} onChange={(e)=>setNewTask(e.target.value)}/>
-
                 <select onChange={(e)=>setPriority(e.target.value)}>
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
@@ -49,7 +48,7 @@ console.log(state);
                 <button type="submit">submit</button>
             </form>
             <div>
-                <TaskItems/>
+                <TaskItems state={state} dispatch={dispatch}/>
             </div>
         </div>
         </>

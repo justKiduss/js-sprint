@@ -9,7 +9,7 @@ export function saveTask(state){
 
 export function loadTask(){
     try{
-        const task=localStorage.getItem("task");
+        const task=localStorage.getItem("tasks");
         if(!task) return [];
         return JSON.parse(task)
     }catch(err){
@@ -17,6 +17,4 @@ export function loadTask(){
     }
 }
 
-export const initialState={
-    task:[]
-} 
+export const initialState=[];

@@ -1,6 +1,46 @@
-export default function TaskItems(){
+import {useState} from "react"
+export default function TaskItems({state,dispatch}){
+    const [editId,setEditId]=useState("");
+    const [editText,setEditText]=useState("");
+    const [priority,setPriority]=useState("");
+    const [dueDate,setDueDate]=useState("");
+    const filteredTasks=state.filter((sta)=>{
+          const matchPriority=priority?sta.priority===priority:true
+          const matchdueDate=dueDate?sta.dueDate===dueDate:true
+          return matchPriority&&matchdueDate;
+    })
     return(
         <>
+        <div style={{textAlign:"center"}}>
+                <input type="text" placeholder="search your tasks"/>
+                <select onChange={(e)=>setPriority(e.target.value)} value={priority}>
+                    <option value="">All</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+                <input type="date"  onChange={(e)=>setDueDate(e.target.value)} value={dueDate}/>
+                <button type="submit">search</button>
+            <ul style={{listStyle:"none"}}>
+            
+                {filteredTasks.length===0?
+                <> <p>No Task Found</p></>:
+                filteredTasks.map((task)=>(
+                    <li key={task.id}>
+                      <input type="checkbox"/>
+                      <span>{task.text}</span>
+                      <button onClick={()=>dispatch({
+                          type:"editTask",
+                          id:task.id
+                      })}>Edit</button>
+                      <button onClick={()=>dispatch({
+                           type:"deleteTask",
+                           id:task.id
+                      })}>Delete</button>
+                    </li>
+                ))}
+            </ul>
+        </div>
         </>
     )
 }

@@ -48,7 +48,7 @@ console.log("task",state);
                 <button type="submit">submit</button>
             </form>
             <div>
-                {/* <TaskItems state={state} dispatch={dispatch}/> */}
+                <TaskItems state={state} dispatch={dispatch}/>
             </div>
         </div>
         </>

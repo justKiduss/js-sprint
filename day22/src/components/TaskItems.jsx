@@ -8,8 +8,9 @@ export default function TaskItems({state,dispatch}){
           const matchPriority=priority?sta.priority===priority:true
           const matchdueDate=dueDate?sta.dueDate===dueDate:true
           return matchPriority&&matchdueDate;
-})
+    })
 
+    
     return(
         <>
         <div style={{textAlign:"center"}}>
@@ -31,7 +32,8 @@ export default function TaskItems({state,dispatch}){
                       <input type="checkbox"/>
                       <span>{task.text}</span>
                       <button onClick={()=>dispatch({
-
+                          type:"editTask",
+                          id:task.id
                       })}>Edit</button>
                       <button onClick={()=>dispatch({
                            type:"deleteTask",

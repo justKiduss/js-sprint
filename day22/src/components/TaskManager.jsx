@@ -29,11 +29,11 @@ function handleSubmit(e){
     })
     setNewTask("");
     setCategory("all");
-    setDueDate(Date.now());
+    setDueDate("");
     setPriority("low");
 }
 
-console.log(state);
+console.log("task",state);
     return(
         <>
         <div style={{margin:"50px"}}>
@@ -48,7 +48,7 @@ console.log(state);
                 <button type="submit">submit</button>
             </form>
             <div>
-                <TaskItems state={state} dispatch={dispatch}/>
+                {/* <TaskItems state={state} dispatch={dispatch}/> */}
             </div>
         </div>
         </>

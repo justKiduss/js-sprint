@@ -8,5 +8,15 @@ switch(action.type){
              }
         ]
     }
+    case "deleteTask":{
+        const id=action.id;
+        return  state.filter((sta)=>(
+                id!==sta.id
+            ))
+        
+    }
+    default:{
+        return state
+    }
 }
 }

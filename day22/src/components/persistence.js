@@ -17,6 +17,4 @@ export function loadTask(){
     }
 }
 
-export const initialState={
-    task:[]
-} 
+export const initialState=[];

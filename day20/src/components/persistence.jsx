@@ -1,17 +1,17 @@
 export function loadState (){
     try{
-        const serialized=localStorage.getItem("todos");
+        const serialized=localStorage.getItem('todos');
         if(!serialized) return [];
         return JSON.parse(serialized);
     }catch(err){
         return [];
     }
 }
-export function saveState(state){
+export function saveState(todos){
     try{
-        const serialized=JSON.stringify(state);
-        localStorage.setItem("todos",serialized);
+        const serialized=localStorage.setItem('todos',JSON.stringify(todos))
     }catch(err){
         console.log(err);
     }
 }
+

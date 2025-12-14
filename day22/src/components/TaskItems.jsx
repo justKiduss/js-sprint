@@ -9,7 +9,10 @@ export default function TaskItems({state,dispatch}){
           const matchdueDate=dueDate?sta.dueDate===dueDate:true
           return matchPriority&&matchdueDate;
     })
-
+    function handleEdit(id,text){
+     setEditId(id);
+     setEditText(text);
+    }
     
     return(
         <>
@@ -28,13 +31,28 @@ export default function TaskItems({state,dispatch}){
                 {filteredTasks.length===0?
                 <> <p>No Task Found</p></>:
                 filteredTasks.map((task)=>(
-                    <li key={task.id}>
-                      <input type="checkbox"/>
+                    <li key={task.id} style={{gap:"10px"}}>
+                      <input type="checkbox" checked={task.done} onClick={()=>dispatch({
+                          type:"checkTask",
+                          id:task.id,
+                          done:!task.done
+                      })}/>
                       <span>{task.text}</span>
-                      <button onClick={()=>dispatch({
-                          type:"editTask",
-                          id:task.id
-                      })}>Edit</button>
+                      {editId===task.id?(
+                        <>
+                            <input type="text" onChange={(e)=>setEditText(e.target.value)} value={editText}/>
+                            <button onClick={()=>{dispatch({
+                                type:"editTask",
+                                id:editId,
+                                editedText:editText
+                            });
+                            setEditId("");
+                            setEditText("")
+                            }}>Save</button>
+                        </>
+                        ):(
+                      <button onClick={()=>handleEdit(task.id,task.text)}>Edit</button>
+                      )}
                       <button onClick={()=>dispatch({
                            type:"deleteTask",
                            id:task.id

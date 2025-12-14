@@ -15,6 +15,23 @@ switch(action.type){
             ))
         
     }
+    case "editTask":{
+        const id=action.id
+        const editedText=action.editedText
+        return( 
+            state.map((sta)=>(
+              sta.id===id? {...sta,text:editedText}:sta
+            )))
+    }
+    case "checkTask":{
+        const id=action.id;
+        const done=action.done;
+        return (
+            state.map((sta)=>(
+               sta.id===id? {...sta,done:done}:sta
+            ))
+        )
+    }
     default:{
         return state
     }

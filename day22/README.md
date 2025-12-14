@@ -1,70 +1,144 @@
-# Getting Started with Create React App
+# Day 22 – Task Manager (React)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This project extends the previous task manager by introducing full CRUD operations, task completion tracking, filtering, editing, and localStorage persistence using `useReducer`.
 
-In the project directory, you can run:
+The goal of Day 22 is to strengthen understanding of:
 
-### `npm start`
+* Reducer-driven state management
+* Immutable state updates
+* Cross-component state flow via props
+* Persistent state with `localStorage`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+* Add tasks with priority and due date
+* Persist tasks using `localStorage`
+* Delete tasks
+* Edit task text inline
+* Mark tasks as completed
+* Filter tasks by priority and due date
+* Centralized state management using `useReducer`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Project Structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+src/
+├── components/
+│   ├── TaskManager.jsx
+│   ├── TaskItems.jsx
+│   └── persistence.js
+├── reducers/
+│   └── reducer.js
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## State Management
 
-### `npm run eject`
+State is an **array of task objects** managed by `useReducer`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Task Shape
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```js
+{
+  id: number,
+  text: string,
+  category: string,
+  priority: string,
+  dueDate: string,
+  done: boolean
+}
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Reducer Actions
 
-## Learn More
+### addTask
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Adds a new task to state.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### deleteTask
 
-### Code Splitting
+Removes a task by `id`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### editTask
 
-### Analyzing the Bundle Size
+Updates task text by `id`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### checkTask
 
-### Making a Progressive Web App
+Toggles task completion status.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+All reducer updates are immutable.
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Persistence Layer
 
-### Deployment
+### saveTask(state)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Stores the entire task array in `localStorage`.
 
-### `npm run build` fails to minify
+### loadTask()
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Loads tasks from `localStorage`. Returns an empty array if none exist or on failure.
+
+This logic is isolated from components to enforce separation of concerns.
+
+---
+
+## Component Responsibilities
+
+### TaskManager
+
+* Initializes reducer state
+* Handles task creation
+* Syncs state to `localStorage`
+* Passes `state` and `dispatch` to child components
+
+### TaskItems
+
+* Displays task list
+* Handles filtering logic
+* Dispatches edit, delete, and toggle actions
+* Manages local UI-only state (editing, filters)
+
+---
+
+## Key Learnings
+
+* Reducers must always return the same state shape
+* UI state and global state must be clearly separated
+* `localStorage` persistence must never mutate reducer logic
+* Props are the bridge between reducer state and child components
+
+---
+
+## Known Limitations
+
+* No task search by text implemented
+* Category filtering not yet wired
+* No memoization or performance optimizations
+
+---
+
+## Next Steps (Day 23 Direction)
+
+* Normalize state structure (e.g., `{ tasks: [] }`)
+* Add text search
+* Extract filters into reducer
+* Introduce derived selectors
+* Improve accessibility and keyboard handling
+
+---
+
+## Status
+
+Day 22 completed. Reducer-based task manager with persistence and editing is functional and stable.

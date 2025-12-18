@@ -14,12 +14,12 @@ const [state,dispatch]=useReducer(reducer,loadTasks()||initialState)
 useEffect(()=>{
 saveTasks(state);
 },[state])
+
 function handleSubmit(e){
 e.preventDefault();
 if(!newTask.trim()){
     return
 }
-
 dispatch({
     type:"addTask",
     payload:{
@@ -28,7 +28,7 @@ dispatch({
         priority:priority,
         dueDate:dueDate,
         done:false,
-        parentId:Date.now() | null
+        parentId:null
     }
 })
 setNewTask("");

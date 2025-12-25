@@ -2,6 +2,8 @@ import { useState } from "react";
 function Task({task,allTasks,dispatch}){
 const [subTask,setSubTask]=useState("");
 const [visible,setVisible]=useState(false)
+const [editId,setEditId]=useState("");
+const [editText,setEditText]=useState("");
 const children=allTasks.filter((t)=>t.parentId===task.id);
 
 function addSubTask(){
@@ -20,11 +22,38 @@ function addSubTask(){
 
 return(
    <li key={task.id} style={{listStyle:"none"}}>
-      <input type="checkbox" style={{margin:"5px"}}/>
+      <input type="checkbox" onChange={()=>{
+        dispatch({
+         type:"checkTask",
+         payload:{
+          id:task.id,
+          done:task.done
+         }
+        }
+      )}} checked={task.done} style={{margin:"5px"}}/>
       <span style={{margin:"5px"}}>{task.text}</span>
-      <button style={{margin:"5px"}}>Edit</button>
+      {editId===task.id?(
+    <>
+      <input type="text" onChange={(e)=>setEditText(e.target.value)} value={editText}/>
+      <button onClick={()=>{
+        dispatch({
+          type:"editText",
+          payload:{
+          editedId:editId,
+          editedText:editText
+        } 
+      });
+      setEditId("");
+    }
+      }>save</button>
+      </>
+    ):(
+      <button style={{margin:"5px"}}onClick={()=>{setEditId(task.id)}}
+      >Edit</button>
+      )}
+  
       <button style={{margin:"5px"}} 
-      onClick={(e)=>{dispatch({
+      onClick={()=>{dispatch({
          type:"deleteTask",
          id:task.id,
       })}}>Delete</button>

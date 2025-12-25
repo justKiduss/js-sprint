@@ -33,8 +33,6 @@ dispatch({
 })
 setNewTask("");
 }
-
-console.log(state)
     return (
      <div style={{margin:"50px"}}>
         <form onSubmit={handleSubmit} style={{display:"flex",alignItems:"center",justifyContent:"center"}}>

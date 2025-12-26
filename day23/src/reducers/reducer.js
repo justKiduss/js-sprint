@@ -42,11 +42,12 @@ switch(action.type){
     }
     case "editTask":{
         const {editedId,editedText}=action.payload;
-        return [
+        console.log("edit id",editedId,"edit text",editedText);
+        return(
             state.map((sta)=>(
                sta.id===editedId?{...sta,text:editedText}:sta
             ))
-        ]
+        )
     }
 }
 }

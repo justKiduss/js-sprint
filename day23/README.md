@@ -1,70 +1,163 @@
-# Getting Started with Create React App
+Task Manager – Recursive Todo App (React + useReducer)
+Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a hierarchical task manager built with React.
+It supports parent tasks, unlimited nested subtasks, recursive operations, and persistent storage.
 
-## Available Scripts
+The application uses a flat state structure with parent–child relationships instead of nested state. All hierarchical behavior is achieved through recursion.
 
-In the project directory, you can run:
+Core Features
 
-### `npm start`
+Add root tasks
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Add unlimited nested subtasks
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Recursive delete (deletes a task and all descendants)
 
-### `npm test`
+Recursive toggle (check/uncheck a task and all descendants)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Edit task text
 
-### `npm run build`
+Persistent storage using localStorage
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Single reducer with immutable updates
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Recursive UI rendering
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Data Model
 
-### `npm run eject`
+All tasks are stored in a single flat array.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+{
+  id: number,
+  text: string,
+  done: boolean,
+  parentId: number | null,
+  priority?: "low" | "medium" | "high",
+  dueDate?: string
+}
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+parentId === null → root task
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+parentId === id → child task
 
-## Learn More
+Hierarchy is derived, not nested
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+State Management
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+useReducer for all task state
 
-### Code Splitting
+useState for UI-only concerns (inputs, edit mode, visibility)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+No mutation; every update returns a new state array
 
-### Analyzing the Bundle Size
+Reducer actions:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+addTask
 
-### Making a Progressive Web App
+deleteTask (recursive)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+checkTask (recursive)
 
-### Advanced Configuration
+editTask
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Recursive Logic
+Recursive Delete
 
-### Deployment
+Deletes a task and all of its descendants.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Key idea:
 
-### `npm run build` fails to minify
+Remove the target task
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Find its children
+
+Recursively delete each child
+
+Always return a new state array
+
+newState = deleteTask(newState, child.id);
+
+
+This rebuilds state step-by-step from the deepest child upward.
+
+Recursive Toggle
+
+Toggles a task’s done value and applies the same operation to all descendants.
+
+Each task toggles based on its own current state, not inherited state.
+
+UI Rendering
+
+Tasks are rendered recursively
+
+Each Task component renders its own children by filtering the flat state
+
+No nested data structures in state
+
+Persistence
+
+State is automatically saved to localStorage on every update.
+
+saveTasks(state);
+
+
+On load:
+
+loadTasks() || initialState
+
+
+The app restores its previous state on refresh.
+
+File Structure
+src/
+├── components/
+│   ├── TaskManager.jsx
+│   ├── TaskItems.jsx
+├── reducers/
+│   └── reducer.js
+├── persistence.js
+
+Design Decisions
+
+Flat state + recursion instead of nested state
+
+One reducer, no derived reducers
+
+Immutable updates only
+
+Logic-first approach over UI polish
+
+Explicit control over recursion for learning clarity
+
+Known Limitations
+
+Subtasks do not currently inherit priority or dueDate
+
+UI and logic are not fully separated
+
+No performance optimization for very large task trees
+
+No validation or error handling for edit conflicts
+
+Purpose
+
+This project is not a simple todo list.
+It is an exercise in:
+
+Recursion
+
+Immutable state updates
+
+Reducer-driven architecture
+
+Thinking in data transformations instead of UI events
+
+Status
+
+Functionally complete.
+Structurally improvable.
+Conceptually successful.
+
+This project demonstrates real understanding of recursive state management in React.

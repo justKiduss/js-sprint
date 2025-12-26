@@ -19,7 +19,10 @@ function addSubTask(){
     })
     setSubTask("");
 }
-
+function handleEdit(task){
+  setEditId(task.id);
+  setEditText(task.text);
+}
 return(
    <li key={task.id} style={{listStyle:"none"}}>
       <input type="checkbox" onChange={()=>{
@@ -35,20 +38,20 @@ return(
       {editId===task.id?(
     <>
       <input type="text" onChange={(e)=>setEditText(e.target.value)} value={editText}/>
-      <button onClick={()=>{
-        dispatch({
-          type:"editText",
-          payload:{
+      <button onClick={()=>{dispatch({
+        type:"editTask",
+        payload:{
           editedId:editId,
           editedText:editText
-        } 
+        }
       });
-      setEditId("");
+      setEditText("");
+      setEditId("")
     }
       }>save</button>
       </>
     ):(
-      <button style={{margin:"5px"}}onClick={()=>{setEditId(task.id)}}
+      <button style={{margin:"5px"}} onClick={()=>{handleEdit(task)}}
       >Edit</button>
       )}
   

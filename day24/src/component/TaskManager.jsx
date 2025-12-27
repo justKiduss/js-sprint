@@ -1,5 +1,5 @@
 import { useState,useReducer,useEffect } from "react"; 
-import TaskItems from "./TaskItems";
+import {TaskItems} from "./TaskItems";
 import reducer from "../reducer/reducer";
 import { generateId, initialState, LoadState, SaveState } from "./Persistance";
 export default function TaskManager(){
@@ -48,7 +48,7 @@ export default function TaskManager(){
                     <button type="submit">Add Task</button>
                 </form>
                 <div>
-                    <TaskItems/>
+                    <TaskItems state={state} dispatch={dispatch}/>
                 </div>
             </div>
         </div>

@@ -14,6 +14,40 @@ export default function reducer(state,action){
         }
         ]
         }
+        case "deleteTask":{
+            const {id}=action.payload;
+            function deleteTask(state,id){
+                const children=state.filter((child)=>child.parentId===id);
+                let newState=state.filter((task)=>task.id!==id);
+                children.forEach((task)=>{
+                    newState=deleteTask(newState,task.id)
+                })
+                return newState;
+            }
+            return deleteTask(state,id)
+        }
+        default :{
+            return state
+        }
+        case "checkTask":{
+            const {id}=action.payload;
+            function checkTask(state,id){
+               const info=state.find((task)=>task.id===id)
+               // add feature it need them
+               const children=state.filter((child)=>(child.parentId===id));
+
+               let newState=state.map((task)=>(
+                task.id===id?
+                {...task,done:!info.done}:task
+               ))
+
+               children.forEach((child)=>{
+                newState=checkTask(newState,child.id)
+               })
+               return newState;
+            }
+            return checkTask(state,id)
+        }
     }
 }
 

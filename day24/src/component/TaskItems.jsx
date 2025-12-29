@@ -18,10 +18,9 @@ export function TaskItems({state,dispatch}){
 
 export function Task({task,allTask,dispatch}){
     const [subTask,setSubTask]=useState("");
+    const [visible,setVisible]=useState(false);
     const children=allTask.filter((t)=>t.parentId===task.id)
-    function handleSubTask(e){
-      e.preventDefault();
-
+    function handleSubTask(){
       if(!subTask){
         return 
       }
@@ -30,7 +29,7 @@ export function Task({task,allTask,dispatch}){
         payload:{
             id:generateId(),
             text:subTask,
-            parentId:null,
+            parentId:task.id,
             done:false
         }
       })
@@ -38,36 +37,45 @@ export function Task({task,allTask,dispatch}){
     }
 
     return(
-        <div>
-            <li style={{display:"flex",gap:"10px"}}>
-                <input type="checkbox"/>
-                <span>{task.text}</span>
-                <button>Edit</button>
-                <button>Delete</button>
-                {subTask?(
+        
+            <li style={{listStyle:"none"}}>
+                <div style={{display:"flex",gap:"10px"}}>
+                    <input type="checkbox" checked={task.done} onChange={dispatch({
+                        type:"checkTask",
+                        payload:{ id:task.id }
+                    })}/>
+
+                    <span>{task.text}</span>
+
+                    <button>Edit</button>
+
+                    <button onClick={()=>dispatch({
+                        type:"deleteTask",
+                        payload:{
+                            id:task.id
+                        }
+                    })}>Delete</button>
+                    <button onClick={()=>{setVisible(v=>!v)}}>+ SubTask</button>
+                </div><br/>
+                {visible &&(
                     <>
-                        <input type="text" onChange={(e)=>setSubTask(e.target.value)}/> 
-                        <button>+ SubTask</button>
-                    </>
-                ):(
-                    <>
-                        <button onClick={handleSubTask}>+ SubTask</button>
+                        <input type="text" onChange={(e)=>setSubTask(e.target.value)} value={subTask}/> 
+                        <button onClick={()=>{handleSubTask()}}>+ SubTask</button>
                     </>
                 )}
                 {/* make sure you understand this before you go any further */}
-                {/* {children.length > 0 &&(
+                {children.length > 0 &&(
                    <ul>
                     {children.map((child)=>(
                         <Task 
                          key={child.id}
                          task={child}
                          allTask={allTask}
-                         dis
+                         dispatch={dispatch}
                         />
                     ))}
                    </ul>
-                )} */}
+                )}
             </li>
-        </div>
     )
 }

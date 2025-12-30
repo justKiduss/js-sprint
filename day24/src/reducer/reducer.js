@@ -26,9 +26,6 @@ export default function reducer(state,action){
             }
             return deleteTask(state,id)
         }
-        default :{
-            return state
-        }
         case "checkTask":{
             const {id}=action.payload;
             const info=state.find((task)=>task.id===id)
@@ -47,6 +44,16 @@ export default function reducer(state,action){
                return newState;
             }
             return checkTask(state,id);
+        }
+        case "editTask":{
+            const {editId,editText}=action.payload;
+            // const info=state.filter((task)=>(task.id===editId));
+            return state.map((task)=>(
+             task.id===editId?{...task,text:editText}:task
+            ))
+        }
+        default :{
+            return state
         }
     }
 }

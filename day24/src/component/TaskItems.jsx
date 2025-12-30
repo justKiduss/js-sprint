@@ -19,6 +19,10 @@ export function TaskItems({state,dispatch}){
 export function Task({task,allTask,dispatch}){
     const [subTask,setSubTask]=useState("");
     const [visible,setVisible]=useState(false);
+    const [editText,setEditText]=useState("");
+    const [editId,setEditId]=useState("");
+    const [priority,setPriority]=useState("Low");
+    const [dueDate,setdueDate]=useState("");
     const children=allTask.filter((t)=>t.parentId===task.id)
     function handleSubTask(){
       if(!subTask){
@@ -28,14 +32,20 @@ export function Task({task,allTask,dispatch}){
         type:"addTask",
         payload:{
             id:generateId(),
+            priority:priority,
             text:subTask,
             parentId:task.id,
+            dueDate:dueDate,
             done:false
         }
       })
       setSubTask("");
     }
 
+    function HandleEditTask(task){
+     setEditId(task.id);
+     setEditText(task.text);
+    }
     return(
         
             <li style={{listStyle:"none"}}>
@@ -45,9 +55,28 @@ export function Task({task,allTask,dispatch}){
                         payload:{ id:task.id }
                     })}/>
                     <span>{task.text}</span>
-
-                    <button>Edit</button>
-
+                      {
+                        editId===task.id?<>
+                        
+                          <input type="text" onChange={(e)=>setEditText(e.target.value)} value={editText}/>
+                          <button onClick={()=>{
+                            dispatch({
+                                type:"editTask",
+                                payload:{
+                                    editId:editId,
+                                    editText:editText
+                                }
+                            });
+                            setEditId("");
+                            setEditText("");
+                          }}>Save</button>
+                        
+                        </>:<>
+                        
+                          <button onClick={()=>HandleEditTask(task)}>Edit</button>
+                        
+                        </>
+                      }
                     <button onClick={()=>dispatch({
                         type:"deleteTask",
                         payload:{
@@ -58,8 +87,16 @@ export function Task({task,allTask,dispatch}){
                 </div><br/>
                 {visible &&(
                     <>
-                        <input type="text" onChange={(e)=>setSubTask(e.target.value)} value={subTask}/> 
-                        <button onClick={()=>{handleSubTask()}}>+ SubTask</button>
+                    <div style={{gap:"5px"}}>
+                            <input type="text" onChange={(e)=>setSubTask(e.target.value)} value={subTask}/> 
+                            <select onChange={(e)=>setPriority(e.target.value)} value={priority}>
+                                <option value="Low">Low </option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                            <input type="date" onChange={(e)=>setdueDate(e.target.value)} value={dueDate}/>
+                            <button onClick={()=>{handleSubTask()}}>+ SubTask</button>
+                    </div>
                     </>
                 )}
                 {/* make sure you understand this before you go any further */}

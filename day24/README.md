@@ -1,70 +1,99 @@
-# Getting Started with Create React App
+Day 24 – Recursive Task Manager (Tasks + Subtasks)
+Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project implements a recursive task manager using React and useReducer.
+Tasks can contain unlimited nested subtasks. All operations—add, delete, toggle, and edit—propagate correctly through the task tree. State is persisted using localStorage.
 
-## Available Scripts
+Primary focus: tree-based state modeling, recursion, and reducer correctness.
 
-In the project directory, you can run:
+Core Concepts Practiced
 
-### `npm start`
+Tree data modeling using parentId
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Recursive rendering in React
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Recursive state updates in reducers
 
-### `npm test`
+Immutable state transformations
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Separation of UI, state logic, and persistence
 
-### `npm run build`
+Controlled inputs and derived UI state
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+LocalStorage persistence lifecycle
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Data Model
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Each task follows this structure:
 
-### `npm run eject`
+{
+  id: string,
+  text: string,
+  priority: "Low" | "Medium" | "High",
+  dueDate: string,
+  parentId: string | null,
+  done: boolean
+}
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+parentId === null → root-level task
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+parentId !== null → subtask
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Unlimited nesting supported
 
-## Learn More
+Features
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Add root tasks and subtasks
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Recursive task rendering
 
-### Code Splitting
+Recursive delete (removes all descendants)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Recursive completion toggle (parent → children)
 
-### Analyzing the Bundle Size
+Inline task editing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Persistent state via localStorage
 
-### Making a Progressive Web App
+State Management
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Managed using useReducer
 
-### Advanced Configuration
+All updates are pure and immutable
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Recursive helper functions handle deep tree operations
 
-### Deployment
+UI state (edit mode, input values) kept separate from global state
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Persistence
 
-### `npm run build` fails to minify
+State saved to localStorage on every update
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Initial state loaded once during app initialization
+
+Design Constraints
+
+No external state libraries
+
+No database or backend
+
+No drag-and-drop reordering
+
+No performance optimizations for large trees
+
+These constraints are intentional to reinforce core concepts.
+
+Outcome
+
+This day validates:
+
+Correct mental model of recursive data
+
+Ability to reason about cascading state changes
+
+Discipline in reducer design
+
+Separation between learning mechanics and abstractions
+
+Day 24 complete.

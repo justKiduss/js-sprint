@@ -40,11 +40,10 @@ export function Task({task,allTask,dispatch}){
         
             <li style={{listStyle:"none"}}>
                 <div style={{display:"flex",gap:"10px"}}>
-                    <input type="checkbox" checked={task.done} onChange={dispatch({
+                    <input type="checkbox" checked={task.done} onChange={()=>dispatch({
                         type:"checkTask",
                         payload:{ id:task.id }
                     })}/>
-
                     <span>{task.text}</span>
 
                     <button>Edit</button>

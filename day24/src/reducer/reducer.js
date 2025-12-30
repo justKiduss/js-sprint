@@ -31,8 +31,8 @@ export default function reducer(state,action){
         }
         case "checkTask":{
             const {id}=action.payload;
+            const info=state.find((task)=>task.id===id)
             function checkTask(state,id){
-               const info=state.find((task)=>task.id===id)
                // add feature it need them
                const children=state.filter((child)=>(child.parentId===id));
 
@@ -46,7 +46,7 @@ export default function reducer(state,action){
                })
                return newState;
             }
-            return checkTask(state,id)
+            return checkTask(state,id);
         }
     }
 }

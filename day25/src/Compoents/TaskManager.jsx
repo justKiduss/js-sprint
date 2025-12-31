@@ -1,7 +1,7 @@
 import { useState,useReducer,useEffect } from "react"; 
-import {TaskItems} from "./TaskItems";
+import {TaskItems} from "./TaskItems"
 import { reducer } from "../reducer/reducer";
-import {loadTask,saveTask,generateId,initialState} from "./Persistence"
+import {loadTask,saveTask,generateId,initialState,getAllTasks} from "./Persistence"
 export default function TaskManager(){
     const [newTask,setNewTask]=useState("");
     const [priority,setPriority]=useState("Low");
@@ -31,7 +31,7 @@ export default function TaskManager(){
        setNewTask("");
     }
 
-
+    console.log("all tasks length",getAllTasks(state));
     console.log("state",state);
     return (
         <div style={{width:"90%",height:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -48,7 +48,7 @@ export default function TaskManager(){
                     <button type="submit">Add Task</button>
                 </form>
                 <div>
-                    {/* <TaskItems state={state} dispatch={dispatch}/> */}
+                    <TaskItems state={state} dispatch={dispatch}/>
                 </div>
             </div>
         </div>

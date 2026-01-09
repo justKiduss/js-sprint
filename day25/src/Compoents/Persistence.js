@@ -2,7 +2,7 @@ export const initialState=[]
 
 export function loadTask(){
     try{
-        const task=localStorage.getItem("task");
+        const task=localStorage.getItem("Task");
         if(!task){
           return [];
         }
@@ -14,7 +14,7 @@ export function loadTask(){
 
 export function saveTask(state){
     try{
-      localStorage.setItem("task",JSON.stringify(state));
+      localStorage.setItem("Task",JSON.stringify(state));
     }catch{
       return "error while saveing task";
     }
@@ -30,8 +30,25 @@ export function getAllTasks(state){
   return state.length;
 }
 
-// getCompletedTasks(state)
+export function getCompletedTasks(state){
+  return state.map((task)=>(
+    task.done===true
+  ))
+}
 
+export function getIncompletedTasks(state){
+  return state.map((task)=>(
+    task.done===!true
+  ))
+}
+export function getTotalSubtaskCount(state){
+  return state.map((task)=>(
+    task.parentId===!null
+  ))
+}
+export function CompletionPercentage(){
+  return getCompletedTasks().length/getAllTasks() *100;
+}
 // getTaskTree(state)
 
 // getStats(state)

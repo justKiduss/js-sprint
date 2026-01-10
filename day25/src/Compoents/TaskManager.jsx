@@ -1,13 +1,13 @@
 import { useState,useReducer,useEffect } from "react"; 
 import {TaskItems} from "./TaskItems"
 import { reducer } from "../reducer/reducer";
-import {loadTask,saveTask,generateId,initialState,getAllTasks} from "./Persistence"
+import {loadTask,saveTask,generateId,initialState,getAllTasks,getCompletedTasks,getIncompletedTasks,getTotalSubtaskCount,CompletionPercentage} from "./Persistence"
 export default function TaskManager(){
     const [newTask,setNewTask]=useState("");
     const [priority,setPriority]=useState("Low");
     const [dueDate,setdueDate]=useState("");
     const [state,dispatch]=useReducer(reducer,loadTask()||initialState)
-    
+    console.log("loadstate",loadTask())
     useEffect(()=>{
         saveTask(state);
     },[state])
@@ -49,6 +49,14 @@ export default function TaskManager(){
                 </form>
                 <div>
                     <TaskItems state={state} dispatch={dispatch}/>
+                </div>
+                <div>
+                    <h1 style={{textAlign:"center"}}>Stat</h1>
+                    <h2>Total Tasks: {getAllTasks(state)}</h2>
+                    <h2>Total Completed Task : {getCompletedTasks(state)}</h2>
+                    <h2>Total Incomplete Task : {getIncompletedTasks(state)}</h2>
+                    <h2>Total Sub Tasks : {getTotalSubtaskCount(state)}</h2>
+                    <h1>Completion Percentage : {CompletionPercentage(state)}%</h1>
                 </div>
             </div>
         </div>

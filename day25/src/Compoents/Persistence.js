@@ -27,29 +27,32 @@ return uniqueId;
 }
 
 export function getAllTasks(state){
+  console.log("getAllTask",state)
   return state.length;
 }
 
 export function getCompletedTasks(state){
-  return state.map((task)=>(
+  return state.filter((task)=>
     task.done===true
-  ))
+  ).length;
 }
 
 export function getIncompletedTasks(state){
-  return state.map((task)=>(
-    task.done===!true
-  ))
+  return state.filter((task)=>
+    task.done===false
+  ).length;
 }
 export function getTotalSubtaskCount(state){
-  return state.map((task)=>(
-    task.parentId===!null
-  ))
+  return state.filter((task)=>
+    task.parentId !== null
+  ).length
 }
-export function CompletionPercentage(){
-  return getCompletedTasks().length/getAllTasks() *100;
+export function CompletionPercentage(state){
+  const total = getAllTasks(state);
+  if (total === 0) return 0;
+  return Math.round(getCompletedTasks(state)/getAllTasks(state) *100);
 }
 // getTaskTree(state)
 
 // getStats(state)
-
+// @dr3h0t#r3@d

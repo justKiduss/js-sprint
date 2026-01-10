@@ -52,6 +52,25 @@ export function CompletionPercentage(state){
   if (total === 0) return 0;
   return Math.round(getCompletedTasks(state)/getAllTasks(state) *100);
 }
+export function filterTasks(state,filter){
+          switch(filter){
+              case "done":{
+                const tasks=state; 
+                return tasks.filter((task)=>(
+                   task.done===true
+                ))
+              }
+              case "High":{
+                const tasks=state; 
+                return tasks.filter((task)=>(
+                   task.priority==="High"
+                ))
+              }
+              default:{
+                return state;
+              }
+          }
+        }
 // getTaskTree(state)
 
 // getStats(state)

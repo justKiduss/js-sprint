@@ -1,12 +1,13 @@
 import {Children, useState} from "react"
-import {generateId} from "./Persistence"
+import {filterTasks, generateId} from "./Persistence"
 export function TaskItems({state,dispatch}){
     const [filter,setFilter]=useState("All");
     const rootTask=state.filter((task)=>task.parentId===null);
+    const filterTask=filterTasks(state,filter)
         return (
         <div>
             <form>
-                <select onChange={(e)=>setFilter(e.target.value)}>
+                <select onChange={(e)=>{setFilter(e.target.value)}}>
                     <option value="All">All</option>
                     <option value="done">Completed</option>
                     <option value="High">High Priority</option>
@@ -14,7 +15,9 @@ export function TaskItems({state,dispatch}){
                 <input type="date"/>
                 <input type="date"/>
             </form>
-            {rootTask.map((task)=>(
+            {filter?(
+                <>
+               {filterTask.map((task)=>(
                 <ul key={task.id}>
                     <Task
                         task={task}
@@ -23,6 +26,20 @@ export function TaskItems({state,dispatch}){
                     />
                 </ul>
             ))}
+                </>
+            ):(
+                <>
+               {rootTask.map((task)=>(
+                <ul key={task.id}>
+                    <Task
+                        task={task}
+                        dispatch={dispatch}
+                        allTasks={state}
+                    />
+                </ul>
+            ))}
+                </>
+             )}
         </div>
         )
 }

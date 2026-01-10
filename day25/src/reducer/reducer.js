@@ -43,7 +43,7 @@ export function reducer(state,action){
           const {id}=action.payload;
           function checkTask(state,id){
            const info=state.find((task)=>task.id===id)
-           
+
            const children=state.filter((child)=>child.parentId===id);
            let newState=state.map((task)=> task.id===id? {...task,done:!info.done}:task);
            children.forEach((child)=>{

@@ -30,5 +30,8 @@ switch(filter){
             task.done
         ))
     }
+    default:{
+        return state;
+    }
 }
 }

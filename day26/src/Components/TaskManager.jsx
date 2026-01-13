@@ -41,9 +41,9 @@ export default function TaskManager(){
                     <form onSubmit={handleAddTask}>
                         <input type="text" onChange={(e)=>setNewTask(e.target.value)} value={newTask} />
                         <select onChange={(e)=>setPriority(e.target.value)} value={priority}>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
                             <option value="High">High</option>
-                            <option value="High">Medium</option>
-                            <option value="High">Low</option>
                         </select>
                         <input type="datetime-local" onChange={(e)=>setDueDate(e.target.value)} value={dueDate}/>
                         <button type="submit">Add Task</button>

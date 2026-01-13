@@ -11,6 +11,7 @@ export function Task({allState,dispatch,task}){
        if(!subTask.trim()){
         return
        }
+
        dispatch({
         type:"addTask",
         payload:{
@@ -28,12 +29,12 @@ export function Task({allState,dispatch,task}){
     return(
         <>
             <div>
-                <ul>
-                    <li>
+                    <li style={{gap:"5px"}}>
                         <input type="checkbox"/>
                         <span>{task.text}</span>
                         <button>Edit</button>
-                        <button >+ SubTask</button>
+                        <button>Delete</button>
+                        <button onClick={()=>setVisible((v)=>!v)}>+ SubTask</button>
                         {visible &&(
                             <>
                             <div>
@@ -47,22 +48,22 @@ export function Task({allState,dispatch,task}){
                                     <input type="date" onChange={(e)=>setDueDate(e.target.value)}/>
                                     <button type="submit">+ subTask</button>
                                 </form>
+                                {children.length>0&&
+                                    <ul>
+                                        {children.map((child)=>(
+                                            <Task
+                                            key={child.id}
+                                            allState={allState}
+                                            dispatch={dispatch}
+                                            task={child}
+                                            />
+                                        ))}
+                                    </ul>
+                                }
                             </div>
                             </>
                         )}
                     </li>
-                </ul>
-               {children.length>0&&
-                <ul>
-                    {children.map((child)=>(
-                        <Task
-                        key={child.id}
-                        dispatch={dispatch}
-                        task={child}
-                        />
-                    ))}
-                </ul>
-               }
             </div>
         </>
     )
@@ -83,29 +84,27 @@ export function TaskItems({state,dispatch}){
                 <input type="date"/>
                 <input type="date"/>
           </form>
-            <ul>
-                {filter?
+                {filter ?
                 <>
-                {filterTask.map((task)=>(
-                       <Task 
-                        key={task.id}
-                        dispatch={dispatch}
-                        allState={state}
-                        task={task}
-                        />  
-                ))}  
-                </>:<>
-                {rootTasks.map((task)=>(
+                    {filterTask.map((task)=>(
                         <Task 
-                        key={task.id}
-                        dispatch={dispatch}
-                        allState={state}
-                        task={task}
-                        />
+                            key={task.id}
+                            dispatch={dispatch}
+                            allState={state}
+                            task={task}
+                        />  
+                    ))}  
+                </>:<>
+                     {rootTasks.map((task)=>(
+                        <Task 
+                            key={task.id}
+                            dispatch={dispatch}
+                            allState={state}
+                            task={task}
+                        />  
                     ))} 
                 </>
                 }
-            </ul>
-        </>
+         </>
     )
 }

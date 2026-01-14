@@ -8,6 +8,7 @@ return uniqueId;
 
 export function loadTask(){
 const task=localStorage.getItem("Tasks");
+if(!task) return [];
 return JSON.parse(task);
 }
 
@@ -19,19 +20,22 @@ localStorage.setItem("Tasks",JSON.stringify(state));
 }
 
 export function filterTasks(filter,state){
+    const filtered=state.filter((task)=>(
+        task.parentId===null
+    ))
 switch(filter){
     case "High":{
-        return state.filter((task)=>(
+        return filtered.filter((task)=>(
             task.priority==="High"
         ))
     }
     case "done":{
-        return state.filter((task)=>(
+        return filtered.filter((task)=>(
             task.done
         ))
     }
-    default:{
-        return state;
-    }
+    case "All":
+    default:
+        return filtered;
 }
 }

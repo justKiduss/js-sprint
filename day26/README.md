@@ -1,70 +1,102 @@
-# Getting Started with Create React App
+README.md (Day 26)
+# Task Manager — Day 26
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A hierarchical task manager built with React using a flat state model, recursive rendering, and deterministic state transitions.
 
-## Available Scripts
+This project is part of the Day 26 sprint, focused on mastering:
+- State normalization
+- Recursive UI rendering
+- Reducer-driven logic
+- Filtering without derived state bugs
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Core Concepts
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 1. Flat State with Hierarchy
+All tasks live in a single array.
+Hierarchy is expressed using `parentId`.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```js
+{
+  id: string,
+  text: string,
+  priority: "Low" | "Medium" | "High",
+  dueDate: string,
+  done: boolean,
+  parentId: string | null
+}
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+parentId === null → root task
 
-### `npm run build`
+otherwise → subtask
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. Single Source of Truth
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+state contains all tasks (roots + children).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+No duplicated or derived task lists.
 
-### `npm run eject`
+Filtering is applied only to root tasks.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. Root-Only Filtering
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Filtering never affects children directly.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+filterTasks(filter, state)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+Always starts from parentId === null
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Children are rendered recursively inside their parent task
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+4. Recursive Rendering
 
-### Code Splitting
+The Task component renders itself and its children:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+const children = allState.filter(t => t.parentId === task.id);
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+This enables unlimited nesting without extra state.
 
-### Making a Progressive Web App
+5. Reducer Logic
+Add Task
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Adds both root tasks and subtasks.
 
-### Advanced Configuration
+Delete Task
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Deletes a task and all descendants recursively.
 
-### Deployment
+Check Task
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Toggles completion on a task and propagates the same state to all children.
 
-### `npm run build` fails to minify
+No side effects. No mutations.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+6. Persistence
+
+State is persisted to localStorage.
+
+Loaded once on initialization
+
+Saved automatically on every state change
+
+What This Project Proves
+
+Understanding of normalized state
+
+Correct use of recursion in UI and reducers
+
+Proper separation of concerns
+
+Filtering without breaking hierarchy
+
+React used as a deterministic system, not a magic box
+
+Status
+
+Day 26: Completed
+
+This project is production-structured for a learning sprint and is ready to be extended in later stages (editing, date filtering, UX polish).

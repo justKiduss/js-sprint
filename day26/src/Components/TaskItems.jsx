@@ -58,14 +58,15 @@ export function Task({allState,dispatch,task}){
                                     <input type="date" onChange={(e)=>setDueDate(e.target.value)}/>
                                     <button type="submit">+ subTask</button>
                                 </form>
+                              
                                 {children.length>0&&
                                 <ul>
                                         {children.map((child)=>(
                                             <Task
-                                            key={child.id}
-                                            allState={allState}
-                                            dispatch={dispatch}
-                                            task={child}
+                                                key={child.id}
+                                                allState={allState}
+                                                dispatch={dispatch}
+                                                task={child}
                                             />
                                         ))}
                                 </ul>
@@ -81,8 +82,7 @@ export function Task({allState,dispatch,task}){
 
 export function TaskItems({state,dispatch}){
     const [filter,setFilter]=useState("");
-    const rootTasks=state.filter((task)=>task.parentId===null)
-    const filterTask=filterTasks(filter,state);
+    const filteredTask=filterTasks(filter,state);
     return(
         <>
           <form>
@@ -94,20 +94,7 @@ export function TaskItems({state,dispatch}){
                 <input type="date"/>
                 <input type="date"/>
           </form>
-                {filter ?
-                <>
-                    {filterTask.map((task)=>(
-                        <ul>
-                            <Task 
-                                key={task.id}
-                                dispatch={dispatch}
-                                allState={state}
-                                task={task}
-                            />  
-                        </ul>
-                    ))}  
-                </>:<>
-                     {rootTasks.map((task)=>(
+                     {filteredTask.map((task)=>(
                         <ul>
                             <Task 
                                 key={task.id}
@@ -117,8 +104,6 @@ export function TaskItems({state,dispatch}){
                             />  
                         </ul>
                     ))} 
-                </>
-                }
          </>
     )
 }

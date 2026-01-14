@@ -30,10 +30,20 @@ export function Task({allState,dispatch,task}){
         <>
             <div>
                     <li style={{gap:"5px"}}>
-                        <input type="checkbox"/>
+                        <input type="checkbox" checked={task.done} onChange={()=>dispatch({
+                            type:"checkTask",
+                            payload:{
+                                id:task.id
+                            }
+                        })}/>
                         <span>{task.text}</span>
                         <button>Edit</button>
-                        <button>Delete</button>
+                        <button onClick={()=>dispatch({
+                            type:"deleteTask",
+                            payload:{
+                              id:task.id
+                            }
+                        })}>Delete</button>
                         <button onClick={()=>setVisible((v)=>!v)}>+ SubTask</button>
                         {visible &&(
                             <>
@@ -49,7 +59,7 @@ export function Task({allState,dispatch,task}){
                                     <button type="submit">+ subTask</button>
                                 </form>
                                 {children.length>0&&
-                                    <ul>
+                                <ul>
                                         {children.map((child)=>(
                                             <Task
                                             key={child.id}
@@ -58,7 +68,7 @@ export function Task({allState,dispatch,task}){
                                             task={child}
                                             />
                                         ))}
-                                    </ul>
+                                </ul>
                                 }
                             </div>
                             </>
@@ -70,7 +80,7 @@ export function Task({allState,dispatch,task}){
 } 
 
 export function TaskItems({state,dispatch}){
-    const [filter,setFilter]=useState("All");
+    const [filter,setFilter]=useState("");
     const rootTasks=state.filter((task)=>task.parentId===null)
     const filterTask=filterTasks(filter,state);
     return(
@@ -87,21 +97,25 @@ export function TaskItems({state,dispatch}){
                 {filter ?
                 <>
                     {filterTask.map((task)=>(
-                        <Task 
-                            key={task.id}
-                            dispatch={dispatch}
-                            allState={state}
-                            task={task}
-                        />  
+                        <ul>
+                            <Task 
+                                key={task.id}
+                                dispatch={dispatch}
+                                allState={state}
+                                task={task}
+                            />  
+                        </ul>
                     ))}  
                 </>:<>
                      {rootTasks.map((task)=>(
-                        <Task 
-                            key={task.id}
-                            dispatch={dispatch}
-                            allState={state}
-                            task={task}
-                        />  
+                        <ul>
+                            <Task 
+                                key={task.id}
+                                dispatch={dispatch}
+                                allState={state}
+                                task={task}
+                            />  
+                        </ul>
                     ))} 
                 </>
                 }

@@ -22,3 +22,23 @@ export function saveTask(state){
     }
     localStorage.setItem("Tasks",JSON.stringify(state))
 }
+
+export function filterTask(filter,state){
+const rootTask=state.filter((task)=>task.parentId===null);
+console.log("filterTask",rootTask);
+  switch(filter){
+    case "High":{
+        return rootTask.filter((task)=>(
+            task.priority==="High"
+        ))
+    }
+    case "done":{
+        return rootTask.filter((task)=>(
+            task.done
+        ))
+    }
+    case "All":
+    default:
+        return rootTask;
+  }
+}

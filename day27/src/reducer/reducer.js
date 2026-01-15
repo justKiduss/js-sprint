@@ -42,9 +42,9 @@ export default function reducer(state,action){
     case "editTask":{
         const {id,text,dueDate,priority}=action.payload;
         return state.map((task)=>(
-            task.id===id &&
-          {...task,text:text,priority:priority,dueDate:dueDate}  
-        ))
+                task.id===id?
+               {...task,text:text,priority:priority,dueDate:dueDate} :task
+               ))
     }
    default:{
     return state;

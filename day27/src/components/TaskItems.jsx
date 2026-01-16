@@ -1,10 +1,9 @@
 import {useState} from "react";
-import { filterTask, generateId } from "./Persistence";
+import {filterTask, generateId } from "./Persistence";
 
 export function TaskItems({state,dispatch}){
   const [filter,setFilter]=useState("")
-  // const rootTasks=state.filter((task)=>(task.parentId===null))
-  const filteredTasks=filterTask(filter,state)
+  const filteredTasks=filterTask(filter,state);
     return(
         <div>
            <div>

@@ -4,7 +4,7 @@ export function TaskItems({state,dispatch}){
     const [filter,setFilter]=useState("");
     const filtered=filterTasks(state,filter);
     return(
-        <>
+        <div>
             <div>
                 <select onChange={(e)=>setFilter(e.target.value)}>
                     <option value="All">All</option>
@@ -13,19 +13,19 @@ export function TaskItems({state,dispatch}){
                 </select>
                 <input type="date"/>
                 <input type="date"/>
+            </div>    
                 <div>
                     {filtered.map((task)=>(
-                        <Task
-                         key={task.id}
-                         task={task}
-                         allState={state}
-                         dispatch={dispatch}
-                         depth={0}
-                        />
+                            <Task
+                            key={task.id}
+                            task={task}
+                            allState={state}
+                            dispatch={dispatch}
+                            depth={0}
+                            />
                     ))}
-                </div>
             </div>
-        </>
+        </div>
     )
 }
 
@@ -34,7 +34,11 @@ export function Task({task,allState,dispatch,depth}){
     const [subTask,setSubTask]=useState("");
     const [priority,setPriority]=useState("");
     const [dueDate,setDueDate]=useState("");
-    const children=allState.filter((child)=>child.parentId===task)
+    const [editId,setEditId]=useState("");
+    const [editTask,setEditTask]=useState("");
+    const [editpriority,setEditPriority]=useState("");
+    const [editdueDate,setEditDueDate]=useState("");
+    const children=allState.filter((child)=>child.parentId===task.id)
 
     function handlesubTask(e){
       e.preventDefault();
@@ -48,22 +52,79 @@ export function Task({task,allState,dispatch,depth}){
             text:subTask,
             priority:priority,
             dueDate:dueDate,
-            parentId:task,
+            parentId:task.id,
             done:false
         }
       })
+      setSubTask("");
+    }
+
+    function handleEditTask(e){
+       e.preventDefault();
+       if(!editTask.trim()){
+        return []
+       } 
+       dispatch({
+        type:"editTask",
+        payload:{
+            id:editId,
+            text:editTask,
+            dueDate:editdueDate,
+            priority:editpriority
+        }
+       })
+       setEditId("");
+       setEditTask("");
+       setEditDueDate("");
+       setEditPriority("");
     }
     return(
-        <>
         <div>
             <ul>
-                <li>
-                <input type="checkbox"/>
+              <li>
+                <input type="checkbox" checked={task.done} onChange={(e)=>dispatch({
+                    type:"checkTask",
+                    payload:{
+                        id:task.id
+                    }
+                })}/>
                 <span>{task.text}</span>
-                <button>Edit</button>
-                <button>Delete</button>
+                {editId===task.id?
+                <>
+                    <form onSubmit={handleEditTask}>
+                        <input type="text" onChange={(e)=>(setEditTask(e.target.value))} value={editTask}/>
+                        <select onChange={(e)=>setEditPriority(e.target.value)} value={editpriority}>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                        <input type="date" onChange={(e)=>setEditDueDate(e.target.value)} value={editdueDate}/>
+                        <button type="submit">save</button>
+                        <button onClick={()=>{
+                            setEditId("");
+                            setEditDueDate("");
+                            setEditPriority("");
+                            setEditTask("");
+                        }}>Cancel</button>
+                    </form>
+                    </>:<>
+                    <button onClick={()=>setEditId(task.id)}>Edit</button>  
+                    </>
+                }
+                {!editId &&
+                <>
+                <button onClick={()=>dispatch({
+                    type:"deleteTask",
+                    payload:{
+                        id:task.id
+                    }
+                 })}>Delete</button>
                 <button onClick={()=>setFilter((v)=>!v)}>+ subtask</button>
+                </>
+                }
+                {/* <button onClick={()=>setEditId(task.id)}>Edit</button> */}
                 {filter &&
+                <>
                     <div>
                         <form onSubmit={handlesubTask}>
                             <input type="text" onChange={(e)=>(setSubTask(e.target.value))} value={subTask}/>
@@ -73,24 +134,25 @@ export function Task({task,allState,dispatch,depth}){
                                 <option value="High">High</option>
                             </select>
                             <input type="date" onChange={(e)=>setDueDate(e.target.value)} value={dueDate}/>
-                            <button type="submit">AddTask</button>
-                        </form>
+                            <button type="submit">+ subTask</button>
+                        </form> 
                     </div>
+                    <div>
+                    {children.length>0 &&
+                        children.map((child)=>(
+                                <Task
+                                    key={child.id}
+                                    task={child}
+                                    allState={allState}
+                                    dispatch={dispatch}
+                                    depth={depth+1}
+                                />
+                    ))}
+                    </div>
+                </>
                 }
-            {children.length >0 &&
-            children.map((child)=>(
-                <Task
-                key={child.id}
-                task={child}
-                allState={allState}
-                dispatch={dispatch}
-                depth={depth+1}
-                />
-            ))
-            }
             </li>
-        </ul>
+        </ul>    
         </div>
-        </>
     )
 }

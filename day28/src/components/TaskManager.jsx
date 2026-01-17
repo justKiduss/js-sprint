@@ -3,6 +3,7 @@ import { useState,useReducer, useEffect } from "react";
 import { generateId,initialState,loadTask,saveTask} from "./persistence";
 import reducer from "../reducer/reducer";
 export default function TaskManager(){
+        const [width,setWidth]=useState(window.innerWidth);
         const [newTask,setNewTask]=useState("");
         const [priority,setPriority]=useState("");
         const [dueDate,setDueDate]=useState("");
@@ -30,6 +31,24 @@ export default function TaskManager(){
            setNewTask("");
         }
         console.log(state);
+        useEffect(()=>{
+            function handleResize(){
+                setWidth(window.innerWidth);
+            }
+            window.addEventListener("resize",handleResize);
+            return () => window.removeEventListener("resize",handleResize);
+        },[]);
+        const isMobile=width < 640;
+        const containerStyle={
+            display:"flex",
+            flexDirection:isMobile?"column":"row"
+            
+        }
+        const boxStyle={
+            flex:1,
+            padding:16,
+            border:"1px solid black"
+        }
     return(
         <>
         <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>

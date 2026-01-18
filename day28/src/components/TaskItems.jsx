@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { filterTasks, generateId } from "./persistence";
-export function TaskItems({state,dispatch}){
+export function TaskItems({state,dispatch,heading2Text,isMobile,width,addTaskLabel}){
     const [filter,setFilter]=useState("");
     const filtered=filterTasks(state,filter);
     return(
         <div>
-            <div>
+            <div style={addTaskLabel}>
                 <select onChange={(e)=>setFilter(e.target.value)}>
                     <option value="All">All</option>
                     <option value="done">Completed</option>
@@ -15,6 +15,7 @@ export function TaskItems({state,dispatch}){
                 <input type="date"/>
             </div>    
                 <div>
+                    <h1 style={heading2Text}>List</h1>
                     {filtered.map((task)=>(
                             <Task
                             key={task.id}
@@ -79,8 +80,8 @@ export function Task({task,allState,dispatch,depth}){
        setEditPriority("");
     }
     return(
-        <div>
-            <ul>
+        <div style={{paddingLeft:depth*16}}>
+            <ul style={{listStyle:"none"}}>
               <li>
                 <input type="checkbox" checked={task.done} onChange={(e)=>dispatch({
                     type:"checkTask",

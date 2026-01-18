@@ -39,35 +39,52 @@ export default function TaskManager(){
             return () => window.removeEventListener("resize",handleResize);
         },[]);
         const isMobile=width < 640;
-        const containerStyle={
-            display:"flex",
-            flexDirection:isMobile?"column":"row"
-            
+        const inputFields = {
+          padding: "6px",
+          marginRight: isMobile ? "0px" : "6px",
+          marginBottom: isMobile ? "6px" : "0px",
+          width: isMobile ? "100%" : "auto"
+        };
+        
+        const buttons = {
+        color: "blue",
+        padding: "6px",
+        width: isMobile ? "100%" : "auto"
+        };
+
+        const addTaskLabel = {
+        display: "flex",
+        flexDirection:"row",
+        gap: isMobile ? "6px" : "8px",
+        alignItems: isMobile ? "stretch" : "center"
+        };
+        const heading2Text={
+            fontSize:"20px",
+            color:"blue"
         }
-        const boxStyle={
-            flex:1,
-            padding:16,
-            border:"1px solid black"
+        const headingText={
+            fontSize:"30px",
+            color:"blue" 
         }
     return(
         <>
         <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
             <div>
-                <h1>Task Manager</h1>
-                <div>
+                <h1 style={headingText}>Task Manager</h1>
+                <div style={addTaskLabel}>
                 <form onSubmit={handleAddTask}>
-                    <input type="text" onChange={(e)=>(setNewTask(e.target.value))} value={newTask}/>
-                    <select onChange={(e)=>setPriority(e.target.value)}>
+                    <input type="text" onChange={(e)=>(setNewTask(e.target.value))} value={newTask} style={inputFields}/>
+                    <select onChange={(e)=>setPriority(e.target.value)} style={inputFields}>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
-                    <input type="date" onChange={(e)=>setDueDate(e.target.value)} value={dueDate}/>
-                    <button type="submit">AddTask</button>
+                    <input type="date" onChange={(e)=>setDueDate(e.target.value)} value={dueDate} style={inputFields}/>
+                    <button type="submit" style={buttons}>AddTask</button>
                 </form>
                 </div>
                 <div>
-                    <TaskItems state={state} dispatch={dispatch}/>
+                    <TaskItems state={state} dispatch={dispatch} heading2Text={heading2Text} buttons={buttons} inputFields={inputFields} width={width} isMobile={isMobile} addTaskLabel={addTaskLabel}/>
                 </div>
             </div>
         </div>

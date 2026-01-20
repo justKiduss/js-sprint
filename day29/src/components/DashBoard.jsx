@@ -14,8 +14,12 @@ export default function DashBoard(){
     const listStyle={
        textDecoration:dash?"underline":"none",
     }
+    const bodyStyle={
+        width:"90%",
+        height:"100vh"
+    }
     return(
-        <div>
+        <div style={bodyStyle}>
             <ul style={categoryList}>
                 <li onClick={(e)=>{setDash("Browser");setCategory("Browser")}} style={listStyle}>Browser</li>
                 <li onClick={(e)=>{setDash("Movies");setCategory("Movies")}} style={listStyle}>Movies</li>

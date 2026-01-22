@@ -20,7 +20,7 @@ export function saveTask(state){
     if(!state){
         return []
     }
-    localStorage.setItem("Tasks",JSON.stringify(state))
+    localStorage.setItem("Tasks",JSON.stringify(state));
 }
 
 export function filterTask(filter,state){

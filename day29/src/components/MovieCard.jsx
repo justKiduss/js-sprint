@@ -33,7 +33,7 @@ export default function MovieCard(){
                 </div>
                 {error && (
                     <>
-                        <p>Loading ...</p>
+                        <p>Server is having an issue</p>
                     </>
                 )}
             </div>

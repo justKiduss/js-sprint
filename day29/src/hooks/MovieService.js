@@ -1,7 +1,7 @@
-  const APIKEY="9ba860f27b8af2a4d997f80a66b063b5"
-  export async function fetchMovies(){
+const APIKEY="9ba860f27b8af2a4d997f80a66b063b5"
+export async function fetchMovies(){
     try{
-    const response=await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${APIKEY}&language=en-US&page=1`)
+        const response=await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${APIKEY}&language=en-US&page=1`)
         if(!response.ok){
             throw new Error(`HTTP error ${response.status}`);
         }
@@ -10,4 +10,16 @@
         console.error(`Could not get products: ${error}`);
         throw error;
       }
+}
+export async function searchMovies(searchMov){
+    try{
+        const res=await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${APIKEY}&query=${searchMov}`)
+        if(!res.ok){
+          throw new Error(`HTTP error ${res.status}`);
+        }
+        return res.json();
+    }catch(error){
+       console.error(`Could not get products: ${error}`);
+       throw error; 
+    }
 }

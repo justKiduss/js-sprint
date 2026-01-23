@@ -24,5 +24,6 @@ export function useMovie(){
       .catch(()=>setError(false))
       .finally(()=>setLoading(false))
    },[])
+   console.log("search",data)
    return {data,loading,error}
 }

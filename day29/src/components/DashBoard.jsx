@@ -2,7 +2,7 @@ import { useState } from "react"
 import MovieCard from "./MovieCard"
 
 export default function DashBoard(){
-    const [category,setCategory]=useState("All")
+    const [category,setCategory]=useState("Browser")
     const [dash,setDash]=useState("Browser") 
     // css
     const categoryList={
@@ -21,10 +21,10 @@ export default function DashBoard(){
     return(
         <div style={bodyStyle}>
             <ul style={categoryList}>
-                <li onClick={(e)=>{setDash("Browser");setCategory("Browser")}} style={listStyle}>Browser</li>
-                <li onClick={(e)=>{setDash("Movies");setCategory("Movies")}} style={listStyle}>Movies</li>
-                <li onClick={(e)=>{setDash("Series");setCategory("Series")}} style={listStyle}>Series</li>
-                <li onClick={(e)=>{setDash("Forum");setCategory("Forum")}} style={listStyle}>Forum</li>
+                <li onClick={()=>{setDash("Browser");setCategory("Browser")}} style={{textDecoration:dash==="Browser"?"underline":"none"}} value={category}>Browser</li>
+                <li onClick={()=>{setDash("Movies");setCategory("Movies")}} style={{textDecoration:dash==="Movies"?"underline":"none"}}>Movies</li>
+                <li onClick={()=>{setDash("Series");setCategory("Series")}} style={{textDecoration:dash==="Series"?"underline":"none"}} >Series</li>
+                <li onClick={()=>{setDash("Forum");setCategory("Forum")}} style={{textDecoration:dash==="Forum"?"underline":"none"}}>Forum</li>
             </ul>
             <MovieCard/>
         </div>

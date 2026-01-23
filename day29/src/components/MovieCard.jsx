@@ -1,4 +1,5 @@
-import {useMovies,useMovie} from "../services/useMovies"
+import {useMovies} from "../services/useMovies"
+import Results from "./Results";
 export default function MovieCard(){
     const {data,loading,error}=useMovies();
     console.log("data",data)
@@ -7,7 +8,6 @@ export default function MovieCard(){
         height:"220px"
     }
     const container={
-        display:"flex",
         gap:"10px",
         marginLeft:"10px",
         display:"grid",
@@ -31,13 +31,14 @@ export default function MovieCard(){
                 <div style={caption}>
                     <span>{movie.original_title}</span>
                 </div>
-                {error && (
+            </div>
+          ))}
+          {error && (
                     <>
                         <p>Server is having an issue</p>
                     </>
-                )}
-            </div>
-          ))}
+            )}
+          <Results/>
         </div>
     )
 }

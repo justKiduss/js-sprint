@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react"
-import { searchMovies } from "../hooks/MovieService";
-export default function Header(){
+import { useState } from "react"
+export default function Header({onSearch}){
     const header={
         gap:"60px",
         display:"flex",
@@ -19,7 +18,7 @@ export default function Header(){
         if(!searchMov.trim()){
             return []
         }
-        searchMovies(searchMov);
+        onSearch(searchMov);
     }
     // setSearchMov("");
     return(

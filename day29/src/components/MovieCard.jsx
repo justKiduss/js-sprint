@@ -1,8 +1,10 @@
 import {useMovies} from "../services/useMovies"
-import Results from "./Results";
-export default function MovieCard(){
-    const {data,loading,error}=useMovies();
+export default function MovieCard({mode,query}){
+    const {data,loading,error}=useMovies({mode,query});
     console.log("data",data)
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Server error</p>;
     const imgStyle={
         width:"180px",
         height:"220px"
@@ -33,12 +35,6 @@ export default function MovieCard(){
                 </div>
             </div>
           ))}
-          {error && (
-                    <>
-                        <p>Server is having an issue</p>
-                    </>
-            )}
-          <Results/>
         </div>
     )
 }

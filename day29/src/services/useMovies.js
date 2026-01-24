@@ -30,17 +30,3 @@ export function useMovies({mode,query}){
     },[mode,query])
      return {data,loading,error}
 }
-export function useMovie(){
-   // const [searchData,setSearchData]=useState([]);
-   // const [error,setError]=useState(null);
-   // const [loading,setLoading]=useState(true)
-
-   // useEffect(()=>{
-   //    searchMovies()
-   //    .then((res)=>setSearchData(res.results))
-   //    .catch(()=>setError(false))
-   //    .finally(()=>setLoading(false))
-   // },[])
-   // console.log("search",searchData)
-   // return {searchData,loading,error}
-}

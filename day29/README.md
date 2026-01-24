@@ -1,70 +1,116 @@
-# Getting Started with Create React App
+# MovieParadise — Day 29
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React movie browsing and search application built as part of the JS Sprint roadmap.
 
-## Available Scripts
+## Purpose
 
-In the project directory, you can run:
+This project focuses on:
+- Proper React data flow
+- Custom hooks with parameters
+- Separation of UI, state, and data-fetching logic
+- Avoiding side effects inside components
 
-### `npm start`
+## Architecture Overview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **App**
+  - Owns global state (`mode`, `query`)
+  - Routes intent between components
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Header**
+  - Pure UI component
+  - Emits search intent via callback
+  - Does not fetch data
 
-### `npm test`
+- **DashBoard**
+  - UI layout and navigation state
+  - Passes props downward
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **MovieCard**
+  - Single render surface for movie data
+  - No fetching logic inside
 
-### `npm run build`
+- **useMovies (custom hook)**
+  - Fetches movies based on parameters
+  - Supports:
+    - `browse` mode (top-rated movies)
+    - `search` mode (query-based results)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Data Flow
+# MovieParadise — Day 29
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+A React movie browsing and search application built as part of the JS Sprint roadmap.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Purpose
 
-### `npm run eject`
+This project focuses on:
+- Proper React data flow
+- Custom hooks with parameters
+- Separation of UI, state, and data-fetching logic
+- Avoiding side effects inside components
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Architecture Overview
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **App**
+  - Owns global state (`mode`, `query`)
+  - Routes intent between components
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- **Header**
+  - Pure UI component
+  - Emits search intent via callback
+  - Does not fetch data
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **DashBoard**
+  - UI layout and navigation state
+  - Passes props downward
 
-## Learn More
+- **MovieCard**
+  - Single render surface for movie data
+  - No fetching logic inside
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **useMovies (custom hook)**
+  - Fetches movies based on parameters
+  - Supports:
+    - `browse` mode (top-rated movies)
+    - `search` mode (query-based results)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Data Flow
+Header (search input)
+↓
+App (state owner)
+↓
+DashBoard
+↓
+MovieCard
+↓
+useMovies
+↓
+TMDB API
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Features Implemented
 
-### Analyzing the Bundle Size
+- Browse top-rated movies
+- Search movies by title
+- Loading and error handling
+- Clean hook-based data fetching
+- Explicit and predictable state transitions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## API Used
 
-### Making a Progressive Web App
+- The Movie Database (TMDB)
+- Endpoints:
+  - `/movie/top_rated`
+  - `/search/movie`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Tech Stack
 
-### Advanced Configuration
+- React (hooks)
+- Fetch API
+- Inline styles (no CSS framework)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Status
 
-### Deployment
+- Day 29 requirements: **Completed**
+- Next step: Day 30 — responsiveness, category-driven fetching, UI refinement
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

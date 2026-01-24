@@ -19,8 +19,8 @@ export default function Header({onSearch}){
             return []
         }
         onSearch(searchMov);
+        setSearchMov("");
     }
-    // setSearchMov("");
     return(
         <div style={header}>
             <h1>MovieParadise</h1>

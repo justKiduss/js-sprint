@@ -1,13 +1,15 @@
 import useMovie from "../hook/useMovie";
-import MovieList from "./MovieList";
+// import MovieList from "./MovieList";
 
 export default function DashBoard({mode,query}){
-    const {data,loading,error}=useMovie(mode,query);
+        const {status,data,error}=useMovie(mode,query)
+        if(status === "idle") return null;
+        if(status === "loading") return <p>Loading ...</p>;
+        if(status === "error") return <p>{error}</p>
     return(
         <>  
-        {error?"faild to fetch":""}
-        {!query?
-         loading?<p style={{display:"flex",alignItems:"center",justifyContent:"center"}}>" Loading..."</p>:
+        {/* {!query?
+         loading?<p style={{display:"flex",alignItems:"center",justifyContent:"center"}}>" Loading..."</p>: */}
             <div>
                {data.map((data)=>(
                 <div>
@@ -16,9 +18,9 @@ export default function DashBoard({mode,query}){
                 </div>
                ))}
             </div>
-        :
-        <MovieList mode={mode} query={query}/>
-        }
+        {/* // :
+        // <MovieList mode={mode} query={query}/>
+        // } */}
         </>
     )
 }

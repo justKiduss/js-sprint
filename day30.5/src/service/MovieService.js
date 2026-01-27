@@ -3,7 +3,8 @@ export function Movies(){
     try{
         const promise=fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${APIKEY}&language=en-US&page=1`)
         .then((res)=>{
-            return res
+            if(!res.ok) throw new Error("fetch failed");
+            return res.json()
         })
         return promise;
     }catch(err){
@@ -11,11 +12,12 @@ export function Movies(){
     }
 }
 
-export function searchMovie(mode,query){
+export function searchMovie(query){
     try{
         const promise=fetch(`https://api.themoviedb.org/3/search/movie?api_key=${APIKEY}&query=${query}`)
         .then((res)=>{
-             return res
+            if(!res.ok) throw new Error("fetch failed");
+             return res.json();
             })
         return promise
     }catch(err){

@@ -1,21 +1,39 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import {Movies,searchMovie} from "../service/MovieService"
 export default function useMovie(mode,query){
-    const [data,setData]=useState([]);
-    const [loading,setLoading]=useState(false);
-    const [error,setError]=useState(false)
-    try{
-        query? searchMovie(mode,query):Movies()
-        .then((res)=>res.json())
-        .then((res)=>setData(res.results))
-        .catch(()=>{
-            setError(true)
-        }).finally(()=>{
-            setLoading(false)
+    const [state,setState]=useState({
+        status:"idle",
+        data:[],
+        error:null,
+    });
+    useEffect(()=>{
+        let ignore=false;
+        setState({status:"loading",data:[],error:null})
+
+        const request=query? searchMovie(query):Movies();
+        request
+        .then((res)=>{
+            if(!ignore){
+                setState({
+                    status:"success",
+                    data:res.results,
+                    error:null
+            })
+        }})
+        .catch((err)=>{
+            if(!ignore){
+                setState({
+                    status:"error",
+                    data:[],
+                    error:err.message
+                })
+            }
         })
-        console.log("data",data)
-        return {data,loading,error}
-    }catch(error){
-        console.log(error)   
-    }
+        return ()=>{
+            ignore=true;
+          }
+        },[mode,query])
+    console.log(state)
+    return state   
+
 }

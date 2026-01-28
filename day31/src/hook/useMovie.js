@@ -36,5 +36,5 @@ export default function useMovie(mode,query){
         }
     },[mode,query])
     console.log(state)
-    return state
+    return {state,dispatch}
 }

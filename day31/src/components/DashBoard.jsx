@@ -2,7 +2,7 @@ import useMovie from "../hook/useMovie";
 import MovieList from "./MovieList";
 
 export default function DashBoard({mode,query}){
-    const state=useMovie(mode,query)
+    const {state,dispatch}=useMovie(mode,query)
     const {status,data,error} =state;
 
     if(status==="loading") {
@@ -14,5 +14,5 @@ export default function DashBoard({mode,query}){
         <p>Error while fetching</p>
     )}
     
-    return  <MovieList data={data}/> 
+    return  <MovieList data={data} dispatch={dispatch}/> 
 }

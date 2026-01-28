@@ -1,8 +1,9 @@
-import { useReducer, useState } from "react";
-import { Movie, searchMovie } from "../service/movieService";
+import { useReducer, useEffect } from "react";
+import { Movie, searchMovie } from "../service/MovieService";
+import reducer from "../reducer/reducer";
 
-export default function useMovie({mode,query}){
-    const [state,dispatch]=useReducer(useReducer,{
+export default function useMovie(mode,query){
+    const [state,dispatch]=useReducer(reducer,{
         status:"idle",
         data:[],
         error:null
@@ -34,5 +35,6 @@ export default function useMovie({mode,query}){
             ignore=true;
         }
     },[mode,query])
+    console.log(state)
     return state
 }

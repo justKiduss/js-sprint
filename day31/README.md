@@ -1,33 +1,69 @@
-## Async Architecture
+# Movie Browser with Reviews (Stage 3)
 
-This app enforces a single async entry rule.
-All network requests are started inside a single useEffect
-within a custom hook.
+A React application demonstrating **Stage 3 architecture discipline**:
+- API data fetching via reducer
+- Local CRUD state with persistence
+- Clear separation of concerns
 
-Components never perform async work.
-They only render based on hook state.
+---
 
-## Async Flow
+## Features
 
-user action → state change (mode/query)
-→ useEffect runs
-→ service function called
-→ loading state set
-→ success or error state set
-→ component re-renders
+- Browse top-rated movies from TMDB
+- Search movies by title
+- Add, edit, and delete personal reviews
+- Reviews persist via localStorage
+- Deterministic reducers
+- No side effects inside reducers
 
-## Why Cleanup Is Required
+---
 
-Async requests may resolve after a component unmounts.
-A cancellation flag prevents stale responses
-from mutating state after unmount.
+## Architecture
 
-## .then vs async/await
+### 1. API State (Read-only)
+Handled by `useMovie` hook.
 
-.then is used when returning promises directly
-from service functions.
+- Fetches movie data
+- Manages loading / success / error
+- Reducer controls state transitions
+- No persistence
 
-async/await is preferred inside hooks or handlers
-when sequential logic is required.
+Files:
+- `useMovie.js`
+- `reducer.js`
+- `MovieService.js`
 
-Both represent the same underlying promise execution model.
+---
+
+### 2. User State (CRUD + Persistence)
+Handled by `CRUDreducer`.
+
+- Reviews belong to the user
+- Stored in `localStorage`
+- Fully deterministic
+
+Files:
+- `CRUDreducer.js`
+- `persistence.js`
+
+---
+
+### 3. UI Layer
+Pure rendering + event dispatch.
+
+Files:
+- `Dashboard.jsx`
+- `MovieList.jsx`
+- `Header.jsx`
+
+---
+
+## State Models
+
+### API State
+```js
+{
+  status: "idle" | "loading" | "success" | "error",
+  data: Movie[],
+  error: string | null
+}

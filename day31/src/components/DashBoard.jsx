@@ -1,23 +1,23 @@
-import { useEffect } from "react";
+import { useEffect,useReducer } from "react";
 import useMovie from "../hook/useMovie";
 import MovieList from "./MovieList";
-import { saveMovie } from "../persistence/persistence";
-
+import { loadMovie, saveMovie } from "../persistence/persistence";
+import CRUDreducer from "../reducer/CRUDreducer"
 export default function DashBoard({mode,query}){
-    const {state,dispatch}=useMovie(mode,query)
-    const {status,data,error} =state;
-
-    useEffect(()=>(
-        saveMovie(data)
-    ),[data])
+    const api=useMovie(mode,query)
+    // const {status,data,error} =state;
+    const [localState,localDispatch]=useReducer(CRUDreducer,{},loadMovie);
+    useEffect(()=>{
+        if(api.data.length > 0) saveMovie(localState)
+        },[localState])
     
-    if(status==="loading") {
+    if(api.status==="loading") {
         return(
                 <p style={{display:"flex",alignItems:"center",justifyContent:"center"}}>LOADING ...</p>
             )}
-    if(status==="error") {
+    if(api.status==="error") {
         return (
         <p>Error while fetching</p>
     )}
-    return  <MovieList data={data} dispatch={dispatch}/> 
+    return  <MovieList data={api.data} localState={localState} localDispatch={localDispatch}/> 
 }

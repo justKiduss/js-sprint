@@ -15,7 +15,7 @@ export default function useMovie(mode,query){
         dispatch({
           type:"LOADING"
         })
-        query?searchMovie():Movie()
+        query?searchMovie(query):Movie()
         .then((res)=>{
             if(!ignore){
                 dispatch({
@@ -36,5 +36,5 @@ export default function useMovie(mode,query){
         }
     },[mode,query])
     console.log(state)
-    return {state,dispatch}
+    return state
 }

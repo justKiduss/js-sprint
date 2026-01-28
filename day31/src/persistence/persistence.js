@@ -1,7 +1,6 @@
 export function saveMovie(movie){
     try{
-        const movies=localStorage.setItem("movies",JSON.stringify(movie));
-        return movies;
+        localStorage.setItem("movies",JSON.stringify(movie));
     }catch(err){
         return <p>Error while fetching</p>
     }
@@ -10,6 +9,7 @@ export function saveMovie(movie){
 export function loadMovie(){
     try{
         const loadMovies=localStorage.getItem("movies");
+        if(!loadMovies) return {}
         return JSON.parse(loadMovies);
     }catch(err){
         return <p>Error while fetching</p>

@@ -10,7 +10,7 @@ export function Movie(){
     }
 }
 
-export function searchMovie({query}){
+export function searchMovie(query){
     try{
         return fetch(`https://api.themoviedb.org/3/search/movie?api_key=${APIKEY}&query=${query}`)
         .then((res)=>{

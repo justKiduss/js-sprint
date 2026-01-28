@@ -1,6 +1,6 @@
-import { useState } from "react"
+import {useState } from "react"
 
-export default function MovieList({data,dispatch}){
+export default function MovieList({data,localDispatch,localState}){
     const [review,setReview]=useState("");
     const [reviewId,setReviewId]=useState(null);
     const [editText,setEditText]=useState("");
@@ -10,7 +10,7 @@ export default function MovieList({data,dispatch}){
         if(!review.trim()){
             return
         }
-        dispatch({
+        localDispatch({
             type:"createReview",
             payload:{
                 movieid:movieId,
@@ -24,7 +24,7 @@ export default function MovieList({data,dispatch}){
     const handleEdit=(e)=>{
         e.preventDefault();
         if(!editText.trim()) return
-        dispatch({
+        localDispatch({
             type:"editReview",
             payload:{
                 editId:editId,
@@ -53,12 +53,12 @@ export default function MovieList({data,dispatch}){
                                     <button type='submit'>save</button>
                                     <button onClick={()=>setEditId(null)}>cancel</button>
                                   </form>
-                                </>
+                                </> 
                                 :<>  
-                                    <p>{data.review}</p>
+                                    <p>{localState[data.id]?.review}</p>
                                     <button onClick={()=>{startEdit(data)}}>Edit</button>
                                     <button onClick={()=>
-                                        dispatch({
+                                        localDispatch({
                                             type:"deleteReview",
                                             payload:{
                                                 id:data.id

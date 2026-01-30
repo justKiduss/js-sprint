@@ -30,6 +30,11 @@ export default function MovieList({datas,state,dispatch}){
         setReviewId("");
         setReviewText("");
     }
+    const startEdit=(id,review)=>{
+        setEditId(id)
+        setEditText(review)
+    }
+    console.log(state)
     return(
         <>
             <div>
@@ -39,6 +44,7 @@ export default function MovieList({datas,state,dispatch}){
 
                         <img src={`https://image.tmdb.org/t/p/w500${data.backdrop_path}`} alt={data.original_title}/>
                         <p>{data.original_title}</p> 
+                        <p>{state.byId[data.id]?.review}</p>
                         <button onClick={()=>setReviewId(data.id)}>Review</button>
                         <div style={{display:"flex",gap:"10px"}}>
                             {editId===data.id?(
@@ -52,8 +58,16 @@ export default function MovieList({datas,state,dispatch}){
                                     <button onClick={()=>setEditId("")}>Cancel</button>
                                 </>
                             ):(
-                                <button onClick={(e)=>{setEditId(data.id);}}>Edit</button>
+                                <button onClick={(e)=>{setEditId(data.id);startEdit(data.id,state.byId[data.id].review||"")}}>Edit</button> 
                             )}    
+                            <button onClick={()=>
+                                dispatch({
+                                    type:"deleteReview",
+                                    payload:{
+                                        id:data.id
+                                    }
+                                })
+                            }>Delete</button>
                         </div>
                         <div>
                             {reviewId===data.id &&

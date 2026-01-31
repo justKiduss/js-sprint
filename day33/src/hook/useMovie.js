@@ -1,19 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer} from "react";
 import { Movies, searchMovies } from "../service/MovieService";
+import reducer from "../reducers/reducer";
 
-export default function useMovie(){
-    const [data,setData]=useState([]);
-    const [error,setError]=useState("null")
+export default function useMovie(mode,query){
+    const [state,dispatch]=useReducer(reducer,{status:"idle",data:[],loading:false})
     useEffect(()=>{
-        const ignore=false;
+        let ignore=false;
+        dispatch({status:"LOADING"});
         query?searchMovies(query):Movies()
         .then((res)=>{
             if(!ignore){
-                setData(res.results);
+               dispatch({
+                type:"SUCCESS",
+                payload:res.results
+               }) 
             }
         }).catch((err)=>{
             if(!ignore){
-                setError(err.message)
+                dispatch({
+                  type:"FAILURE",
+                  payload:err.message  
+                })
             }
         })
 
@@ -21,4 +28,5 @@ export default function useMovie(){
             ignore=true;
         }
     },[query,mode])
+    return state;
 }

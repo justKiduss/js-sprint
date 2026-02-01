@@ -1,9 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import Header from './component/Header';
+import DashBoard from './component/DashBoard';
 
 function App() {
+  const [query,setQuery]=useState("");
+  const [mode,setMode]=useState("Browser");
+  function handleSearch(search){
+    setQuery(search);
+    setMode("Search");
+  }
   return (
-      <h1>vgb</h1>
+      <>
+        <div>
+          <Header onSearch={handleSearch}/>
+          <DashBoard mode={mode} query={query}/>
+        </div>
+      </>
   );
 }
 

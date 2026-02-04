@@ -13,6 +13,7 @@ export default function DashBoard({mode,query}){
     useEffect(()=>{
         reviews.hydrate();
     },[])
+    
     console.log(state)
     return(
         <MovieList 

@@ -1,70 +1,116 @@
-# Getting Started with Create React App
+Movie Review App – README
+Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a React-based movie review application that allows users to:
 
-## Available Scripts
+View top-rated movies or search for movies via TMDB API.
 
-In the project directory, you can run:
+Add, edit, and delete reviews for each movie.
 
-### `npm start`
+Persist reviews in localStorage so they survive page reloads.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The app implements a robust data flow architecture with React hooks, reducers, and asynchronous storage, fulfilling the Day 34 objectives (hydration, persistence, and clean state management).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Features
+Movie Display
 
-### `npm test`
+Fetches top-rated movies from TMDB API by default.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Allows search by movie title.
 
-### `npm run build`
+Handles loading and error states gracefully.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Reviews Management
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Create a review for a specific movie.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Edit an existing review.
 
-### `npm run eject`
+Delete a review.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Reviews are stored in localStorage for persistence.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Reviews are hydrated automatically on app startup.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Architecture
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+State Management:
 
-## Learn More
+useReducer manages review state (byIds, allIds) and movie state (status, data, error).
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Hydration flag (hydrated) prevents overwriting persisted reviews on initial load.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Hooks:
 
-### Code Splitting
+useMovie handles API fetching, including search and top-rated movies.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+useReview manages review actions and persistence.
 
-### Analyzing the Bundle Size
+Persistence:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Reviews are saved asynchronously in localStorage using getReviews and saveReviews.
 
-### Making a Progressive Web App
+Hydration ensures the reducer state matches persisted data before enabling saves.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Component Structure:
 
-### Advanced Configuration
+App – Root component managing search query and mode.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Header – Handles user input for search.
 
-### Deployment
+DashBoard – Coordinates movie data and review state.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+MovieList – Displays movies and provides review CRUD UI.
 
-### `npm run build` fails to minify
+Installation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Clone the repository:
+
+git clone <repo-url>
+cd <repo-folder>
+
+
+Install dependencies:
+
+npm install
+
+
+Run the app:
+
+npm start
+
+Usage
+
+View movies – On load, top-rated movies are displayed.
+
+Search movies – Enter a movie name in the header input and submit.
+
+Add review – Click "Review" on a movie, type the review, and submit.
+
+Edit review – Click "Edit" to modify an existing review.
+
+Delete review – Click "DELETE" to remove a review.
+
+Persistence – Reviews remain after page reloads.
+
+Technical Notes
+
+CRUDreducer manages all review actions (CREATED_REVIEW, EDITED_REVIEW, DELETED_REVIEW, REVIEWS_HYDRATED).
+
+Hydration is tracked via hydrated: true to prevent overwriting localStorage on first mount.
+
+useEffect in useReview triggers saves only after hydration.
+
+Movies and reviews are decoupled: adding reviews does not affect movie fetching.
+
+API errors and loading states are handled per movie fetch request.
+
+Future Improvements
+
+Replace localStorage with a backend database for multi-device sync.
+
+Add user authentication for personalized reviews.
+
+Pagination for TMDB movie results.
+
+Enhanced UI with CSS frameworks or component libraries.

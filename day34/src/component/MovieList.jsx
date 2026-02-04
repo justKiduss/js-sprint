@@ -1,36 +1,21 @@
 import { useState } from "react"
 
-export default function MovieList({datas,loading,error,state,dispatch}){
+export default function MovieList({datas,loading,error,state,reviews}){
     const [review,setReview]=useState("");
     const [reviewId,setReviewId]=useState(null);
     const [editId,setEditId]=useState(null);
     const [editText,setEditText]=useState("");
-
     function handleEdit(e){
         e.preventDefault();
         if(!editText.trim()) return
-
-        dispatch({
-            type:'EDITED_REVIEW',
-            payload:{
-                id:editId,
-                review:editText
-            }
-        })
+        reviews.update(editId,editText);
         setEditId("");
         setEditText('');
     }
     function handleReview(e){
         e.preventDefault();
         if(!review.trim()) return
-
-        dispatch({
-            type:'CREATED_REVIEW',
-            payload:{
-                id:reviewId,
-                review:review
-            }
-        })
+        reviews.create(reviewId,review)
         setReview('');
         setReviewId("");
     }
@@ -49,7 +34,7 @@ export default function MovieList({datas,loading,error,state,dispatch}){
                         <p>{data.original_title}</p>
                         <p>{state.byIds[data.id]?.review}</p>
                         <div>
-                            {editId?
+                            {editId===data.id?
                             <>
                                 <form onSubmit={handleEdit}>
                                     <input type="text" onChange={(e)=>setEditText(e.target.value)} value={editText}/>
@@ -72,13 +57,7 @@ export default function MovieList({datas,loading,error,state,dispatch}){
                             :<>
                               <button onClick={()=>setReviewId(data.id)}>Review</button>
                             </>}
-                            <button onClick={()=>
-                                dispatch({
-                                    type:"DELETED_REVIEW",
-                                    payload:{
-                                        id:data.id
-                                    }
-                                })}>DELETE</button>
+                            <button onClick={()=>reviews.remove(data.id)}>DELETE</button>
                         </div>    
                     </div>
                 ))}

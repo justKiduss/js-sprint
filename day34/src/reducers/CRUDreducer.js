@@ -1,35 +1,49 @@
 export default function CRUDreducer(state,action){
     switch(action.type){
         case "DELETED_REVIEW":{
-            const {id}=action.payload;
-            const {[id]:removed ,...restOfIds}=state.byIds;
+            const {reviewId}=action.payload;
+            const {[reviewId]: _,...rest}=state.byIds;
             return {
-                byIds:restOfIds,
-                allIds:state.allIds.filter((ids)=>(ids!==id))
-            }
+                ...state,
+                byIds:rest,
+                allIds:state.allIds.filter(id=>(id!==reviewId))
+                }
         }
         case "CREATED_REVIEW":{
-            const {id,review}=action.payload;
+            const {reviewId,review}=action.payload;
             return {
                 ...state,byIds:{
-                    ...state.byIds,[id]:{
-                        review:review
+                    ...state.byIds,[reviewId]:{
+                        review
                     }
                 },
-                allIds:state.allIds.includes(id)
+                allIds:state.allIds.includes(reviewId)
                 ?state.allIds
-                : [...state.allIds,id]
+                : [...state.allIds,reviewId]
                 };
         }
         case "EDITED_REVIEW":{
-            const {id,review}=action.payload;
+            const {reviewId, review}=action.payload;
             return {
                 ...state,byIds:{
-                    ...state.byIds,[id]:{
-                        review:review
-                    }
-                }
-                }
+                    ...state.byIds,[reviewId]:{
+                        ...state.byIds[reviewId],review
+                    },
+                },
+                };
+        }
+        case "REVIEWS_REQUESTED":
+            return { ...state, loading:true, error:null };
+        case "REVIEWS_HYDRATED":
+                 return {
+                    ...state,
+                    ...action.payload,
+                    hydrated:true,
+                    loading: false,
+                    error: null,
+                };
+        case "REVIEWS_FAILED":{
+            return {...state,loading:false,error:"Review operation failed"};
         }
         default:
             return state;

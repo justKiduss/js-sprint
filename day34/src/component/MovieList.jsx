@@ -8,15 +8,17 @@ export default function MovieList({datas,loading,error,state,dispatch}){
 
     function handleEdit(e){
         e.preventDefault();
-        if(!review.trim()) return
+        if(!editText.trim()) return
 
         dispatch({
             type:'EDITED_REVIEW',
             payload:{
                 id:editId,
-                text:editText
+                review:editText
             }
         })
+        setEditId("");
+        setEditText('');
     }
     function handleReview(e){
         e.preventDefault();
@@ -29,6 +31,12 @@ export default function MovieList({datas,loading,error,state,dispatch}){
                 review:review
             }
         })
+        setReview('');
+        setReviewId("");
+    }
+    const atBegining=(data)=>{
+        setEditId(data.id);
+        setEditText(state.byIds[data.id]?.review);
     }
     return(
         <>
@@ -39,7 +47,7 @@ export default function MovieList({datas,loading,error,state,dispatch}){
                     <div key={data.id}>
                         <img src={`https://image.tmdb.org/t/p/w500${data.backdrop_path}`} alt={data.original_title}/>
                         <p>{data.original_title}</p>
-                        <p>{state.byIds[data.id]}</p>
+                        <p>{state.byIds[data.id]?.review}</p>
                         <div>
                             {editId?
                             <>
@@ -51,7 +59,7 @@ export default function MovieList({datas,loading,error,state,dispatch}){
 
                             </>:
                             <>
-                                <button onClick={()=>setEditId(data.id)}>Edit</button>
+                                <button onClick={()=>atBegining(data)}>Edit</button>
                             </>
                             }
                             {reviewId?

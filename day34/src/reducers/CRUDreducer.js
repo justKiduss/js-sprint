@@ -22,11 +22,11 @@ export default function CRUDreducer(state,action){
                 };
         }
         case "EDITED_REVIEW":{
-            const {id,text}=action.payload;
+            const {id,review}=action.payload;
             return {
                 ...state,byIds:{
                     ...state.byIds,[id]:{
-                        review:text
+                        review:review
                     }
                 }
                 }

@@ -29,7 +29,7 @@ export default function useReviewController(state,dispatch){
     }
 
     useEffect(()=>{
-        if(!state.hydrate) return;
+        if(!state.hydrated) return;
         saveReviews(state);
     },[state])
 

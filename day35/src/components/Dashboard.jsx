@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import {useReducer } from "react";
 import useMovieController from "../controllers/useMovieController";
 import MovieList from "./MovieList";
 import ReviewReducers from "../reducers/ReviewReducers";
@@ -17,7 +17,6 @@ export default function DashBoard({query}){
             loading={datas.loading} 
             error={datas.error} 
             reviews={reviews}
-            dispatch={dispatch}
         />
     )
 }

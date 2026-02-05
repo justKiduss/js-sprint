@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function MovieList({datas,loading,error,reviews,dispatch}){
+export default function MovieList({datas,loading,error,reviews}){
     const [review,setReview]=useState("");
     const [reviewId,setReviewId]=useState(null);
     const [editId,setEditId]=useState(null);
@@ -21,7 +21,7 @@ export default function MovieList({datas,loading,error,reviews,dispatch}){
     }
     const atBegining=(data)=>{
         setEditId(data.id);
-        setEditText(state.byIds[data.id]?.review);
+        setEditText(reviews.byIds[data.id]?.review);
     }
     return(
         <>
@@ -32,8 +32,8 @@ export default function MovieList({datas,loading,error,reviews,dispatch}){
                     <div key={data.id}>
                         <img src={`https://image.tmdb.org/t/p/w500${data.backdrop_path}`} alt={data.original_title}/>
                         <p>{data.original_title}</p>
-                        {/* <p>{state.byIds[data.id]?.review}</p> */}
-                        {/* <div>
+                        <p>{reviews.byIds[data.id]?.review}</p>
+                        <div>
                             {editId===data.id?
                             <>
                                 <form onSubmit={handleEdit}>
@@ -58,7 +58,7 @@ export default function MovieList({datas,loading,error,reviews,dispatch}){
                               <button onClick={()=>setReviewId(data.id)}>Review</button>
                             </>}
                             <button onClick={()=>reviews.remove(data.id)}>DELETE</button>
-                        </div>     */}
+                        </div>    
                     </div>
                 ))}
             </div>

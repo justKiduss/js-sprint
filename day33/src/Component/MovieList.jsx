@@ -36,6 +36,8 @@ export default function MovieList({datas,status,loading,state,dispatch}){
     return(
         <>
             <div>
+                {loading&&<p>Loading...</p>}
+                {error&&<p>Error while fetching data</p>}
                 {datas.map((data)=>(
                     <div>
                         <img src={`https://image.tmdb.org/t/p/w500${data.backdrop_path}`} alt={data.original_title}/>

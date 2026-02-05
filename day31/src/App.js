@@ -4,7 +4,6 @@ import { useState } from "react";
 function App(){
     const [mode,setMode]=useState("Browser");
     const [query,setQuery]=useState("");
-
     const handleSearch=(value)=>{
         setQuery(value);
         setMode("search")

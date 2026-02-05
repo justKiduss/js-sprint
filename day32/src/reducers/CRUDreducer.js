@@ -1,6 +1,7 @@
 export default function CRUDreducer(state,action){
     const safeState = {
-        byId: state?.byId ?? {},
+        byId: state?.byId ?? {}, // this - Use {} only if state?.byId is null or undefined.
+                                // const safe = state?.byId || {}; - → Use {} if state?.byId is falsy (null, undefined, 0, false, "").
         allIds: Array.isArray(state?.allIds) ? state.allIds : [],
     };
     switch(action.type){
@@ -12,7 +13,7 @@ export default function CRUDreducer(state,action){
               ...safeState,byId:{
                 ...safeState.byId,
                 [id]:{
-                    ...(safeState.byId?.[id]),
+                    ...(safeState.byId??{}),
                     review:text,
                 },
               },

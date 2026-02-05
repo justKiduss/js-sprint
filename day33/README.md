@@ -1,70 +1,102 @@
-# Getting Started with Create React App
+# Day 33 — Transition from Local CRUD → Backend-Ready Architecture
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Objective
+Refactor the frontend from a local-only CRUD mindset into a backend-ready architecture.  
+No backend is implemented. The goal is architectural correctness and future compatibility.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Core Principles Enforced
 
-### `npm start`
+1. **Decoupling**
+   - UI does not know where data comes from.
+   - Persistence details are hidden behind a service layer.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2. **Single Source of Truth**
+   - Movies are owned by the Movie API.
+   - Reviews are owned by the Review Service.
+   - React state is the only source of truth for rendering.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+3. **Event-Based State Management**
+   - Reducer actions represent intent, not implementation.
+   - Actions mirror backend events.
 
-### `npm test`
+4. **Explicit Hydration**
+   - Initial state is loaded atomically on app startup.
+   - No incremental or implicit merging.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Architecture Overview
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Persistence is a side-effect.  
+Reducers are pure.  
+UI only dispatches and renders.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Implemented Components
 
-### `npm run eject`
+### 1. Review Service (`services/ReviewService.js`)
+**Responsibility:** Own review persistence.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- `getReviews()`
+- `persistReviews(state)`
+- `createReview(state)`
+- `updateReview(state)`
+- `deleteReview(state)`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`localStorage` access exists **only** here.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 2. Reducer (`CRUDreducer`)
+**Responsibility:** Transform state based on events.
 
-## Learn More
+Supported actions:
+- `REVIEWS_HYDRATED`
+- `REVIEW_CREATED`
+- `REVIEW_UPDATED`
+- `REVIEW_DELETED`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Reducer rules:
+- No side-effects
+- No persistence logic
+- No UI assumptions
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+### 3. Hydration Phase
+On application mount:
+1. Load reviews via `getReviews()`
+2. Dispatch `REVIEWS_HYDRATED`
+3. Replace state atomically
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+### 4. Persistence Side-Effect
+After state changes:
+- State is persisted via the service
+- Guarded to avoid overwriting during initial hydration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+### 5. UI Layer
+- Dispatches events only
+- Never accesses `localStorage`
+- Uses optional chaining when reading reviews
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## Data Shape
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```ts
+ReviewState {
+  byIds: {
+    [movieId]: {
+      review: string
+    }
+  },
+  allIds: number[]
+}
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

@@ -1,28 +1,28 @@
-// import { useState } from "react"
+import { useState } from "react"
 
-export default function MovieList({datas,loading,error}){
-    // const [review,setReview]=useState("");
-    // const [reviewId,setReviewId]=useState(null);
-    // const [editId,setEditId]=useState(null);
-    // const [editText,setEditText]=useState("");
-    // function handleEdit(e){
-    //     e.preventDefault();
-    //     if(!editText.trim()) return
-    //     reviews.update(editId,editText);
-    //     setEditId("");
-    //     setEditText('');
-    // }
-    // function handleReview(e){
-    //     e.preventDefault();
-    //     if(!review.trim()) return
-    //     reviews.create(reviewId,review)
-    //     setReview('');
-    //     setReviewId("");
-    // }
-    // const atBegining=(data)=>{
-    //     setEditId(data.id);
-    //     setEditText(state.byIds[data.id]?.review);
-    // }
+export default function MovieList({datas,loading,error,reviews,dispatch}){
+    const [review,setReview]=useState("");
+    const [reviewId,setReviewId]=useState(null);
+    const [editId,setEditId]=useState(null);
+    const [editText,setEditText]=useState("");
+    function handleEdit(e){
+        e.preventDefault();
+        if(!editText.trim()) return
+        reviews.update(editId,editText);
+        setEditId("");
+        setEditText('');
+    }
+    function handleReview(e){
+        e.preventDefault();
+        if(!review.trim()) return
+        reviews.create(reviewId,review)
+        setReview('');
+        setReviewId("");
+    }
+    const atBegining=(data)=>{
+        setEditId(data.id);
+        setEditText(state.byIds[data.id]?.review);
+    }
     return(
         <>
             <div>

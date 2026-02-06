@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function MovieList({datas,loading,error}){
+export default function MovieList({datas,loading,error,reviews,reviewState}){
     const [review,setReview]=useState("");
     const [reviewId,setReviewId]=useState(null);
     const [editId,setEditId]=useState(null);
@@ -8,20 +8,20 @@ export default function MovieList({datas,loading,error}){
     function handleEdit(e){
         e.preventDefault();
         if(!editText.trim()) return
-        // reviews.update(editId,editText);
+        reviews.update(editId,editText);
         setEditId("");
         setEditText('');
     }
     function handleReview(e){
         e.preventDefault();
         if(!review.trim()) return
-        // reviews.create(reviewId,review)
+        reviews.create(reviewId,review)
         setReview('');
         setReviewId("");
     }
     const atBegining=(data)=>{
         setEditId(data.id);
-        // setEditText(reviewState.byIds[data.id]?.review);
+        setEditText(reviewState.byIds[data.id]?.review??"");
     }
     return(
         <>
@@ -32,6 +32,7 @@ export default function MovieList({datas,loading,error}){
                     <div key={data.id}>
                         <img src={`https://image.tmdb.org/t/p/w500${data.backdrop_path}`} alt={data.original_title}/>
                         <p>{data.original_title}</p>
+                        <p>{reviewState.byIds[data.id]?.review??""}</p>
                         <div>
                             {editId===data.id?
                             <>
@@ -46,7 +47,7 @@ export default function MovieList({datas,loading,error}){
                                 <button onClick={()=>atBegining(data)}>Edit</button>
                             </>
                             }
-                            {reviewId?
+                            {reviewId===data.id?
                             <>
                                 <form onSubmit={handleReview}>
                                     <input type="text" onChange={(e)=>setReview(e.target.value)}/>
@@ -56,7 +57,7 @@ export default function MovieList({datas,loading,error}){
                             :<>
                               <button onClick={()=>setReviewId(data.id)}>Review</button>
                             </>}
-                            {/* <button onClick={()=>reviews.remove(data.id)}>DELETE</button> */}
+                            <button onClick={()=>reviews.remove(data.id)}>DELETE</button>
                         </div>    
                     </div>
                 ))}

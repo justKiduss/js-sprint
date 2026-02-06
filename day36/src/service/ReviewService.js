@@ -1,3 +1,15 @@
-export default function ReviewService(){
-    
+const KEY="reviews"
+
+const delay=()=>
+    new Promise(res=>setTimeout(res,500))
+export async function getReview(){
+    await delay();
+    const reviews=localStorage.getItem(KEY)
+        return reviews?JSON.parse(reviews):{byIds:{},allIds:[]};
+}
+
+export async function saveReview(state){
+    await delay();
+    if(!state) return;
+    localStorage.setItem(KEY,JSON.stringify(state))
 }

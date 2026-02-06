@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function MovieList({datas,loading,error,reviews}){
+export default function MovieList({datas,loading,error,reviews,reviewState}){
     const [review,setReview]=useState("");
     const [reviewId,setReviewId]=useState(null);
     const [editId,setEditId]=useState(null);
@@ -21,7 +21,7 @@ export default function MovieList({datas,loading,error,reviews}){
     }
     const atBegining=(data)=>{
         setEditId(data.id);
-        setEditText(reviews.byIds[data.id]?.review);
+        setEditText(reviewState.byIds[data.id]?.review);
     }
     return(
         <>
@@ -32,7 +32,7 @@ export default function MovieList({datas,loading,error,reviews}){
                     <div key={data.id}>
                         <img src={`https://image.tmdb.org/t/p/w500${data.backdrop_path}`} alt={data.original_title}/>
                         <p>{data.original_title}</p>
-                        <p>{reviews.byIds[data.id]?.review}</p>
+                        <p>{reviewState.byIds[data.id]?.review}</p>
                         <div>
                             {editId===data.id?
                             <>

@@ -2,7 +2,7 @@ import { useEffect, useReducer } from "react";
 import MovieReducer from "../reducers/MovieReducer";
 import { Movies, SearchMovies } from "../service/MovieService";
 
-export default function MovieController(query){
+export default function useMovieController(query){
     const [state,dispatch]=useReducer(MovieReducer,{status:"Idle",data:[],error:null})
 
     useEffect(()=>{

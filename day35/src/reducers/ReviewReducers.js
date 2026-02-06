@@ -1,7 +1,7 @@
 export default function ReviewReducers(state,action){
     switch(action.type){
         case "REVIEW_HYDRATED":{
-            return {...state,...action.payload,hydrate:true,loading:false,error:null}
+            return {...state,...action.payload,hydrated:true,loading:false,error:null}
         }
         case "REVIEW_CREATED":{
             const {reviewId,review}=action.payload;
@@ -11,11 +11,11 @@ export default function ReviewReducers(state,action){
                         review
                     }
                 },
-                allIds:{
-                    ...state.allIds.includes(reviewId)?
+                allIds:
+                    state.allIds.includes(reviewId)?
                     state.allIds:
                     [...state.allIds,reviewId]
-                }
+                
             }
         }
         case "REVIEW_UPDATED":{
@@ -30,12 +30,10 @@ export default function ReviewReducers(state,action){
         }
         case "REVIEW_REMOVED":{
             const reviewId=action.payload;
-            const {[reviewId]: _,rest}=state.byIds;
+            const {[reviewId]: _,...rest}=state.byIds;
             return {
-                ...state,byIds:{
-                    rest
-                },
-                allIds:[state.filter((ids)=>ids!==reviewId)]
+                ...state,byIds:rest,
+                allIds:state.allIds.filter(id=>id!==reviewId)
             }
         }
         case "REVIEW_FAILED":{

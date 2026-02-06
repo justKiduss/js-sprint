@@ -1,4 +1,4 @@
-import {useReducer } from "react";
+import {useEffect, useReducer } from "react";
 import useMovieController from "../controllers/useMovieController";
 import MovieList from "./MovieList";
 import ReviewReducers from "../reducers/ReviewReducers";
@@ -11,12 +11,17 @@ export default function DashBoard({query}){
     const reviews=useReviewController(state,dispatch)
 
     // console.log(state)
+
+    useEffect(()=>{
+        reviews.hydrate();
+    },[])
     return(
         <MovieList 
             datas={datas.data} 
             loading={datas.loading} 
             error={datas.error} 
             reviews={reviews}
+            reviewState={state}
         />
     )
 }

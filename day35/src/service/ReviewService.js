@@ -6,7 +6,7 @@ export async function getReviews(){
     await delay();
 
     const review=localStorage.getItem(KEY);
-    return JSON.parse(review);
+    return review?JSON.parse(review):{byIds:{},allIds:[]};
 }
 
 export async function saveReviews(state){

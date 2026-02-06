@@ -1,70 +1,150 @@
-# Getting Started with Create React App
+# Day 35 — Controller Layer & Full Decoupling Audit
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Date:** 2/6/2026  
+**Status:** Completed after correction cycle  
+**Stage:** Late Stage 2 → Stage 3 Transition
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Objective
 
-### `npm start`
+Finalize the transition from a component-driven React app to a **controller-driven, backend-ready architecture**.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Day 35 focuses on enforcing strict separation between:
+- UI (components)
+- Controllers (application logic)
+- Reducers (state transitions)
+- Services (side effects / persistence)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The goal is to ensure the frontend can later swap `localStorage` with a real backend **without structural rewrites**.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Architecture Overview
 
-### `npm run build`
+### Data Flow (Read Path)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+API / localStorage
+→ Service
+→ Controller
+→ Dispatch
+→ Reducer
+→ State
+→ UI Render
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Data Flow (Write Path)
 
-### `npm run eject`
+User Action
+→ Controller
+→ Dispatch (event)
+→ Reducer (pure state change)
+→ State
+→ Effect (save via service)
+→ UI Re-render
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+UI components never touch:
+- localStorage
+- reducers
+- API calls
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Key Changes Implemented
 
-## Learn More
+### 1. Controller Layer Introduced
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- `useMovieController`
+- `useReviewController`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Controllers now:
+- Fetch data
+- Dispatch domain events
+- Own orchestration logic
 
-### Code Splitting
+Components only:
+- Render
+- Call controller methods
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+### 2. Review State Fully Isolated
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Review state is:
+- Owned by `ReviewReducers`
+- Accessed read-only by UI
+- Mutated only via dispatched events
 
-### Making a Progressive Web App
+State shape:
+```js
+{
+  byIds: {},
+  allIds: [],
+  hydrated: boolean,
+  loading: boolean,
+  error: string | null
+}
+3. Event-Based Reducers (No CRUD Naming)
+Reducer actions represent domain events, not UI intent:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+REVIEW_HYDRATED
 
-### Advanced Configuration
+REVIEW_CREATED
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+REVIEW_UPDATED
 
-### Deployment
+REVIEW_REMOVED
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+REVIEW_FAILED
 
-### `npm run build` fails to minify
+Reducers are:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Pure
+
+Deterministic
+
+UI-agnostic
+
+4. Explicit Hydration Phase
+On dashboard mount:
+
+Controller calls hydrate()
+
+Reviews loaded via service
+
+Full state replacement via REVIEW_HYDRATED
+
+No incremental merging. One atomic state load.
+
+5. Persistence Fully Abstracted
+ReviewService is the only layer touching localStorage
+
+Reducer never performs side effects
+
+Controller triggers save via effect after state changes
+
+This mirrors future backend behavior.
+
+6. Accidental Coupling Removed
+Confirmed removals:
+
+No localStorage usage in components
+
+No reducer logic tied to UI assumptions
+
+No component assumes review existence
+
+Optional chaining enforced when reading review data:
+
+reviewState.byIds[id]?.review
+Bugs Found & Fixed During Day 35
+Prop name mismatch causing undefined access
+
+Incorrect object destructuring in reducer delete logic
+
+Invalid array operations on object state
+
+Hydration flag naming inconsistencies
+
+These were resolved without altering architecture.

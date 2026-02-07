@@ -1,7 +1,7 @@
 export default function MovieReducer(state,action){
     switch(action.type){
         case 'LOADING':{
-            return {status:'LOADING'}
+            return {status:'LOADING',data:[],error:null}
         }
         case 'SUCCESS':{
             return {status:"success",data:action.payload,error:null}

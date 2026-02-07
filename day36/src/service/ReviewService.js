@@ -10,6 +10,6 @@ export async function getReview(){
 
 export async function saveReview(state){
     await delay();
-    if(!state) return;
+    if(!state) throw new Error("Invalid state");
     localStorage.setItem(KEY,JSON.stringify(state))
 }

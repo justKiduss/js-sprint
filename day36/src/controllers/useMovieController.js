@@ -6,6 +6,7 @@ export default function useMovieController(query){
 
     useEffect(()=>{
         let ignore=false; 
+            dispatch({type:'LOADING'})
         const fetchedMovies= async()=>{
             try{
                 const res=query?await SearchMovie(query):await Movies();

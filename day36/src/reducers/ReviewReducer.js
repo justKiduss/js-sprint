@@ -15,7 +15,7 @@ export default function ReviewReducer(state,action){
                 allIds:
                     state.allIds.includes(reviewId)?
                     state.allIds:
-                    [...state.allIds,reviewId]
+                    [...state.allIds,reviewId], loading:false
             }
         }
         case 'REVIEW_CREATE_FAILURE':{

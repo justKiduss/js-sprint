@@ -3,7 +3,8 @@ const APIKEY="9ba860f27b8af2a4d997f80a66b063b5";
 export async function Movie(){
     try{
         const movie=await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${APIKEY}&language=en-US&page=1`)
-              return await movie.json();
+        if(!movie.ok) throw new Error ("Server responded with a error")
+            return await movie.json();
     }catch{
         throw new Error("error while fetching");
     }

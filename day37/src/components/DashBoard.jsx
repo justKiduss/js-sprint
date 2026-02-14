@@ -1,13 +1,16 @@
-import { useMovieController } from "../controllers/useMovieController"
+import { useReducer } from "react";
 import MovieList from "./MovieList";
-
+import ReviewReducer from "../reducers/ReviewReducer";
+import useReviewController from "../controllers/useReviewController";
+import useMovieController from "../controllers/useMovieController"
 export default function DashBoard({query}){
+    const [state,dispatch]=useReducer(ReviewReducer,{byIds:{},allIds:[]})
     const movies=useMovieController(query);
-    console.log(movies)
+    const reviews=useReviewController(state,dispatch)
     return(
         <>
             {movies.data.length >0&&
-                <MovieList movies={movies} query={query}/>
+                <MovieList movies={movies} reviews={reviews}/>
             }
         </>
     )

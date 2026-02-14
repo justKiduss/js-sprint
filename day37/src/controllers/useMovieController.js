@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from "react";
 import MoiveReducer from "../reducers/MoiveReducer";
 import {SearchMovie,Movie} from "../service/MovieService"
-export function useMovieController(query){
+export default function useMovieController(query){
     const [state,dispatch]=useReducer(MoiveReducer,{status:'idle',data:[],error:null});
     useEffect(()=>{
         let ignore=false;

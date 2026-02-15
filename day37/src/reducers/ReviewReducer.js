@@ -1,5 +1,14 @@
 export default function ReviewReducer(state,action){
     switch(action.type){
+        case 'HYDRATE_REVIEW_REQUEST':{
+            return {...state,loading:true,error:null}
+        }
+        case 'HYDRATE_REVIEW_SUCCESS':{
+            return {...state,...action.payload,loading:false,error:null}
+        }
+        case 'HYDRATE_REVIEW_FAILURE':{
+            return {...state,loading:false,error:action.payload}
+        }
         case "CREATE_REVIEW_REQUEST":{
             return {...state,loading:true,error:null}
         }
@@ -7,7 +16,9 @@ export default function ReviewReducer(state,action){
             const {reviewId,review}=action.payload;
             return {
                 ...state,byIds:{
-                    ...state.byIds,[reviewId]:review
+                    ...state.byIds,[reviewId]:{
+                        reviews:review
+                    }
                 },
                 allIds:
                 state.allIds.includes(reviewId)?
@@ -20,7 +31,7 @@ export default function ReviewReducer(state,action){
         case "CREATE_REVIEW_FAILURE":{
             return {...state,loading:false,error:action.payload}
         }
-        case "UPDATE_REVIEW_REQUEGST":{
+        case "UPDATE_REVIEW_REQUEST":{
             return {...state,loading:true,error:null}
         }
         case "UPDATE_REVIEW_SUCCESS":{
@@ -28,7 +39,7 @@ export default function ReviewReducer(state,action){
             return {
                 ...state,byIds:{
                 ...state.byIds,[editId]:{
-                    review:editText
+                    reviews:editText
                     },
                 },
                 loading:false,
@@ -38,7 +49,7 @@ export default function ReviewReducer(state,action){
         case "UPDATE_REVIEW_FAILURE":{
             return {...state,loading:false,error:action.payload}
         }
-        case "DELETE_REVIEW_REQUEGST":{
+        case "DELETE_REVIEW_REQUEST":{
             return {...state,loading:true,error:null}
         }
         case "DELETE_REVIEW_SUCCESS":{

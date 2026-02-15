@@ -1,5 +1,23 @@
 import {saveReviews,loadReviews} from "../service/ReviewService"
 export default function useReviewController(state,dispatch){
+
+    async function hydrate(){
+        dispatch({
+            type:"HYDRATE_REVIEW_REQUEST"
+        })
+        try{
+            const data=await loadReviews();
+            dispatch({
+                type:"HYDRATE_REVIEW_SUCCESS",
+                payload:data??{byIds:{},allIds:[]}
+            })
+        }catch(err){
+            dispatch({
+                type:"HYDRATE_REVIEW_FAILURE",
+                payload:err.message
+            })
+        }
+    }
     async function create(reviewId,review){
         dispatch({
             type:"CREATE_REVIEW_REQUEST"
@@ -7,7 +25,9 @@ export default function useReviewController(state,dispatch){
         try{
             const saveToStorage={
                 ...state,byIds:{
-                    ...state.byIds,[reviewId]:review
+                    ...state.byIds,[reviewId]:{
+                        reviews:review
+                    }
                 },
                 allIds:
                 state.allIds.includes(reviewId)?
@@ -29,13 +49,13 @@ export default function useReviewController(state,dispatch){
 
     async function update(editId,editText){
         dispatch({
-            type:"UPDATE_REVIEW_REQUEGST"
+            type:"UPDATE_REVIEW_REQUEST"
         })
         try{
             const saveToStorage={
                 ...state,byIds:{
                     ...state.byIds,[editId]:{
-                        review:editText
+                        reviews:editText
                     }
                 }
             }
@@ -54,7 +74,7 @@ export default function useReviewController(state,dispatch){
 
     async function remove(deleteId){
            dispatch({
-            type:"DELETE_REVIEW_REQUEGST",
+            type:"DELETE_REVIEW_REQUEST",
             payload:{deleteId}
             })
         try{
@@ -75,5 +95,5 @@ export default function useReviewController(state,dispatch){
             })
         }
     }
-    return {create,update,remove}
+    return {create,update,remove,hydrate}
 }

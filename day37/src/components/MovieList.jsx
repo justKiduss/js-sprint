@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Warning from "./Warning";
 
-export default function MovieList({movies,reviews}){
+export default function MovieList({movies,reviews,reviewState}){
 const [reviewId,setReviewId]=useState(null);
 const [reviewText,setReviewText]=useState("");
 const [editId,setEditId]=useState(null);
@@ -32,7 +32,7 @@ const handleReview=(e)=>{
                     <div key={movie.id}>
                         <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`} alt={movie.original_title}/>
                         <p>{movie.original_title}</p>
-
+                        <p>{reviewState.byIds[movie.id]?.reviews??""}</p>
                         <div>
                             {reviewId===movie.id?
                             <>
@@ -59,7 +59,7 @@ const handleReview=(e)=>{
                             {removeId===movie.id &&(
                                 <Warning
                                     onConfirm={()=>{
-                                        reviewId.remove(removeId);
+                                        reviews.remove(removeId);
                                         setRemoveId(null);
                                     }}
                                     onCancel={()=>setRemoveId(null)}

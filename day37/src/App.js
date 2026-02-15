@@ -6,7 +6,7 @@ function App() {
   const [query,setQuery]=useState("");
 
   function handleSearch(value){
-    setQuery(value);;
+    setQuery(value);
   }
   return (
     <>

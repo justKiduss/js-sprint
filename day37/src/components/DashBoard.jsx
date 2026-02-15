@@ -7,6 +7,7 @@ export default function DashBoard({query}){
     const [state,dispatch]=useReducer(ReviewReducer,{byIds:{},allIds:[]})
     const movies=useMovieController(query);
     const reviews=useReviewController(state,dispatch)
+    console.log(state);
     return(
         <>
             {movies.data.length >0&&

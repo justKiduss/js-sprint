@@ -25,7 +25,6 @@ export default function useMovieController(query){
             }
         }
         fechedMovies();
-        console.log(fechedMovies);
         return ()=>{
             ignore=true;
         }

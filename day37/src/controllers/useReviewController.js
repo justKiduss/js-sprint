@@ -2,7 +2,7 @@ import {saveReviews,loadReviews} from "../service/ReviewService"
 export default function useReviewController(state,dispatch){
     async function create(reviewId,review){
         dispatch({
-            type:"CREATE_REVIEW_REQUEGST"
+            type:"CREATE_REVIEW_REQUEST"
         })
         try{
             const saveToStorage={

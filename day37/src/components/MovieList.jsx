@@ -12,7 +12,6 @@ const handleEdit=(e)=>{
     if(!editText.trim()){
         return
     }
-
     reviews.update(editId,editText);
     setReviewId("");
     setReviewText("");
@@ -26,12 +25,6 @@ const handleReview=(e)=>{
     setReviewId("");
     setReviewText("");
 }
-const handleRemove=(id)=>{
-    setRemoveId(id);
-    <Warning/>
-    reviews.remove(removeId);
-    setRemoveId("");
-}
     return(
         <>
             <div>
@@ -41,17 +34,17 @@ const handleRemove=(id)=>{
                         <p>{movie.original_title}</p>
 
                         <div>
-                            {reviewId?
+                            {reviewId===movie.id?
                             <>
                                 <form onSubmit={handleReview}>
                                     <input type="text" onChange={(e)=>setReviewText(e.target.value)} value={reviewText}/>
-                                    <button type="submit">submit</button>
+                                    <button type="submit">send</button>
                                 </form>
                             </>:<>
                                 <button onClick={()=>setReviewId(movie.id)}>Review</button>
                             </>
                             }
-                            {editId?<>
+                            {editId===movie.id?<>
                                     <form onSubmit={handleEdit}>
                                         <input type="text" onChange={(e)=>setEditText(e.target.value)} value={editText}/>
                                         <button type="submit">save</button>
@@ -61,7 +54,17 @@ const handleRemove=(id)=>{
                                 <button onClick={()=>setEditId(movie.id)}>Edit</button>
                                 </>
                             }
-                            <button onClick={()=>handleRemove(movie.id)}>Delete</button>
+                            <button onClick={()=>setRemoveId(movie.id)}>Delete</button>
+
+                            {removeId===movie.id &&(
+                                <Warning
+                                    onConfirm={()=>{
+                                        reviewId.remove(removeId);
+                                        setRemoveId(null);
+                                    }}
+                                    onCancel={()=>setRemoveId(null)}
+                                />
+                            )}
                         </div>
                     </div>
                 ))}

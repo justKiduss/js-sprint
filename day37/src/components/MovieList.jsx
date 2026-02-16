@@ -6,15 +6,16 @@ const [reviewId,setReviewId]=useState(null);
 const [reviewText,setReviewText]=useState("");
 const [editId,setEditId]=useState(null);
 const [editText,setEditText]=useState("");
-const [removeId,setRemoveId]=useState(null)
+const [removeId,setRemoveId]=useState(null);
+const isAnyActionActive=removeId!==null||editId!==null||reviewId!==null;
 const handleEdit=(e)=>{
     e.preventDefault();
     if(!editText.trim()){
         return
     }
     reviews.update(editId,editText);
-    setReviewId("");
-    setReviewText("");
+    setEditId("");
+    setEditText("");
 }
 const handleReview=(e)=>{
     e.preventDefault();
@@ -25,6 +26,12 @@ const handleReview=(e)=>{
     setReviewId("");
     setReviewText("");
 }
+
+const atBegining=(movie)=>{
+    setEditId(movie.id);
+    setEditText(reviewState.byIds[movie.id]?.reviews);
+}
+
     return(
         <>
             <div>
@@ -32,30 +39,34 @@ const handleReview=(e)=>{
                     <div key={movie.id}>
                         <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`} alt={movie.original_title}/>
                         <p>{movie.original_title}</p>
+                        {reviewState.loading&&<p>LOADING...</p>}
+                        {reviewState.error&&<p>Error while feching</p>}
                         <p>{reviewState.byIds[movie.id]?.reviews??""}</p>
-                        <div>
-                            {reviewId===movie.id?
+                        <div style={{display:"flex"}}>
+                            
                             <>
-                                <form onSubmit={handleReview}>
-                                    <input type="text" onChange={(e)=>setReviewText(e.target.value)} value={reviewText}/>
-                                    <button type="submit">send</button>
-                                </form>
-                            </>:<>
-                                <button onClick={()=>setReviewId(movie.id)}>Review</button>
-                            </>
-                            }
-                            {editId===movie.id?<>
-                                    <form onSubmit={handleEdit}>
-                                        <input type="text" onChange={(e)=>setEditText(e.target.value)} value={editText}/>
-                                        <button type="submit">save</button>
+                                {reviewId===movie.id?
+                                <>
+                                    <form onSubmit={handleReview}>
+                                        <input type="text" onChange={(e)=>setReviewText(e.target.value)} value={reviewText}/>
+                                        <button type="submit">send</button>
                                     </form>
-                                    <button onClick={()=>setEditId("")}>cancel</button>
                                 </>:<>
-                                <button onClick={()=>setEditId(movie.id)}>Edit</button>
+                                    {!isAnyActionActive&&<button onClick={()=>setReviewId(movie.id)}>Review</button>}
                                 </>
-                            }
-                            <button onClick={()=>setRemoveId(movie.id)}>Delete</button>
-
+                                }
+                                </>
+                                {editId===movie.id?<>
+                                        <form onSubmit={handleEdit}>
+                                            <input type="text" onChange={(e)=>setEditText(e.target.value)} value={editText}/>
+                                            <button type="submit">save</button>
+                                        </form>
+                                        <button onClick={()=>setEditId("")}>cancel</button>
+                                    </>:<>
+                                    {!isAnyActionActive&&<button onClick={()=>{atBegining(movie)}}>Edit</button>}
+                                    </>
+                                }
+                            {isAnyActionActive&&<button onClick={()=>setRemoveId(movie.id)}>Delete</button>}
                             {removeId===movie.id &&(
                                 <Warning
                                     onConfirm={()=>{

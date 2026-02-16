@@ -1,15 +1,15 @@
-export async function saveReviews(state){
+export function saveReviews(saveToStorage){
     try{
-        if(!state||state===null) throw new Error("their is an issue with state")
-        localStorage.setItem("reviews",JSON.stringify(state));
+        if(!saveToStorage||saveToStorage===null) throw new Error("their is an issue with state")
+        localStorage.setItem("reviews",JSON.stringify(saveToStorage));
     }catch{
         throw new Error("error while trying to save")
     }
 }
-export async function loadReviews(){
+export function loadReviews(){
     try{
         const reviews=localStorage.getItem("reviews");
-        return reviews?JSON.parse(reviews):{byIds:{},allIds:[]};    
+        return reviews? JSON.parse(reviews):{byIds:{},allIds:[]};    
     }catch{
         throw new Error("error while loading")
     }

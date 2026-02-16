@@ -24,7 +24,7 @@ export default function useReviewController(state,dispatch){
         })
         try{
             const saveToStorage={
-                ...state,byIds:{
+                byIds:{
                     ...state.byIds,[reviewId]:{
                         reviews:review
                     }
@@ -53,11 +53,12 @@ export default function useReviewController(state,dispatch){
         })
         try{
             const saveToStorage={
-                ...state,byIds:{
+                byIds:{
                     ...state.byIds,[editId]:{
                         reviews:editText
                     }
-                }
+                },
+                allIds:state.allIds
             }
             await saveReviews(saveToStorage);
             dispatch({
@@ -80,7 +81,7 @@ export default function useReviewController(state,dispatch){
         try{
             const {[deleteId]:_,...rest}=state.byIds;
             const deleteReviews={
-                ...state,byIds:rest,
+                byIds:rest,
                 allIds:state.allIds.filter(id=>id!==deleteId)
             }
             await saveReviews(deleteReviews);

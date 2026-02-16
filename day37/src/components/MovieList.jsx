@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState } from "react";
 import Warning from "./Warning";
 
 export default function MovieList({movies,reviews,reviewState}){
@@ -14,8 +14,8 @@ const handleEdit=(e)=>{
         return
     }
     reviews.update(editId,editText);
-    setEditId("");
-    setEditText("");
+    setEditId(null);
+    setEditText(null);
 }
 const handleReview=(e)=>{
     e.preventDefault();
@@ -23,8 +23,8 @@ const handleReview=(e)=>{
         return 
     }
     reviews.create(reviewId,reviewText);
-    setReviewId("");
-    setReviewText("");
+    setReviewId(null);
+    setReviewText(null);
 }
 
 const atBegining=(movie)=>{
@@ -61,12 +61,12 @@ const atBegining=(movie)=>{
                                             <input type="text" onChange={(e)=>setEditText(e.target.value)} value={editText}/>
                                             <button type="submit">save</button>
                                         </form>
-                                        <button onClick={()=>setEditId("")}>cancel</button>
+                                        <button onClick={()=>setEditId(null)}>cancel</button>
                                     </>:<>
                                     {!isAnyActionActive&&<button onClick={()=>{atBegining(movie)}}>Edit</button>}
                                     </>
                                 }
-                            {isAnyActionActive&&<button onClick={()=>setRemoveId(movie.id)}>Delete</button>}
+                            {!isAnyActionActive&&<button onClick={()=>setRemoveId(movie.id)}>Delete</button>}
                             {removeId===movie.id &&(
                                 <Warning
                                     onConfirm={()=>{

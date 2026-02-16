@@ -1,4 +1,4 @@
-import {saveReviews,loadReviews} from "../service/ReviewService"
+import {saveReviews,loadReviews, deleteReview} from "../service/ReviewService"
 export default function useReviewController(state,dispatch){
 
     async function hydrate(){
@@ -23,21 +23,10 @@ export default function useReviewController(state,dispatch){
             type:"CREATE_REVIEW_REQUEST"
         })
         try{
-            const saveToStorage={
-                byIds:{
-                    ...state.byIds,[reviewId]:{
-                        reviews:review
-                    }
-                },
-                allIds:
-                state.allIds.includes(reviewId)?
-                state.allIds:
-                [...state.allIds,reviewId]
-            }
-            await saveReviews(saveToStorage);
+            const payload=await saveReviews(reviewId,review)
             dispatch({
                 type:"CREATE_REVIEW_SUCCESS",
-                payload:{reviewId,review}
+                payload
             })
         }catch(err){
             dispatch({
@@ -52,18 +41,10 @@ export default function useReviewController(state,dispatch){
             type:"UPDATE_REVIEW_REQUEST"
         })
         try{
-            const saveToStorage={
-                byIds:{
-                    ...state.byIds,[editId]:{
-                        reviews:editText
-                    }
-                },
-                allIds:state.allIds
-            }
-            await saveReviews(saveToStorage);
+            const payload=await saveReviews(editId,editText)
             dispatch({
                 type:"UPDATE_REVIEW_SUCCESS",
-                payload:{editId,editText}
+                payload
             })
         }catch(err){
             dispatch({
@@ -79,15 +60,10 @@ export default function useReviewController(state,dispatch){
             payload:{deleteId}
             })
         try{
-            const {[deleteId]:_,...rest}=state.byIds;
-            const deleteReviews={
-                byIds:rest,
-                allIds:state.allIds.filter(id=>id!==deleteId)
-            }
-            await saveReviews(deleteReviews);
+         const payload=await deleteReview(deleteId);
             dispatch({
                 type:"DELETE_REVIEW_SUCCESS",
-                payload:deleteId
+                payload
             })
         }catch(err){
             dispatch({

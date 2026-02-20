@@ -15,11 +15,11 @@ export async function saveReviews(id,review){
     }
 }
 
-export async function deleteReview(deleteId){
-    const reviews=await fetch(`${API}/get_reviews`,{
+export async function deleteReview(id){
+    const reviews=await fetch(`${API}/delete_reviews`,{
         method:"DELETE",
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({deleteId})
+        body:JSON.stringify({id})
     });
     if(!reviews.ok) throw new Error("error happened")
     return await loadReviews();

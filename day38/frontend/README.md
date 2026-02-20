@@ -1,178 +1,150 @@
-Day 37 — Review System Refactor (Backend-Ready Architecture)
+Day 38 – Backend Integration & Review Persistence
 Overview
 
-Day 37 focuses on refactoring the movie review feature into a backend-ready, layered architecture.
-The goal was to eliminate direct localStorage coupling, enforce separation of concerns, and stabilize state transitions for future API integration.
+Day 38 transitions the review system from local state-only management to full backend persistence using an Express server. The application now performs real CRUD operations through an API layer.
 
-This milestone transitions the project from feature-driven implementation to architecture-driven design.
+Architecture flow:
 
-Objectives
+UI → API Service Layer → Express Backend → Normalized Data Store → Rehydration
 
-Separate UI state from domain state
+Backend (Express Server)
+Tech Stack
 
-Isolate persistence logic inside a service layer
+Node.js
 
-Ensure reducer purity (no side effects)
+Express
 
-Remove stale state race conditions
+CORS
 
-Make persistence layer swappable (localStorage → HTTP API)
+JSON middleware
 
-Preserve deterministic state transitions
-
-Final Architecture
-1. UI Layer (MovieList)
-
-Responsibilities:
-
-Render movies and reviews
-
-Manage local transient UI state (form inputs, edit mode, delete confirmation)
-
-Trigger controller actions
-
-Display loading and error states
-
-No persistence logic.
-No reducer mutation.
-
-2. Controller Layer (useReviewController)
-
-Responsibilities:
-
-Dispatch request actions
-
-Call service layer
-
-Dispatch success/failure actions
-
-Coordinate async flow
-
-Controller does not:
-
-Access localStorage directly
-
-Compute next state
-
-Mutate reducer state
-
-3. Reducer Layer (ReviewReducer)
-
-Responsibilities:
-
-Handle all state transitions
-
-Maintain domain state:
-
-byIds
-
-allIds
-
-Maintain runtime flags:
-
-loading
-
-error
-
-Reducer is pure:
-
-No async logic
-
-No storage access
-
-No side effects
-
-4. Service Layer (ReviewService)
-
-Responsibilities:
-
-Load data from persistence
-
-Save updated snapshots
-
-Delete records
-
-Current implementation:
-
-localStorage-based
-
-Structured for future HTTP replacement
-
-Persistence stores only:
-
-{
-  byIds: { [movieId]: { reviews: string } },
-  allIds: string[]
-}
-
-
-UI runtime flags are never persisted.
-
-State Model
-{
+Server Port
+http://localhost:5000
+In-Memory Data Structure
+reviewData = {
   byIds: {
-    movieId: {
-      reviews: string
-    }
+    [id]: { reviews: string }
   },
-  allIds: [movieId],
-  loading: boolean,
-  error: string | null
+  allIds: [id1, id2, ...]
 }
 
+Normalized structure ensures:
 
-Domain data is separated from UI state.
+O(1) lookup
 
-Key Improvements Made
+Predictable state shape
 
-Removed spreading full reducer state into persistence
+Frontend-ready hydration
 
-Eliminated stale-closure race condition by reading latest snapshot in service
+API Endpoints
+1. Get All Reviews
+GET /api/get_reviews
 
-Ensured consistent persistence shape across create, update, delete
+Response:
 
-Preserved reducer determinism
+{
+  "byIds": {},
+  "allIds": []
+}
+2. Add / Update Review
+POST /api/post_reviews
 
-Verified hydration consistency after refresh
+Request Body:
 
-Confirmed full CRUD persistence integrity
+{
+  "id": "review-id",
+  "review": "text"
+}
 
-Tested Scenarios
+Behavior:
 
-Create → Refresh → Data persists
+Stores review under byIds[id]
 
-Update → Refresh → Data persists
+Adds id to allIds if not already present
 
-Delete → Refresh → Data persists
+Returns 201 status
 
-Rapid sequential operations
+3. Delete Review
+DELETE /api/delete_reviews
 
-Hydration on initial mount
+Request Body:
 
-All operations behave deterministically.
+{
+  "id": "review-id"
+}
+
+Behavior:
+
+Removes entry from byIds
+
+Filters id from allIds
+
+Returns 200 status
+
+Frontend API Layer
+
+All API logic is abstracted into a service module.
+
+Base URL
+const API = "http://localhost:5000/api";
+loadReviews()
+
+Fetches entire normalized state
+
+Returns fallback empty structure if needed
+
+Acts as hydration layer
+
+saveReviews(id, review)
+
+Sends POST request
+
+Persists review
+
+Rehydrates state by calling loadReviews()
+
+deleteReview(id)
+
+Sends DELETE request to correct endpoint
+
+Removes review from backend
+
+Rehydrates state
+
+Architectural Decisions
+
+Service abstraction layer isolates fetch logic from UI.
+
+State rehydration after every mutation ensures single source of truth.
+
+Normalized backend structure mirrors frontend state model.
+
+No local mutation without backend confirmation.
+
+This moves the project from Stage 2 local state maturity to early Stage 3 backend integration readiness.
 
 Known Limitations
 
-One review per movie (keyed by movieId)
+No validation
 
-Last-write-wins model (no concurrency protection)
+No error payload differentiation
 
-localStorage is synchronous and single-user
+In-memory storage (resets on server restart)
 
-No timestamp or metadata in review model
+No status-based error messaging
 
-Optimistic UI clearing before server confirmation
+No async loading state management
 
-These are acceptable for Stage 2 maturity.
+Skill Demonstrated
 
-Backend Readiness
+RESTful endpoint construction
 
-The architecture supports direct migration to HTTP by:
+Normalized state modeling
 
-Replacing service functions with fetch calls
+Contract alignment between frontend and backend
 
-Keeping controller and reducer unchanged
+Express middleware usage
 
-Preserving domain state structure
+Async data flow control
 
-No UI refactor required for backend transition.
+Full request-response loop integration

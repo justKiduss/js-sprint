@@ -26,6 +26,13 @@ app.post('/api/post_reviews',(req,res)=>{
     res.status(201).json({id,reviews:review})
 })
 
+app.delete("/api/delete_reviews",(req,res)=>{
+    const {id}=req.body;
+    const {[id]:delete_reviews,...rest}=reviewData.byIds;
+    reviewData.byIds=rest;
+    reviewData.allIds=reviewData.allIds.filter((ids)=>ids!==id);
+    res.status(200).json({success:"true",msg:`${id} deleted successfully`});
+})
 app.listen(PORT,()=>{
     console.log(`server running on http://localhost:${PORT}`);
 })

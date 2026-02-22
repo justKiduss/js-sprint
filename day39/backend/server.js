@@ -9,16 +9,16 @@ app.use(express.json())
 
 const ReviewData={
     byIds:{},
-    allIds:{}
+    allIds:[]
 }
 
-app.get('/api/review',(req,res)=>{
-    res.json(initialData);
+app.get('/api/get_reviews',(req,res)=>{
+    res.json(ReviewData);
 })
 
 app.post('/api/post_review',(req,res)=>{
     const {id,review}=req.body;
-    if(!id||!review) res.status(400).json("invalid input");
+    if(!id||!review) return res.status(400).json("invalid input");
     ReviewData.byIds[id]={review:review};
     if(!ReviewData.allIds.includes(id)){
         ReviewData.allIds.push(id);
@@ -30,12 +30,12 @@ app.post('/api/post_review',(req,res)=>{
 
 app.delete('/api/delete_review',(req,res)=>{
     const {id}=req.body;
-    if(!id) res.status(400).json({
+    if(!id) return res.status(400).json({
         success:false,
         message:"id is missing"
     });
-    const idInReview=allIds.find(id);
-    if(!idInReview) res.status(404).json({success:false,msg:"id is not found"});
+    const idInReview=ReviewData.allIds.includes(id);
+    if(!idInReview) return res.status(404).json({success:false,msg:"id is not found"});
 
     const {[id]:deleteID,...rest}=ReviewData.byIds;
     ReviewData.byIds=rest;
@@ -46,6 +46,19 @@ app.delete('/api/delete_review',(req,res)=>{
         message:`${id} is deleted`
     })
 })
+app.patch('/api/edit_review',(req,res)=>{
+    const {id,review}=req.body;
+    if(!id) return res.status(400).json({
+        success:false,
+        message:"id is missing"
+    });
+    const idInReview=ReviewData.allIds.includes(id);
+    if(!idInReview) return res.status(404).json({success:false,msg:"id is not found"});
+
+    ReviewData.byIds[id]={review:review}
+    res.status(200).json({success:true,msg:`${id}:${review}`})
+})
+
 
 app.use((req,res)=>{ // it only runs if no other route matched the request.if yes this is res
    res.status(404).json({success:false,error:"Route not found"});

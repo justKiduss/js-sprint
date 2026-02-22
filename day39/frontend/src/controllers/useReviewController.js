@@ -1,4 +1,4 @@
-import {saveReviews,loadReviews, deleteReview} from "../service/ReviewService"
+import {saveReviews,loadReviews, deleteReview,EditReviews} from "../service/ReviewService"
 export default function useReviewController(state,dispatch){
 
     async function hydrate(){
@@ -41,7 +41,7 @@ export default function useReviewController(state,dispatch){
             type:"UPDATE_REVIEW_REQUEST"
         })
         try{
-            const payload=await saveReviews(editId,editText)
+            const payload=await EditReviews(editId,editText)
             dispatch({
                 type:"UPDATE_REVIEW_SUCCESS",
                 payload

@@ -7,10 +7,12 @@ export default function useReviewController(state,dispatch){
         })
         try{
             const data=await loadReviews();
+            console.log(data)
             dispatch({
                 type:"HYDRATE_REVIEW_SUCCESS",
                 payload:data??{byIds:{},allIds:[]}
             })
+            console.log(data);
         }catch(err){
             dispatch({
                 type:"HYDRATE_REVIEW_FAILURE",
@@ -28,6 +30,7 @@ export default function useReviewController(state,dispatch){
                 type:"CREATE_REVIEW_SUCCESS",
                 payload
             })
+            console.log("haa")
         }catch(err){
             dispatch({
                 type:"CREATE_REVIEW_FAILURE",

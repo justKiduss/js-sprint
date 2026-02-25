@@ -8,10 +8,11 @@ export async function saveReviews(id,review){
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({id,review:review})
         });
-        if(!response.ok) throw new Error();
+        const data=await response.json();
+        if(!response.ok) throw new Error(data.error);
         return await loadReviews();
     }catch{
-        throw new Error("error while trying to save")
+        throw new Error("couldn't reach backend")
     }
 }
 
@@ -21,14 +22,16 @@ export async function deleteReview(id){
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({id})
     });
-    if(!reviews.ok) throw new Error("error happened")
+    const data=await reviews.json();
+    if(!reviews.ok) throw new Error(data.error)
     return await loadReviews();
 }
 export async function loadReviews(){
     try{
         const reviews=await fetch(`${API}/get_reviews`);
         const data=await reviews.json();
-        return data?? {byIds:{},allIds:[]};
+        if(!reviews.ok) throw new Error(data.error)
+        return data.data?? {byIds:{},allIds:[]};
     }catch{
         throw new Error("error while loading")
     }
@@ -41,7 +44,8 @@ export async function EditReviews(id,review){
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({id,review})
         })
-        if(!reviews.ok) throw new Error("error");
+        const data=await reviews.json();
+        if(!reviews.ok) throw new Error(data.error);
         return await loadReviews();
     }catch{
         throw new Error("error while updaing")

@@ -1,4 +1,4 @@
-import {useState } from "react";
+import {useEffect, useState } from "react";
 import Warning from "./Warning";
 
 export default function MovieList({movies,reviews,reviewState}){
@@ -8,6 +8,7 @@ const [editId,setEditId]=useState(null);
 const [editText,setEditText]=useState("");
 const [removeId,setRemoveId]=useState(null);
 const isAnyActionActive=removeId!==null||editId!==null||reviewId!==null;
+
 const handleEdit=(e)=>{
     e.preventDefault();
     if(!editText.trim()){
@@ -41,7 +42,7 @@ const atBegining=(movie)=>{
                         <p>{movie.original_title}</p>
                         {reviewState.loading&&<p>LOADING...</p>}
                         {reviewState.error&&<p>Error while feching</p>}
-                        <p>{reviewState.byIds[movie.id]?.reviews??""}</p>
+                        <p>{reviewState.byIds[movie.id]?.review??""}</p>
                         <div style={{display:"flex"}}>
                             
                             <>

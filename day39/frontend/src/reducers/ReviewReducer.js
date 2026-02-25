@@ -13,17 +13,9 @@ export default function ReviewReducer(state,action){
             return {...state,loading:true,error:null}
         }
         case "CREATE_REVIEW_SUCCESS":{
-            const {reviewId,review}=action.payload;
             return {
-                ...state,byIds:{
-                    ...state.byIds,[reviewId]:{
-                        reviews:review
-                    }
-                },
-                allIds:
-                state.allIds.includes(reviewId)?
-                state.allIds:
-                [...state.allIds,reviewId],
+                ...state,
+                ...action.payload,
                 loading:false,
                 error:null
             }
@@ -35,13 +27,9 @@ export default function ReviewReducer(state,action){
             return {...state,loading:true,error:null}
         }
         case "UPDATE_REVIEW_SUCCESS":{
-            const {editId,editText}=action.payload;
             return {
-                ...state,byIds:{
-                ...state.byIds,[editId]:{
-                    reviews:editText
-                    },
-                },
+                ...state,
+                ...action.payload,
                 loading:false,
                 error:null
             } 
@@ -53,11 +41,9 @@ export default function ReviewReducer(state,action){
             return {...state,loading:true,error:null}
         }
         case "DELETE_REVIEW_SUCCESS":{
-            const deleteId=action.payload;
-            const {[deleteId]:_,...rest}=state.byIds;
             return {
-                ...state,byIds:rest,
-                allIds:state.allIds.filter(id=>id!==deleteId),
+                ...state,
+                ...action.payload,
                 loading:false,
                 error:null
             }

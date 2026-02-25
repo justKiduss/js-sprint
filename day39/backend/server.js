@@ -13,18 +13,18 @@ const ReviewData={
 }
 
 app.get('/api/get_reviews',(req,res)=>{
-    res.json(ReviewData);
+    res.status(200).json({success:true,data:ReviewData});
 })
 
 app.post('/api/post_review',(req,res)=>{
     const {id,review}=req.body;
-    if(!id||!review) return res.status(400).json("invalid input");
+    if(!id||!review) return res.status(400).json({success:false,error:"invalid input"});
     ReviewData.byIds[id]={review:review};
     if(!ReviewData.allIds.includes(id)){
         ReviewData.allIds.push(id);
     }
 
-    res.status(201).json({id,review})
+    res.status(201).json({success:true,data:{id,review}})
 })
 
 
@@ -32,31 +32,31 @@ app.delete('/api/delete_review',(req,res)=>{
     const {id}=req.body;
     if(!id) return res.status(400).json({
         success:false,
-        message:"id is missing"
+        error:"id is missing"
     });
     const idInReview=ReviewData.allIds.includes(id);
-    if(!idInReview) return res.status(404).json({success:false,msg:"id is not found"});
+    if(!idInReview) return res.status(404).json({success:false,error:"id is not found"});
 
     const {[id]:deleteID,...rest}=ReviewData.byIds;
     ReviewData.byIds=rest;
     ReviewData.allIds=ReviewData.allIds.filter(ids=>ids!==id);
 
     res.status(200).json({
-        success:"true",
-        message:`${id} is deleted`
+        success:true,
+        data:`${id} is deleted`
     })
 })
 app.patch('/api/edit_review',(req,res)=>{
     const {id,review}=req.body;
-    if(!id) return res.status(400).json({
+    if(!id||!review) return res.status(400).json({
         success:false,
-        message:"id is missing"
+        error:"id is missing"
     });
     const idInReview=ReviewData.allIds.includes(id);
-    if(!idInReview) return res.status(404).json({success:false,msg:"id is not found"});
+    if(!idInReview) return res.status(404).json({success:false,error:"id is not found"});
 
     ReviewData.byIds[id]={review:review}
-    res.status(200).json({success:true,msg:`${id}:${review}`})
+    res.status(200).json({success:true,data:{id,review}})
 })
 
 

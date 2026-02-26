@@ -40,8 +40,8 @@ const atBegining=(movie)=>{
                     <div key={movie.id}>
                         <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`} alt={movie.original_title}/>
                         <p>{movie.original_title}</p>
-                        {reviewState.loading&&<p>LOADING...</p>}
-                        {reviewState.error&&<p>Error while feching</p>}
+                        {reviewState.byIds[movie.id]?.loading&&<p>LOADING...</p>}
+                        {reviewState.byIds[movie.id]?.error&&<p>Error while feching</p>}
                         <p>{reviewState.byIds[movie.id]?.review??""}</p>
                         <div style={{display:"flex"}}>
                             

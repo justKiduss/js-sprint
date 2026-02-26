@@ -70,7 +70,7 @@ export default function useReviewController(state,dispatch){
         }catch(err){
             dispatch({
                 type:"DELETE_REVIEW_FAILURE",
-                payload:{deleteId,error:err.message}
+                payload:{id:deleteId,error:err.message}
             })
         }
     }

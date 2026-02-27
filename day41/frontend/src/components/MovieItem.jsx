@@ -1,11 +1,13 @@
-export default function MovieItem({onEdit,onReview,reviewId,reviewState,movie}){
+import { useState } from "react";
+import Warning from "./Warning";
+export default function MovieItem({onEdit,onReview,reviewMeta,movie,reviews}){
     const [reviewId,setReviewId]=useState(null);
     const [reviewText,setReviewText]=useState("");
     const [editId,setEditId]=useState(null);
     const [editText,setEditText]=useState("");
     const [removeId,setRemoveId]=useState(null);
     const isAnyActionActive=removeId!==null||editId!==null||reviewId!==null;
-
+console.log(reviewMeta.review);
     const handleEdit=(e)=>{
         e.preventDefault();
         if(!editText.trim()){
@@ -21,24 +23,20 @@ export default function MovieItem({onEdit,onReview,reviewId,reviewState,movie}){
             return 
         }
         onReview(movie.id,reviewText)
-        setReviewId(null);
-        setReviewText(null);
+        setReviewId("");
+        setReviewText("");
     }
     const atBegining=(movie)=>{
         setEditId(movie.id);
-        setEditText(reviewState.byIds[movie.id]?.reviews);
+        setEditText(reviewMeta.reviews);
     }
         return(
                     <div key={movie.id}>
                         <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`} alt={movie.original_title}/>
                         <p>{movie.original_title}</p>
-                        <p>{selectIsReviewLoading(reviewState,movie.id)?"LOADING":""}</p>
-
-                        <p>{selectReviewError(reviewState,movie.id)}</p>
-                        {/* {reviewState.byIds[movie.id]?.loading&&<p>LOADING...</p>}
-                        {reviewState.byIds[movie.id]?.error&&<p>Error while feching</p>} */}
-                        {/*<p>{reviewState.byIds[movie.id]?.review??""}</p>*/}
-                        <p>{selectReviewById(reviewState,movie.id)}</p>
+                        <p>{reviewMeta.loading?"LOADING":""}</p>
+                        <p>{reviewMeta.error}</p>
+                        <p>{reviewMeta.review}</p>
                         <div style={{display:"flex"}}>
                             
                             <>

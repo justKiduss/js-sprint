@@ -1,7 +1,6 @@
 import {useState } from "react";
 import Warning from "./Warning";
 import { selectAllIds, selectByIds, selectIsReviewLoading, selectReviewById, selectReviewError,selectReviewedMovieIds } from "../selectors/ReviewSelectors";
-
 export default function MovieList({movies,reviews,reviewState}){
 const [reviewId,setReviewId]=useState(null);
 const [reviewText,setReviewText]=useState("");
@@ -10,8 +9,7 @@ const [editText,setEditText]=useState("");
 const [removeId,setRemoveId]=useState(null);
 const [filterReviewed,setFilterReviewed]=useState(false)
 const isAnyActionActive=removeId!==null||editId!==null||reviewId!==null;
-selectAllIds(reviewState);
-selectByIds(reviewState);
+
 const handleEdit=(e)=>{
     e.preventDefault();
     if(!editText.trim()){
@@ -35,24 +33,22 @@ const atBegining=(movie)=>{
     setEditId(movie.id);
     setEditText(reviewState.byIds[movie.id]?.reviews);
 }
-// console.log(selectReviewedMovieIds())
+ const reviewedIds=selectReviewedMovieIds(reviewState);
     return(
         <>
             <div>
                 <button onClick={()=>setFilterReviewed(prev=>!prev)}>filter reviewed movies</button>
-                {filterReviewed?
-                <>
-                    {/* {
-                        selectReviewedMovieIds().map(())
-                    } */}
-                    <p>not available</p>
-                </>:
-                <>
+                {filterReviewed &&(
+                        reviewedIds.map((id)=>(
+                            <p>{id}</p>
+                        ))
+                )}
                     {movies.data.map((movie)=>(
                     <div key={movie.id}>
                         <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`} alt={movie.original_title}/>
                         <p>{movie.original_title}</p>
-                        <p>{selectIsReviewLoading(reviewState,movie.id)}</p>
+                        <p>{selectIsReviewLoading(reviewState,movie.id)?"LOADING":""}</p>
+
                         <p>{selectReviewError(reviewState,movie.id)}</p>
                         {/* {reviewState.byIds[movie.id]?.loading&&<p>LOADING...</p>}
                         {reviewState.byIds[movie.id]?.error&&<p>Error while feching</p>} */}
@@ -95,11 +91,7 @@ const atBegining=(movie)=>{
                         </div>
                     </div>
                 ))}
-                </>
-
-                }
-                
             </div>
-        </>
+            </>
     )
 }

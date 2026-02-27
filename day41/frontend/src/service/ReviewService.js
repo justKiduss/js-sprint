@@ -13,7 +13,7 @@ export async function saveReviews(id,review){
         console.log(data.data)
         return {id,review};
     }catch{
-        throw new Error("couldn't reach backend")
+        throw new Error("error while connecting")
     }
 }
 

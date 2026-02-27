@@ -12,13 +12,15 @@ export const selectAllReviews=(state)=>{
     return state.byIds??{};
 } 
 
-export const selectIsReviewLoading=(state, id)=>{
-    return state.byIds[id]?.loading;
-}
+// export const selectIsReviewLoading=(state, id)=>{
+//     return state.byIds[id]?.loading;
+// }
 
-export const selectReviewError=(state, id)=>{
-    return state.byIds[id]?.error;
-}
+// export const selectReviewError=(state, id)=>{
+//     return state.byIds[id]?.error;
+// }
+
+
 
 export const selectReviewCount=createSelector(
     [selectAllReviews],
@@ -34,5 +36,13 @@ export const selectMoviesWithoutReviews=createSelector([selectAllIds,selectByIds
         allIds.filter((id)=>!byIds[id]?.review)
 )
 
+export const selectReviewMetaById= createSelector(
+    [selectByIds,(_,id)=>id], // - (_, id) => id is another input selector. It receives (state, id) but explicitly ignores the first parameter 
+    (byIds,id)=>({
+        review:byIds[id]?.review??"",
+        loading:byIds[id]?.loading??false,
+        error:byIds[id]?.error??null
+    })
+) 
 
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Warning from "./Warning";
-export default function MovieItem({onEdit,onReview,reviewMeta,movie,reviews}){
+export default function MovieItem({onEdit,onReview,reviewMeta,movie,onDelete}){
     const [reviewId,setReviewId]=useState(null);
     const [reviewText,setReviewText]=useState("");
     const [editId,setEditId]=useState(null);
@@ -15,7 +15,7 @@ console.log(reviewMeta.review);
         }
         onEdit(movie.id,editText)
         setEditId(null);
-        setEditText(null);
+        setEditText("");
     }
     const handleReview=(e)=>{
         e.preventDefault();
@@ -23,15 +23,20 @@ console.log(reviewMeta.review);
             return 
         }
         onReview(movie.id,reviewText)
-        setReviewId("");
+        setReviewId(null);
         setReviewText("");
+    }
+
+    const handleRemove=(id)=>{
+        onDelete(id);
+        setRemoveId(null);
     }
     const atBegining=(movie)=>{
         setEditId(movie.id);
-        setEditText(reviewMeta.reviews);
+        setEditText(reviewMeta.review);
     }
         return(
-                    <div key={movie.id}>
+                    <div>
                         <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`} alt={movie.original_title}/>
                         <p>{movie.original_title}</p>
                         <p>{reviewMeta.loading?"LOADING":""}</p>
@@ -65,8 +70,7 @@ console.log(reviewMeta.review);
                             {removeId===movie.id &&(
                                 <Warning
                                     onConfirm={()=>{
-                                        reviews.remove(removeId);
-                                        setRemoveId(null);
+                                        handleRemove(movie.id);
                                     }}
                                     onCancel={()=>setRemoveId(null)}
                                 />

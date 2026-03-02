@@ -1,8 +1,10 @@
-import { useEffect, useReducer } from "react";
-import MoiveReducer from "../reducers/MoiveReducer";
+import { useEffect} from "react";
 import {SearchMovie,Movie} from "../service/MovieService"
+import { useDispatch, useSelector } from "react-redux";
 export default function useMovieController(query){
-    const [state,dispatch]=useReducer(MoiveReducer,{status:'idle',data:[],error:null});
+    // const [state,dispatch]=useReducer(MoiveReducer,{status:'idle',data:[],error:null});
+    const state=useSelector(state =>state.movies);
+    const dispatch=useDispatch();
     useEffect(()=>{
         let ignore=false;
         dispatch({type:"LOADING"})
@@ -28,6 +30,6 @@ export default function useMovieController(query){
         return ()=>{
             ignore=true;
         }
-    },[query])
+    },[query,dispatch])
     return state;
 } 

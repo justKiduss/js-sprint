@@ -1,5 +1,5 @@
 import {saveReviews,loadReviews, deleteReview,EditReviews} from "../service/ReviewService"
-export default function useReviewController(state,dispatch){
+export default function useReviewController(dispatch){
 
     async function hydrate(){
         dispatch({

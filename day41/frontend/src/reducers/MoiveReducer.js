@@ -1,4 +1,9 @@
-export default function MovieReducer(state,action){
+const initialState = {
+  status: "idle",
+  data: [],
+  error: null
+};
+export default function MovieReducer(state=initialState,action){
     switch(action.type){
         case "LOADING":{
             return {status:"loading",data:[],error:null}

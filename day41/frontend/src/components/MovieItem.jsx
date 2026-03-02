@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useState,useMemo } from "react";
+import { useSelector } from "react-redux";
 import Warning from "./Warning";
-export default function MovieItem({onEdit,onReview,reviewMeta,movie,onDelete}){
+import { selectReviewMetaById } from "../selectors/ReviewSelectors"; 
+export default function MovieItem({onEdit,onReview,movie,onDelete}){
     const [reviewId,setReviewId]=useState(null);
     const [reviewText,setReviewText]=useState("");
     const [editId,setEditId]=useState(null);
     const [editText,setEditText]=useState("");
     const [removeId,setRemoveId]=useState(null);
     const isAnyActionActive=removeId!==null||editId!==null||reviewId!==null;
-console.log(reviewMeta.review);
     const handleEdit=(e)=>{
         e.preventDefault();
         if(!editText.trim()){
@@ -35,6 +36,8 @@ console.log(reviewMeta.review);
         setEditId(movie.id);
         setEditText(reviewMeta.review);
     }
+    const selectorReviewMeta = useMemo(selectReviewMetaById, []);
+    const reviewMeta=useSelector(state => selectorReviewMeta(state,movie.id))
         return(
                     <div>
                         <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`} alt={movie.original_title}/>

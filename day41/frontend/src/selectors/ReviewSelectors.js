@@ -1,9 +1,5 @@
 import {createSelector} from "reselect"
 
-export const selectAllIds=(state)=>state.allIds??[];
-
-export const selectByIds=(state)=>state.byIds??{};
-
 export const selectReviewById=(state, id)=>{
     return state.byIds[id]?.review??"";
 }
@@ -28,6 +24,9 @@ export const selectReviewCount=createSelector(
         Object.keys(reviews).length
 )
 
+export const selectAllIds=(state)=>state.reviews.allIds??[];
+export const selectByIds=(state)=>state.reviews.byIds??{};
+
 export const selectReviewedMovieIds=createSelector([selectAllIds,selectByIds],(allIds,byIds)=>
         allIds.filter((id)=>!!byIds[id]?.review)
 )
@@ -36,13 +35,22 @@ export const selectMoviesWithoutReviews=createSelector([selectAllIds,selectByIds
         allIds.filter((id)=>!byIds[id]?.review)
 )
 
-export const selectReviewMetaById= createSelector(
-    [selectByIds,(_,id)=>id], // - (_, id) => id is another input selector. It receives (state, id) but explicitly ignores the first parameter 
-    (byIds,id)=>({
-        review:byIds[id]?.review??"",
-        loading:byIds[id]?.loading??false,
-        error:byIds[id]?.error??null
-    })
+
+
+export const selectReviewMetaById=()=>
+    createSelector(
+        [selectByIds,(_,id)=>id], // - (_, id) => id is another input selector. It receives (state, id) but explicitly ignores the first parameter 
+        (byIds,id)=>({
+            review:byIds[id]?.review??"",
+            loading:byIds[id]?.loading??false,
+            error:byIds[id]?.error??null
+        })
 ) 
+
+
+
+
+
+
 
 

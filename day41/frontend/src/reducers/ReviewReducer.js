@@ -1,4 +1,12 @@
-export default function ReviewReducer(state,action){
+const initialState = {
+  byIds: {},
+  allIds: [],
+  loading: false,
+  error: null
+};
+
+
+export default function ReviewReducer(state=initialState,action){
     switch(action.type){
         case 'HYDRATE_REVIEW_REQUEST':{
             return {...state,loading:true,error:null}

@@ -50,9 +50,7 @@ export const selectReviewMetaById=()=>
 export const visibleMovies=()=>
     createSelector(
         [(state)=>state.movies.data,selectReviewedMovieIds],
-        (movies,ids)=>{
-            return movies.filter(m => ids.includes(m.id))
-        }
+        (movies,ids)=>movies.filter(m => ids.includes(m.id))
     )
 
 

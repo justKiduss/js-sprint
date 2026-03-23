@@ -1,18 +1,48 @@
-
-export const getReviews=(req,res)=>{
-        res.status(200).json({msg:"list of reviews"});
+import { createReview, getAllReviews, getReviewById } from "../services/reviewService";
+export const getReviews=(req,res,next)=>{
+        res.status(200)
+        .json({
+                id:getAllReviews().id,
+                review:getAllReviews.review,
+                rating:getAllReviews.rating,
+        });
+        next();
 };
 
-export const createReview=(req,res)=>{
-        res.status(201).json({msg:"review created"});
+export const getReview=(req,res)=>{
+        getReviewById(req.id);
+        res.status(200).
+        json({
+                id:getReviewById().id,
+                review:getReviewById().review,
+                rating:getReviewById().rating,   
+        });
+        next();
+}
+export const createReviews=(req,res)=>{
+        createReview(req.id,req.review);
+        res.status(201).json({
+                id:createReview().id,
+                review:createReview().review,
+                rating:createReview().rating,  
+        });
+        next;
 }
 
-export const updateReview=(rea,res)=>{
-        res.status(200).json({msg:"review updated"});
+export const updateReview=(req,res)=>{
+        updateReview(req.id);
+        res.status(200).json({
+                id:updateReview().id,
+                review:updateReview().review,
+                rating:updateReview().rating,
+        });
 }
 
-export const deleteReview=()=>{
-        res.status(200).json({msg:"review deleted"});
+export const deleteReview=(req,res)=>{
+        deleteReview(req.id);
+        res.status(200).json({
+                msg:deleteReview()
+        });
 }
 
 

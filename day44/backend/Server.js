@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cors());
 
 // routes
-app.use("/api/review",reviewRoutes);
+app.use("/api/reviews",reviewRoutes);
 
 
 // middleware

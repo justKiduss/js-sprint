@@ -4,15 +4,19 @@
 // PATCH //update review/:id
 
 import express from "express";
-import { createReview, deleteReview, getReviews, updateReview } from "../controllers/reviewController.js";
+import { createReviews, deleteReview, getReviews, updateReviews,getReview } from "../controllers/reviewController.js";
+import { createReview, getAllReviews } from "../services/reviewService.js";
 
     const router=express.Router();
-    router.get('/getReviews', getReviews);
+    router.get('/',getAllReviews);
 
-    router.post('/createReview', createReview);
+    // router.get('/:id', getReview);
 
-    router.patch('/updateReview/:id', updateReview);
+    router.post('/create',createReview);
 
-    router.delete("/deleteReview/:id", deleteReview);
+    // router.patch('/:id', updateReviews);
+
+    // router.delete("/:id", deleteReview);
+
 
     export default router;

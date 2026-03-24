@@ -8,9 +8,8 @@ export function reviewModel(){
         getById:(id)=>byIds[id],
 
         create:(id,review)=>{
-            if (!allIds.includes(id)) return null
+            if (allIds.includes(id)) return null
             byIds[id]={...review,id}
-            // byIds[id]...review,id;
             allIds.push(id);
             return byIds[id];
         },

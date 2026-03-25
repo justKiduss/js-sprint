@@ -2,7 +2,7 @@ import pg from "pg";
 import dotenv from 'dotenv';
 
 // This line reads your .env file and attaches the variables to process.env
-dotenv.config({path:'../.env'});
+dotenv.config();
 
 const {Pool} =pg;
 
@@ -31,9 +31,9 @@ const testConnection = async () => {
     try {
         const res = await pool.query('SELECT NOW()');
         console.log('Database Time:', res.rows[0].now);
-        console.log('Contract 1 Verified: Connection is alive.');
+        console.log('connection is successful');
     } catch (err) {
-        console.error('Contract 1 Failed:', err.message);
+        console.error('Connection not successful', err.message);
     }
 };
 

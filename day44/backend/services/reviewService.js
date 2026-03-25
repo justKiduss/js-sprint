@@ -1,35 +1,31 @@
-import model, { reviewModel } from "../models/reviewModel.js";
-export function getAllReviews(){
-    return model.getAll();
+import model from "../models/reviewModel.js";
+export async function getAllService(){
+    return await model.getAll();
 }
 
-export function getReviewById(id){
+export async function getReviewByIdService(id){
     if(!id){
         return null
     }
-    const stringId=String(id);
-    return model.getById(stringId);
+    return await model.getById(id);
 }
-export function createReview(data){
+export async function createService(data){
     if(!data){
         return null;
       }
-    const id=Date.now().toString();
-    return model.create(id,data);
+    return await model.create(data);
 }
 
-export function updateReviews(id, data){
+export async function updateService(id,data){
     if(!id || !data){
         return null;
     }
-    const stringId=String(id);
-    return model.update(stringId,data);
+    return await model.update(id,data);
 }
 
-export function deleteReview(id){
+export async function deleteService(id){
     if(!id){
         return null;
     }
-    const stringId=String(id);
-    return  model.delete(stringId);
+    return  await model.delete(id);
 }

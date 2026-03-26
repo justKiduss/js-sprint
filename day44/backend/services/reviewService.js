@@ -4,6 +4,9 @@ export async function getAllService(){
 }
 
 export async function getReviewByIdService(id){
+    if (id === "test-error") {
+        throw new Error("Async failure: Testing the Error Handler");
+    }
     if(!id){
         return null
     }

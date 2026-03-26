@@ -1,12 +1,9 @@
 import { getAllService, getReviewByIdService, createService, updateService, deleteService } from "../services/reviewService.js";
-export const getReviews=async (req,res,next)=>{
-        try{
-                const reviews=await getAllService();
-                res.status(200).json({success:true,data:reviews});
-        }catch(error){
-                next(error)
-        }
-};
+import { asyncHandler } from "../utilis/asyncHandler.js";
+export const getReviews=asyncHandler(async(req,res,next)=>{
+        const reviews=await getAllService();
+        res.status(200).json({success:true,data:reviews});
+});
 
 export const getReview=async (req,res,next)=>{
         try{
@@ -17,43 +14,30 @@ export const getReview=async (req,res,next)=>{
                 next(error);
         }
 }
-export const createReviews=async (req,res,next)=>{
-        try{
-                const {movie_id,movie_title,rating,review}=req.body;
-                const newReview=await createService({
-                        movie_id,movie_title,rating,review
-                })
-                res.status(201).json({success:true,data:newReview});
-        }catch(error){
-                next(error);
-        }      
-}
+export const createReviews=asyncHandler(async (req,res,next)=>{
+        const {movie_id,movie_title,rating,review}=req.body;
+        const newReview=await createService({
+                movie_id,movie_title,rating,review
+        })
+        res.status(201).json({success:true,data:newReview});   
+});
 
-export const updateReview=async (req,res,next)=>{
-        try{    
-                const {id}=req.params;
-                const {movie_id,movie_title,rating,review}=req.body;
-                const updated=await updateService(id,{
+export const updateReview=asyncHandler(async (req,res,next)=>{   
+        const {id}=req.params;
+        const {movie_id,movie_title,rating,review}=req.body;
+        const updated=await updateService(id,{
                 movie_id,movie_title,rating,review  
-                });
-                res.status(200).json({success:true,data:updated});
-        }catch(error){
-                next(error);
-        }
+        });
+        res.status(200).json({success:true,data:updated});
+});
 
-}
-
-export const deleteReview=async (req,res)=>{
-        try{
-                const { id }=req.params;
-                const deleted=await deleteService(id);
-                res.status(200).json({
-                        success:true,
-                        data:deleted
-                });
-        }catch(error){
-                next(error);
-        }
-}
+export const deleteReview=asyncHandler(async (req,res)=>{
+        const { id }=req.params;
+        const deleted=await deleteService(id);
+        res.status(200).json({
+                success:true,
+                data:deleted
+        });   
+});
 
 

@@ -4,13 +4,16 @@ export async function getAllService(){
 }
 
 export async function getReviewByIdService(id){
-    if (id === "test-error") {
-        throw new Error("Async failure: Testing the Error Handler");
-    }
     if(!id){
         return null
     }
     return await model.getById(id);
+}
+export async function getReviewByMovieIdService(movie_id){
+    if(!movie_id){
+        return null;
+    }
+    return await model.getReviewsByMovieId(movie_id)
 }
 export async function createService(data){
     if(!data){

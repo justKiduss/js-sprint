@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
+import { notFound } from "./middleware/notFound.js";
 const PORT=5000;
 
 const app=express();
@@ -13,7 +14,7 @@ app.use("/api/reviews",reviewRoutes);
 
 
 // middleware
-
+app.use(notFound);
 // error handling
 app.use(errorHandler);
 

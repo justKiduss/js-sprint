@@ -4,34 +4,24 @@ export async function getAllService(){
 }
 
 export async function getReviewByIdService(id){
-    if(!id){
-        return null
-    }
+    if(!id) return null
     return await model.getById(id);
 }
 export async function getReviewByMovieIdService(movie_id){
-    if(!movie_id){
-        return null;
-    }
+    if(!movie_id) return null;
     return await model.getReviewsByMovieId(movie_id)
 }
 export async function createService(data){
-    if(!data){
-        return null;
-      }
+    if(!data) return null;
     return await model.create(data);
 }
 
 export async function updateService(id,data){
-    if(!id || !data){
-        return null;
-    }
+    if(!id || !data) return null;
     return await model.update(id,data);
 }
 
 export async function deleteService(id){
-    if(!id){
-        return null;
-    }
+    if(!id) return null;
     return  await model.delete(id);
 }

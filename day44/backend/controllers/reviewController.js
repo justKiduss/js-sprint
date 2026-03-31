@@ -17,12 +17,13 @@ export const getReview=asyncHandler(async (req,res,next)=>{
 });
 export const getReviewsByMovieId=asyncHandler(async (req,res,next)=>{
         const {movie_id}=req.params;
-        // if(!movie_id){
-        //       const error = new Error("");
-        //         error.status = 404;
-        //         throw error;   
-        // }
         const reviewForAmovie=await getReviewByMovieIdService(movie_id);
+
+        if(!reviewForAmovie || reviewForAmovie.length===0){
+                const error = new Error("reveiws not found");
+                error.status = 404;
+                throw error;
+        }
         res.status(200).json({success:true,data:reviewForAmovie});
 
 });

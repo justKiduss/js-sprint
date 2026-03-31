@@ -11,7 +11,7 @@ export const validateReview=(req,res,next)=>{
         if(inValid){
             const error=new Error("Invalid input")
             error.status = 400;
-            throw error;
+            return next(error);
         }
         req.body={
             movie_id:movie_id.trim(),

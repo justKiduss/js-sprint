@@ -14,9 +14,9 @@ import { validateId } from "../middleware/validateId.js"
 
     router.get('/:id',validateId, getReview);
 
-    router.post('/create', validateReview ,createReviews);
+    router.post('/', validateReview ,createReviews);
 
-    router.patch('/:id', validateId,validateReview ,updateReview);
+    router.put('/:id', validateId,validateReview ,updateReview);
 
     router.delete("/:id", validateId ,deleteReview);
 

@@ -8,21 +8,25 @@ export const getUserService=async (id)=>{
     return await userModel.getById(id);
 }
 
-export const createUserService=(data)=>{
+export const createUserService=async (data)=>{
     if(!data) return null;
 
     const normalized={
         username:data.username.trim(),
         email:data.email.trim(),
-        password,avatar
+        password:data.password.trim(),
+        avatar:data.avatar.trim()
     }
+    return await userModel.create(normalized);
 }
 
-export const updateUserService=()=>{
-
-
+export const updateUserService=async (id,data)=>{
+    if(!id || !data) return null;
+    return await userModel.update(id,data);
 }
 
-export const deleteUserService=()=>{
+export const deleteUserService=async (id)=>{
+    if(!id) return null;
+    return  await userModel.delete(id);
 
 }

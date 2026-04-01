@@ -10,6 +10,7 @@ import helmet from "helmet"; // this is for security like it
                 // Key Header: X-Content-Type-Options (prevents MIME-sniffing).
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
+import userRoutes from "./routes/userRoutes.js";
 dotenv.config();
 
 
@@ -29,6 +30,8 @@ const limiter =rateLimit({
 app.use("/api",limiter);
 // routes
 app.use("/api/reviews",reviewRoutes);
+
+app.use('/api/user',userRoutes);
 // middleware
 app.use(notFound);
 // error handling

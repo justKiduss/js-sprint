@@ -13,7 +13,20 @@ export async function getReviewByMovieIdService(movie_id){
 }
 export async function createService(data){
     if(!data) return null;
-    return await model.create(data);
+    // we use this write a script to import reviews from a CSV file example when their is data migration ? That script won't use your middleware.
+    const normalized={
+        movie_id:data.movie_id.trim(),
+        movie_title:data.movie_title.trim(),
+        rating:Number(data.rating),
+        review:data.review? data.review.trim() : null
+    }
+    // const existing=await model.getReviewsByMovieId(normalized.movie_id);
+
+    // const duplicate=existing.find(r=>
+    //     r.review===normalized.review &&
+    //     r.movie_title
+    // )
+    return await model.create(normalized);
 }
 
 export async function updateService(id,data){

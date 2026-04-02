@@ -1,5 +1,5 @@
-import { createUserService, deleteUserService, getUserService, getUsersService, loginService, updateUserService } from "../services/userService"
-import { asyncHandler } from "../utilis/asyncHandler";
+import { createUserService, deleteUserService, getUserService, getUsersService, loginService, updateUserService } from "../services/userService.js"
+import { asyncHandler } from "../utilis/asyncHandler.js";
 
 export const getUsers=asyncHandler( async (req,res,next)=>{
     const users=await getUsersService();

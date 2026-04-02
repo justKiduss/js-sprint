@@ -1,4 +1,4 @@
-import { createUserService, deleteUserService, getUserService, getUsersService, updateUserService } from "../services/userService"
+import { createUserService, deleteUserService, getUserService, getUsersService, loginService, updateUserService } from "../services/userService"
 import { asyncHandler } from "../utilis/asyncHandler";
 
 export const getUsers=asyncHandler( async (req,res,next)=>{
@@ -23,11 +23,21 @@ export const createUser=asyncHandler( async (req,res,next)=>{
         error.status=400;
         throw error;
     }
-    res.status(201).json({success:"true",data:newUser,msg:"user created"});
+    res.status(201).json({success:true,data:newUser,msg:"user created"});
 })
 
+export const loginUser=asyncHandler( async(req,res,next)=>{
+    const user=await loginService(req.body);
+    if(!user){
+        const error=new Error("Invalid credentials");
+        error.status=400;
+        throw error; 
+    }
+    res.status(200).json({success:true,data:user,msg:"user logging in"});
+})
 export const updateUser=asyncHandler( async(req,res,next)=>{
-    const updated=await updateUserService(req.params.id);
+    const updated=await updateUserService(req.params.id,req.body);
+
     if(!updated){
         const error=new Error("user not found");
         error.status=404;

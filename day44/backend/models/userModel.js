@@ -1,8 +1,7 @@
 import pool from "../config/db";
-import { reviewModel } from "./reviewModel";
 export function userModel(){
     return{
-        getall:async()=>{
+        getAll:async()=>{
             const res=await pool.query('SELECT * FROM users');
             return res.rows;
         },
@@ -13,17 +12,21 @@ export function userModel(){
         },
         create:async(data)=>{
             const {username,email,password,avatar}=data;
-            const query=`INSERT INTO users (username,email,password,avatar)
-                VALUES ($1, $2, $3, $4) RETURNING *`;
-            const values=[username,email,password,avatar];
-            const res=await pool.query(query,values);
+            const res=await pool.query(`INSERT INTO users (username,email,password,avatar)
+                VALUES ($1, $2, $3, $4) RETURNING *`,[username,email,password,avatar]
+            );
+            return res.rows[0];
+        },
+        getByEmail:async (email)=>{
+            const res=await pool.query('SELECT * FROM users WHERE email=$1',[email]                
+            );
             return res.rows[0];
         },
         update:async (id,data)=>{
             const {username,email,password,avatar}=data;
-            const query=`UPDATE users SET username=$1, email=$2, password=$3, avatar=$4, updated_at=NOW() WHERE id=$5 RETURNING *`;
-            const values=[username,email,password,avatar,id];
-            const res=await pool.query(query,values);
+            const res=await pool.query(`UPDATE users SET username=$1, email=$2, password=$3, avatar=$4, updated_at=NOW() WHERE id=$5 RETURNING *`,
+                [username,email,password,avatar,id]
+            );
             return res.rows[0];
         },
         delete:async (id)=>{
@@ -36,5 +39,5 @@ export function userModel(){
     }
 }
 
-const userModel=userModel;
-export default userModel;
+const model=userModel();
+export default model;

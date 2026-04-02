@@ -9,17 +9,17 @@ import { validateReview } from "../middleware/validateReview.js";
 import { validateId } from "../middleware/validateId.js"
 import validateMovieId from "../middleware/validateMovieId.js";
     const router=express.Router();
-    router.get('/',getReviews);
+        router.get('/',getReviews);
 
-    router.get('/movie/:movie_id',validateMovieId,getReviewsByMovieId);
+        router.get('/movie/:movie_id',validateMovieId,getReviewsByMovieId);
 
-    router.get('/:id',validateId, getReview);
+        router.get('/:id',validateId, getReview);
 
-    router.post('/', validateReview ,createReviews);
+        router.post('/', validateReview ,createReviews);
 
-    router.put('/:id', validateId,validateReview ,updateReview);
+        router.put('/:id', validateId,validateReview ,updateReview);
 
-    router.delete("/:id", validateId ,deleteReview);
+        router.delete("/:id", validateId ,deleteReview);
 
 
     export default router;

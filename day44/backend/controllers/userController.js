@@ -13,7 +13,8 @@ export const getUser=asyncHandler( async (req,res,next)=>{
         error.status=404;
         throw error;
     }
-    res.status(200).json({success:true,data:user});
+    const {password,...safeUser} =user;
+    res.status(200).json({success:true,data:safeUser});
 })
 
 export const createUser=asyncHandler( async (req,res,next)=>{
@@ -23,7 +24,8 @@ export const createUser=asyncHandler( async (req,res,next)=>{
         error.status=400;
         throw error;
     }
-    res.status(201).json({success:true,data:newUser,msg:"user created"});
+    const {password,...safeUser} =newUser;
+    res.status(201).json({success:true,data:safeUser,msg:"user created"});
 })
 
 export const loginUser=asyncHandler( async(req,res,next)=>{
@@ -33,7 +35,8 @@ export const loginUser=asyncHandler( async(req,res,next)=>{
         error.status=400;
         throw error; 
     }
-    res.status(200).json({success:true,data:user,msg:"user logging in"});
+    const {password,...safeUser}=user;
+    res.status(200).json({success:true,data:safeUser,msg:"user logging in"});
 })
 export const updateUser=asyncHandler( async(req,res,next)=>{
     const updated=await updateUserService(req.params.id,req.body);

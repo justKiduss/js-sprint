@@ -43,7 +43,6 @@ export const loginService=async (data)=>{
         password:data.password.trim()
     }
     const user=await model.getByEmail(normalized.email);
-
     if(!user){
         const error = new Error("Invalid credentials");
         error.status = 401;
@@ -60,12 +59,33 @@ export const loginService=async (data)=>{
 }
 export const updateUserService=async (id,data)=>{
     if(!id || !data) return null;
+    const {newUsername,newEmail,newPassword}=data;
 
-    return await model.update(id,data);
+    const user=await getById(id.trim());
+    if(!user){
+        const error=new Error("user not found");
+        error.status=404;
+        return error;
+    }
+    const updatedPassword=newPassword?await bcrypt.hash(newPassword.trim(),10):user.password;
+
+    const updated={
+        username:newUsername.trim() || user.username,
+        email:newEmail.trim() || user.email,
+        password:updatedPassword.trim() || user.password
+    }
+    return await model.update(id,updated);
 }
 
 export const deleteUserService=async (id)=>{
     if(!id) return null;
+    const user=await getById(id);
+    if(!user){
+        const error=new Error("user not found");
+        error.status=404;
+        return error;
+    }
+    
     return  await model.delete(id);
 
 }

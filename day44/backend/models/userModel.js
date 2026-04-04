@@ -2,11 +2,11 @@ import pool from "../config/db.js";
 export function userModel(){
     return{
         getAll:async()=>{
-            const res=await pool.query('SELECT * FROM users');
+            const res=await pool.query('SELECT id,username,email,avatar,role FROM users');
             return res.rows;
         },
         getById:async(id)=>{
-            const res=await pool.query('SELECT * FROM users WHERE id= $1',[id]
+            const res=await pool.query('SELECT id,username,email,avatar,role FROM users WHERE id= $1',[id]
             );
             return res.rows[0];
         },

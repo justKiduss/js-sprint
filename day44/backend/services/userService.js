@@ -1,3 +1,4 @@
+import { generateToken } from "../utilis/generate.js";
 import model from "../models/userModel.js";
 import bcrypt from "bcrypt";
 export const getUsersService=async ()=>{
@@ -59,7 +60,8 @@ export const loginService=async (data)=>{
         error.status = 401;
         throw error;
     }
-    return user;
+    const token=generateToken(user)
+    return {user,token};
    
 }
 export const updateUserService=async (id,data)=>{

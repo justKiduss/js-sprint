@@ -1,6 +1,7 @@
 import express from "express";
 import { createUser, deleteUser, getUser, getUsers, loginUser, updateUser } from "../controllers/userController.js";
 import { validateUser } from "../middleware/validateUser.js";
+import { protect } from "../middleware/protect.js";
 
 const router=express.Router();
 
@@ -10,8 +11,8 @@ const router=express.Router();
     router.post('/login',loginUser);
 
     router.get('/:id',getUser);
-    router.put('/:id',updateUser);
-    router.delete('/:id',deleteUser);
+    router.put('/:id',protect,updateUser);
+    router.delete('/:id',protect,deleteUser);
 
 
 export default router;

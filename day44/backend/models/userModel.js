@@ -6,7 +6,12 @@ export function userModel(){
             return res.rows;
         },
         getById:async(id)=>{
-            const res=await pool.query('SELECT id,username,email,avatar,role FROM users WHERE id= $1',[id]
+            const res=await pool.query('SELECT * FROM users WHERE id= $1',[id]
+            );
+            return res.rows[0];
+        },
+        getByUsername:async(username)=>{
+            const res=await pool.query(`SELECT * FROM users where username=$1`,[username]
             );
             return res.rows[0];
         },

@@ -24,7 +24,12 @@ export const createUserService=async (data)=>{
         error.status=409;
         throw error;
     }
-
+    const existingUsername=await model.getByUsername(data.username.trim());
+    if(existingUsername){
+      const error=new Error("username already exists");
+        error.status=409;
+        throw error;  
+    }
     const hashedPassword=await bcrypt.hash(data.password.trim(),10);
 
     const normalized={
@@ -59,33 +64,49 @@ export const loginService=async (data)=>{
 }
 export const updateUserService=async (id,data)=>{
     if(!id || !data) return null;
-    const {newUsername,newEmail,newPassword}=data;
+    const {username,email,password,avatar}=data;
 
-    const user=await getById(id.trim());
+    const user=await model.getById(id);
     if(!user){
         const error=new Error("user not found");
         error.status=404;
-        return error;
+        throw error;
     }
-    const updatedPassword=newPassword?await bcrypt.hash(newPassword.trim(),10):user.password;
+    if(email){
+        const existingEmail=await model.getByEmail(email.trim());
+        if(existingEmail && existingEmail.id !== user.id){
+            const error=new Error("email already exist");
+            error.status=409;
+            throw error; 
+        }
+    }
+    if(username){
+        const existingusername=await model.getByUsername(username.trim());
+        if(existingusername && existingusername.id !== user.id){
+            const error=new Error("username already exist");
+            error.status=409;
+            throw error; 
+        }
+    }
+    const updatedPassword=password?await bcrypt.hash(password.trim(),10):user.password;
 
     const updated={
-        username:newUsername.trim() || user.username,
-        email:newEmail.trim() || user.email,
-        password:updatedPassword.trim() || user.password
+        username:username?.trim() || user.username,
+        email:email?.trim() || user.email,
+        password:updatedPassword || user.password,
+        avatar:avatar|| user.avatar
     }
     return await model.update(id,updated);
 }
 
 export const deleteUserService=async (id)=>{
     if(!id) return null;
-    const user=await getById(id);
-    if(!user){
-        const error=new Error("user not found");
-        error.status=404;
-        return error;
+    const deleted=await model.delete(id);
+    if(!deleted){
+       const error = new Error("user not found");
+        error.status = 404;
+        throw error; 
     }
-    
-    return  await model.delete(id);
+    return deleted;
 
 }

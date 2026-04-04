@@ -13,7 +13,7 @@ export const getUser=asyncHandler( async (req,res,next)=>{
         error.status=404;
         throw error;
     }
-    const {password,...safeUser} =user;
+    const {password,...safeUser}=user;
     res.status(200).json({success:true,data:safeUser});
 })
 
@@ -24,7 +24,7 @@ export const createUser=asyncHandler( async (req,res,next)=>{
         error.status=400;
         throw error;
     }
-    const {password,...safeUser} =newUser;
+    const {password,...safeUser}=newUser;
     res.status(201).json({success:true,data:safeUser,msg:"user created"});
 })
 
@@ -40,13 +40,13 @@ export const loginUser=asyncHandler( async(req,res,next)=>{
 })
 export const updateUser=asyncHandler( async(req,res,next)=>{
     const updated=await updateUserService(req.params.id,req.body);
-
     if(!updated){
         const error=new Error("user not found");
         error.status=404;
         throw error;
     }
-    res.status(200).json({success:true,data:updated,msg:"user updated"});
+    const {password,...safeUser}=updated;
+    res.status(200).json({success:true,data:safeUser,msg:"user updated"});
 })
 
 export const deleteUser=asyncHandler( async (req,res,next)=>{
@@ -56,5 +56,6 @@ export const deleteUser=asyncHandler( async (req,res,next)=>{
         error.status=404;
         throw error; 
     }
-    res.status(200).json({success:true,data:deleted,msg:"user deleted"})
+    const {password,...safeUser}=deleted;
+    res.status(200).json({success:true,data:safeUser,msg:"user deleted"})
 })

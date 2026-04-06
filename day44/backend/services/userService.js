@@ -110,5 +110,4 @@ export const deleteUserService=async (id)=>{
         throw error; 
     }
     return deleted;
-
 }

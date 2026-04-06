@@ -30,17 +30,18 @@ export const createUser=asyncHandler( async (req,res,next)=>{
 })
 
 export const loginUser=asyncHandler( async(req,res,next)=>{
-    const user=await loginService(req.body,token);
-    if(!user){
+    const result=await loginService(req.body);
+    if(!result){
         const error=new Error("Invalid credentials");
         error.status=400;
         throw error; 
     }
+    const {user,token}=result;
     const {password,...safeUser}=user;
-    res.status(200).json({success:true,data:safeUser,token:user.token,msg:"user logging in"});
+    res.status(200).json({success:true,data:safeUser,token:token,msg:"user logging in"});
 })
 export const updateUser=asyncHandler( async(req,res,next)=>{
-    if(req.user.id !== Number(req.params.id)){
+    if(Number(req.user.id) !== Number(req.params.id)){
         const error=new Error("Forbidden");
         error.status=403;
         throw error;

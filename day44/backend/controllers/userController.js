@@ -8,6 +8,11 @@ export const getUsers=asyncHandler( async (req,res,next)=>{
 })
 
 export const getUser=asyncHandler( async (req,res,next)=>{
+    if(req.user.role !== "admin" && req.user.id !== Number(req.params.id)){
+        const error=new Error("forbidden");
+        error.status=403;
+        throw error;
+    }
     const user=await getUserService(req.params.id);
     if(!user){
         const error=new Error("user not found");
@@ -38,10 +43,13 @@ export const loginUser=asyncHandler( async(req,res,next)=>{
     }
     const {user,token}=result;
     const {password,...safeUser}=user;
-    res.status(200).json({success:true,data:safeUser,token:token,msg:"user logging in"});
+    res.status(200).json({success:true,data:{user:safeUser,token:token},msg:"user logging in"});
 })
 export const updateUser=asyncHandler( async(req,res,next)=>{
-    if(Number(req.user.id) !== Number(req.params.id)){
+    const isOwner=Number(req.user.id) == Number(req.params.id);
+    
+
+    if(!isOwner){
         const error=new Error("Forbidden");
         error.status=403;
         throw error;
@@ -59,11 +67,6 @@ export const updateUser=asyncHandler( async(req,res,next)=>{
 })
 
 export const deleteUser=asyncHandler( async (req,res,next)=>{
-    if(req.user.id !== Number(req.params.id)){
-        const error=new Error("Forbidden");
-        error.status=403;
-        throw error;
-    }
     const deleted=await deleteUserService(req.params.id);
 
     if(!deleted){
@@ -73,5 +76,23 @@ export const deleteUser=asyncHandler( async (req,res,next)=>{
     }
     
     const {password,...safeUser}=deleted;
-    res.status(200).json({success:true,data:safeUser,msg:"user deleted"})
+    res.status(200).json({success:true,data:safeUser,msg:"user deleted by admin/moderator"})
 })
+
+export const deleteOwnAccount = asyncHandler(async (req, res) => {
+    const deleted = await deleteUserService(req.user.id);
+
+    if (!deleted) {
+        const error = new Error("user not found");
+        error.status = 404;
+        throw error;
+    }
+
+    const { password, ...safeUser } = deleted;
+
+    res.status(200).json({
+        success: true,
+        data: safeUser,
+        msg: "account deleted"
+    });
+});

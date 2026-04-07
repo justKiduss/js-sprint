@@ -62,7 +62,6 @@ export const loginService=async (data)=>{
     }
     const token=generateToken(user)
     return {user,token};
-   
 }
 export const updateUserService=async (id,data)=>{
     if(!id || !data) return null;

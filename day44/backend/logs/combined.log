@@ -1,0 +1,25 @@
+{"level":"info","message":{"method":"GET","url":"/api/reviews/","user":null},"timestamp":"2026-04-07T23:27:05.067Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5679?page=2&limit=5","user":null},"timestamp":"2026-04-07T23:30:15.746Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5679?page=2&limit=5","user":null},"timestamp":"2026-04-07T23:30:44.906Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=2&limit=5","user":null},"timestamp":"2026-04-07T23:32:28.147Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678","user":null},"timestamp":"2026-04-07T23:32:49.251Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678","user":null},"timestamp":"2026-04-07T23:33:05.777Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5679","user":null},"timestamp":"2026-04-07T23:33:18.490Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678","user":null},"timestamp":"2026-04-08T00:11:51.803Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=1&%20limit=5","user":null},"timestamp":"2026-04-08T00:12:23.168Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5679?page=1&%20limit=5","user":null},"timestamp":"2026-04-08T00:13:55.196Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=1&%20limit=5","user":null},"timestamp":"2026-04-08T00:14:03.095Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=1&%20limit=5","user":null},"timestamp":"2026-04-08T00:17:08.647Z"}
+{"level":"error","message":"getReviewByMovieIdService.getReviewsByMovieId is not a function","method":"GET","path":"/api/reviews/movie/tt5678?page=1&%20limit=5","stack":"TypeError: getReviewByMovieIdService.getReviewsByMovieId is not a function\n    at file:///X:/WeB/js-sprint/js-sprint/day44/backend/controllers/reviewController.js:20:53\n    at file:///X:/WeB/js-sprint/js-sprint/day44/backend/utilis/asyncHandler.js:3:25\n    at Layer.handleRequest (X:\\WeB\\js-sprint\\js-sprint\\day44\\backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (X:\\WeB\\js-sprint\\js-sprint\\day44\\backend\\node_modules\\router\\lib\\route.js:157:13)\n    at validateMovieId (file:///X:/WeB/js-sprint/js-sprint/day44/backend/middleware/validateMovieId.js:9:5)\n    at Layer.handleRequest (X:\\WeB\\js-sprint\\js-sprint\\day44\\backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (X:\\WeB\\js-sprint\\js-sprint\\day44\\backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (X:\\WeB\\js-sprint\\js-sprint\\day44\\backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (X:\\WeB\\js-sprint\\js-sprint\\day44\\backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (X:\\WeB\\js-sprint\\js-sprint\\day44\\backend\\node_modules\\router\\lib\\layer.js:152:17)","timestamp":"2026-04-08T00:17:08.751Z","user":null}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=1&%20limit=5","user":null},"timestamp":"2026-04-08T00:18:02.688Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=1&%20limit=5","user":null},"timestamp":"2026-04-08T00:20:14.372Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=1&%20limit=5","user":null},"timestamp":"2026-04-08T00:20:21.188Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=1&%20limit=5","user":null},"timestamp":"2026-04-08T00:22:26.317Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=1&limit=5","user":null},"timestamp":"2026-04-08T00:24:35.316Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5679?page=1&limit=5","user":null},"timestamp":"2026-04-08T00:26:01.536Z"}
+{"level":"error","message":"data is not defined","method":"GET","path":"/api/reviews/movie/tt5679?page=1&limit=5","stack":"ReferenceError: data is not defined\n    at file:///X:/WeB/js-sprint/js-sprint/day44/backend/controllers/reviewController.js:35:25\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","timestamp":"2026-04-08T00:26:01.836Z","user":null}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=1&limit=5","user":null},"timestamp":"2026-04-08T00:26:08.369Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=1&limit=5","user":null},"timestamp":"2026-04-08T00:40:13.195Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=1&limit=5","user":null},"timestamp":"2026-04-08T00:40:43.735Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=1&limit=5","user":null},"timestamp":"2026-04-08T00:41:43.035Z"}
+{"level":"info","message":{"method":"GET","url":"/api/reviews/movie/tt5678?page=1&limit=5","user":null},"timestamp":"2026-04-08T00:44:13.321Z"}

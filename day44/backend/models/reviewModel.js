@@ -12,9 +12,15 @@ export function reviewModel(){
             );
             return res.rows[0];
         },
-        getReviewsByMovieId:async (movie_id)=>{
+        countReviewsByMovieId:async (movie_id)=>{
             const res=await pool.query(
-                `SELECT * FROM reviews WHERE movie_id=$1`,[movie_id]
+                `SELECT COUNT(*) FROM reviews WHERE movie_id= $1`,[movie_id]
+            )
+            return parseInt(res.rows[0].count);
+        },
+        getReviewsByMovieId:async (movie_id,limit,offSet)=>{
+            const res=await pool.query(
+                `SELECT * FROM reviews WHERE movie_id=$1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`,[movie_id, limit, offSet],
             );
             return res.rows;
         },

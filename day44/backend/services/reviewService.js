@@ -7,9 +7,15 @@ export async function getReviewByIdService(id){
     if(!id) return null
     return await model.getById(id);
 }
-export async function getReviewByMovieIdService(movie_id){
+export async function countReviewsByMovieIdService(movie_id){
+    if(!movie_id) return 0;
+    return await model.countReviewsByMovieId(movie_id);
+}
+export async function getReviewByMovieIdService(movie_id,page,limit){
     if(!movie_id) return null;
-    return await model.getReviewsByMovieId(movie_id)
+    //Page 1: $(1 - 1) *10 = {0}.The DB skips 0 rows and takes the first 10. (Rows 1–10).
+    const offSet=(page-1)*limit;
+    return await model.getReviewsByMovieId(movie_id,limit,offSet)
 }
 export async function createService(data){
     if(!data) return null;

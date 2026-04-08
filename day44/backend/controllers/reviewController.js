@@ -1,5 +1,5 @@
 import { validateReview } from "../middleware/validateReview.js";
-import { getAllService, getReviewByIdService, createService, updateService, deleteService,getReviewByMovieIdService } from "../services/reviewService.js";
+import { getAllService, getReviewByIdService, createService, updateService, deleteService,getReviewByMovieIdService, countReviewsByMovieIdService } from "../services/reviewService.js";
 import { asyncHandler } from "../utilis/asyncHandler.js";
 export const getReviews=asyncHandler(async(req,res,next)=>{
         const reviews=await getAllService();
@@ -17,14 +17,21 @@ export const getReview=asyncHandler(async (req,res,next)=>{
 });
 export const getReviewsByMovieId=asyncHandler(async (req,res,next)=>{
         const {movie_id}=req.params;
-        const reviewForAmovie=await getReviewByMovieIdService(movie_id);
 
-        if(!reviewForAmovie || reviewForAmovie.length===0){
-                const error = new Error("reveiws not found");
-                error.status = 404;
-                throw error;
+        let page=parseInt(req.query.page);
+        let limit=parseInt(req.query.limit);
+
+        if (isNaN(page) || page < 1) page = 1;
+        if (isNaN(limit) || limit < 1) limit = 10;
+        if (limit > 50) limit = 50;
+        
+        const reviewForAmovie=await getReviewByMovieIdService(movie_id,page,limit);
+        const total=await countReviewsByMovieIdService(movie_id);
+        const pages=Math.ceil(total/limit);
+        if(reviewForAmovie.length === 0){
+                return res.status(200).json({success:true,page,limit,total,pages,data: []});
         }
-        res.status(200).json({success:true,data:reviewForAmovie});
+        res.status(200).json({success:true,page,limit,total,pages,data:reviewForAmovie});
 
 });
 export const createReviews=asyncHandler(async (req,res,next)=>{

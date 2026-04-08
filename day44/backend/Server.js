@@ -11,6 +11,7 @@ import helmet from "helmet"; // this is for security like it
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 import router from "./routes/userRoutes.js";
+import { requestLogger } from "./middleware/requestLogger.js";
 
 dotenv.config();
 
@@ -21,13 +22,26 @@ const app=express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-
+app.use(requestLogger);
 const limiter =rateLimit({
     windowMs:15 * 60 * 1000,
     max:100,
     standardHeaders:true,
     legacyHeaders:false
 })
+const authLimiter=rateLimit({
+    windowMs:60 *60*1000,
+    max:5,
+    message:{
+        success:false,
+        message:"too many login attempts, please try again in an hour"
+    },
+    standardHeaders:true,
+    legacyHeaders:false
+})
+// this apply for login route only
+app.use("/api/user/login",authLimiter);
+
 app.use("/api",limiter);
 // routes
 app.use("/api/reviews",reviewRoutes);

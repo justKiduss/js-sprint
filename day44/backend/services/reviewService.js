@@ -1,4 +1,5 @@
 import model from "../models/reviewModel.js";
+import {logger} from "../utilis/logger.js"
 export async function getAllService(){
     return await model.getAll();
 }
@@ -14,8 +15,19 @@ export async function countReviewsByMovieIdService(movie_id){
 export async function getReviewByMovieIdService(movie_id,page,limit){
     if(!movie_id) return null;
     //Page 1: $(1 - 1) *10 = {0}.The DB skips 0 rows and takes the first 10. (Rows 1–10).
+    const start=Date.now();
     const offSet=(page-1)*limit;
-    return await model.getReviewsByMovieId(movie_id,limit,offSet)
+    const reviews=await model.getReviewsByMovieId(movie_id,limit,offSet);
+    const duration=Date.now() - start;
+
+    logger.info({
+        service:'getReviewByMovieIdService',
+        movie_id,
+        page,
+        limit,
+        duration:`${duration}ms`
+    })
+    return reviews;
 }
 export async function createService(data){
     if(!data) return null;

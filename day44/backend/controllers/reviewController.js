@@ -34,9 +34,10 @@ export const getReviewsByMovieId=asyncHandler(async (req,res,next)=>{
         res.status(200).json({success:true,page,limit,total,pages,data:reviewForAmovie});
 
 });
+
 export const createReviews=asyncHandler(async (req,res,next)=>{
 
-        const newReview=await createService(req.body);
+        const newReview=await createService({...req.body,user_id:req.user.id});
         if (!newReview) {
                 const error = new Error("Review is not created");
                 error.status = 400;
@@ -48,7 +49,7 @@ export const createReviews=asyncHandler(async (req,res,next)=>{
 
 export const updateReview=asyncHandler(async (req,res,next)=>{   
 
-        const updated=await updateService(req.params.id,req.body);
+        const updated=await updateService(req.params.id,{...req.body,user_id:req.user.id});
         if (!updated) {
                 const error = new Error("Review not found");
                 error.status = 404;
@@ -58,7 +59,7 @@ export const updateReview=asyncHandler(async (req,res,next)=>{
 });
 
 export const deleteReview=asyncHandler(async (req,res)=>{
-        const deleted=await deleteService(req.params.id);
+        const deleted=await deleteService(req.params.id,req.user.id);
         if (!deleted) {
                 const error = new Error("Review not found");
                 error.status = 404;

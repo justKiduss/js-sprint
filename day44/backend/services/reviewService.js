@@ -36,7 +36,8 @@ export async function createService(data){
         movie_id:data.movie_id.trim(),
         movie_title:data.movie_title.trim(),
         rating:Number(data.rating),
-        review:data.review? data.review.trim() : null
+        review:data.review? data.review.trim() : null,
+        user_id:data.user_id
     }
     // const existing=await model.getReviewsByMovieId(normalized.movie_id);
 
@@ -52,7 +53,7 @@ export async function updateService(id,data){
     return await model.update(id,data);
 }
 
-export async function deleteService(id){
-    if(!id) return null;
-    return  await model.delete(id);
+export async function deleteService(id,user_id){
+    if(!id || !user_id) return null;
+    return  await model.delete(id,user_id);
 }

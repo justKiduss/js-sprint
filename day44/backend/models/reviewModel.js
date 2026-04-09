@@ -25,24 +25,24 @@ export function reviewModel(){
             return res.rows;
         },
         create:async (data)=>{
-            const {movie_id,movie_title,rating,review}=data;
-            const query=`INSERT INTO reviews (movie_id,movie_title,rating,review)
-            VALUES ($1, $2, $3, $4) RETURNING *`;
+            const {movie_id,movie_title,rating,review,user_id}=data;
+            const query=`INSERT INTO reviews (movie_id,movie_title,rating,review,user_id)
+            VALUES ($1, $2, $3, $4, $5) RETURNING *`;
 
-            const values=[movie_id,movie_title,rating,review];
+            const values=[movie_id,movie_title,rating,review,user_id];
             const res=await pool.query(query,values);
             return res.rows[0];
         },
         update:async(id,data)=>{
-            const {movie_id,movie_title,rating,review}=data;
-            const query=`UPDATE reviews SET movie_id=$1, movie_title=$2, rating=$3,review=$4,updated_at=NOW() WHERE id=$5 RETURNING *`;
-            const values=[movie_id,movie_title,parseFloat(rating),review,id];
+            const {movie_id,movie_title,rating,review,user_id}=data;
+            const query=`UPDATE reviews SET movie_id=$1, movie_title=$2, rating=$3, review=$4,updated_at=NOW() WHERE id=$5 AND user_id=$6 RETURNING *`;
+            const values=[movie_id,movie_title,parseFloat(rating),review,id,user_id];
             const res=await pool.query(query,values);
             return res.rows[0];
         },
-        delete:async(id)=>{
+        delete:async(id,user_id)=>{
             const res=await pool.query(
-                `DELETE FROM reviews WHERE id=$1 RETURNING *`,[id]
+                `DELETE FROM reviews WHERE id=$1 AND user_id=$2 RETURNING *`,[id,user_id]
             );
             return res.rows[0];
         }

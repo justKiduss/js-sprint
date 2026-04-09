@@ -8,6 +8,7 @@ import { getReviews,createReviews, getReview, updateReview, deleteReview,getRevi
 import { validateReview } from "../middleware/validateReview.js";
 import { validateId } from "../middleware/validateId.js"
 import validateMovieId from "../middleware/validateMovieId.js";
+import { protect } from "../middleware/protect.js";
     const router=express.Router();
         router.get('/',getReviews);
 
@@ -15,11 +16,11 @@ import validateMovieId from "../middleware/validateMovieId.js";
 
         router.get('/:id',validateId, getReview);
 
-        router.post('/', validateReview ,createReviews);
+        router.post('/',protect , validateReview ,createReviews);
 
-        router.put('/:id', validateId,validateReview ,updateReview);
+        router.put('/:id', protect ,validateId,validateReview ,updateReview);
 
-        router.delete("/:id", validateId ,deleteReview);
+        router.delete("/:id",protect ,validateId ,deleteReview);
 
 
     export default router;

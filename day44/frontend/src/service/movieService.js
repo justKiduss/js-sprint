@@ -1,5 +1,4 @@
-const APIKEY=process.env.APIKEY;
-
+const APIKEY=process.env.REACT_APP_APIKEY;
 export async function Movie(){
     try{
         const movie= await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${APIKEY}&language=en-US&page=1`);

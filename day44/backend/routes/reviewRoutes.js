@@ -18,7 +18,7 @@ import { protect } from "../middleware/protect.js";
 
         router.post('/',protect , validateReview ,createReviews);
 
-        router.put('/:id', protect ,validateId,validateReview ,updateReview);
+        router.patch('/:id', protect ,validateId,validateReview ,updateReview);
 
         router.delete("/:id",protect ,validateId ,deleteReview);
 

@@ -3,6 +3,7 @@ import Layout from "./components/layout";
 // import Home from "./pages/Home";
 import LoginPage from "./page/signupPage";
 import SignUpPage from "./page/signupPage";
+import DashBoard from "./components/DashBoard";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -10,7 +11,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <DashBoard />,
       },
       {
         path: "login",

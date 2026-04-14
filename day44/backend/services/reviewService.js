@@ -33,7 +33,7 @@ export async function createService(data){
     if(!data) return null;
     // we use this write a script to import reviews from a CSV file example when their is data migration ? That script won't use your middleware.
     const normalized={
-        movie_id:data.movie_id.trim(),
+        movie_id:data.movie_id,
         movie_title:data.movie_title.trim(),
         rating:Number(data.rating),
         review:data.review? data.review.trim() : null,

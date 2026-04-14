@@ -25,7 +25,7 @@ export default function useReview(state,dispatch){
         dispatch({
             type:"CREATE_REVIEW_REQUEST"
         })
-
+        console.log(movie_id,movie_title,rating,review);
         try{
             const payload=await createReview(movie_id,movie_title,rating,review);
             dispatch({

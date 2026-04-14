@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Warning from "./Warning";
+import { Link } from "react-router-dom";
 
-export default function MovieList({ movies, reviews, reviewState }) {
+export default function MovieList({ movies, reviews, reviewState,query}) {
   const [reviewId, setReviewId] = useState(null);
   const [reviewText, setReviewText] = useState("");
   const [editId, setEditId] = useState(null);
@@ -47,13 +48,13 @@ export default function MovieList({ movies, reviews, reviewState }) {
           key={movie.id}
           className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
         >
-          {/* Image */}
-          <img
-            src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-            alt={movie.original_title}
-            className="h-40 w-full object-cover"
-          />
-
+          <Link to={`/movie/${movie.id}`}>
+            <img
+              src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+              alt={movie.original_title}
+              className="h-40 w-full object-cover"
+            />
+          </Link>
           {/* Content */}
           <div className="p-4 flex flex-col gap-2">
             <h3 className="font-semibold text-sm">

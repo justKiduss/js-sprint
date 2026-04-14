@@ -17,3 +17,24 @@ export async function SearchMovie(query){
         throw new Error("error while fetching");
     }
 }
+
+export async function trendingMovies(){
+    try{
+        const movie=await fetch(`https://api.themoviedb.org/3/trending/tv/week?api_key=${APIKEY}`);
+        const data=await movie.json();
+        return data.results;
+    }catch{
+        throw new Error("error while fegtching");
+    }
+}
+
+export async function popularMovies(){
+    try{
+        const movie=await fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${APIKEY}&language=en-US&page=1`);
+        const data=await movie.json();
+        return data.results;
+    }catch{
+        throw new Error("error while fegtching");
+    }
+}
+

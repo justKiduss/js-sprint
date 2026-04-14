@@ -1,6 +1,15 @@
+import { useState } from "react"
 import { Outlet, Link } from "react-router-dom"
 
 export default function Layout() {
+  const [query,setQuery]=useState("");
+  function handleSearch(e){
+    setQuery(e.target.value);
+  }
+  function handleSubmit(e){
+    e.preventDefault();
+    setQuery("");
+  }
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
 
@@ -21,10 +30,15 @@ export default function Layout() {
           </Link>
         </div>
         <div className="flex items-center gap-4">
-          <input
-            className="border p-1 rounded"
-            placeholder="Search..."
-          />
+          <form onSubmit={handleSubmit} className="relative flex items-center">
+            <input
+              className="border p-1 rounded"
+              placeholder="Search..."
+              value={query}
+              onChange={handleSearch}
+            />
+            <button type="button" onClick={()=>setQuery("")} className={`absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-all duration-200 ${!query ? "opacity-0 pointer-events-none" : "opacity-100"}`}>✕</button>
+          </form>
           <Link to="/login" className="text-sm">
             Login
           </Link>
@@ -33,7 +47,7 @@ export default function Layout() {
 
       {/* Main Content */}
       <main className="flex-1 p-6">
-        <Outlet />
+        <Outlet context={{ query }}/>
       </main>
 
     </div>

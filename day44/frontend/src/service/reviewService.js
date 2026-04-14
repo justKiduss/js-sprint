@@ -11,7 +11,9 @@ export async function createReview(movie_id,movie_title,rating,review){
         });
         const data=await response.json();
         if (!response.ok) throw new Error(data.error || "Request failed");
-        return await data;
+        console.log(data.data);
+        return await data.data;
+
     }catch{
         throw new Error("couldn't reach backend");
     }

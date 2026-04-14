@@ -4,6 +4,7 @@ import Layout from "./components/layout";
 import LoginPage from "./page/loginPage";
 import SignUpPage from "./page/signupPage";
 import DashBoard from "./components/DashBoard";
+import MovieDetail from "./page/movieDetail";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path:"signup",
         element:<SignUpPage/> 
+      },
+      {
+        path: "movie/:movieId",
+        element: <MovieDetail/>,
       }
     ],
   },

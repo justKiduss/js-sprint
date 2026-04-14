@@ -3,7 +3,7 @@ export const validateReview=(req,res,next)=>{
 
     const parsedRating = parseFloat(rating);
 
-    const inValid=!movie_id || typeof movie_id !== "string"||
+    const inValid=!movie_id || typeof movie_id !== "number"||
         !movie_title||typeof movie_title != "string"||
         isNaN(parsedRating) || parsedRating < 1 ||parsedRating > 5||
         (review&&typeof review !== "string");
@@ -14,7 +14,7 @@ export const validateReview=(req,res,next)=>{
             return next(error);
         }
         req.body={
-            movie_id:movie_id.trim(),
+            movie_id:movie_id,
             movie_title:movie_title.trim(),
             rating:parsedRating,
             review:review?review.trim():null

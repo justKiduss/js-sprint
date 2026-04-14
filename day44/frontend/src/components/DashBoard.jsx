@@ -15,8 +15,7 @@ export default function DashBoard({query}){
     return(
         <>
             {movies.data.length > 0 &&
-                // <MovieList movies={movies} reviews={reviews} reviewState={state} />
-                ""
+                <MovieList movies={movies} reviews={reviews} reviewState={state} />
             }
         </>
     )

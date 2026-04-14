@@ -7,23 +7,23 @@ export default function SignUpForm(){
                     <p>Enter your details below to sign up </p>
 
                     <div className="flex flex-col gap-2 mb-4">
-                        <lable className="text-sm font-medium">Username</lable>
+                        <label className="text-sm font-medium">Username</label>
                         <input type="text" className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                     </div>
 
                     <div className="flex flex-col gap-2 mb-2">
-                        <lable className="text-sm font-medium">Email</lable>
+                        <label className="text-sm font-medium">Email</label>
                         <input type="email" className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                     </div>
 
                     <div className="flex flex-col gap-2 mb-2">
-                        <lable className="text-sm font-medium">Password</lable>
+                        <label className="text-sm font-medium">Password</label>
                         <input type="password" className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                     </div>
 
                     <button className="w-full bg-black text-white py-2 rounded mt-4"> Sign Up</button>
                     <p className="text-sm text-center my-4">Already have an account? {" "} 
-                        <a href="/#" className="text-blue-500 hover:underline">Login</a>
+                        <a href="/login" className="text-blue-500 hover:underline">Login</a>
                     </p>
                 </div>
                 

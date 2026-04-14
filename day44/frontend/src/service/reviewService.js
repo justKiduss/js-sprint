@@ -1,14 +1,17 @@
-const API=`http://localhost:5000/api`
-export async function createReview(id,movie_title,rating,review){
+const API=`http://localhost:5000/api`;
+function getToken() {
+  return localStorage.getItem("token");
+}
+export async function createReview(movie_id,movie_title,rating,review){
     try{
-        const repsonse=await fetch(`${API}/reviews/`,{
+        const response=await fetch(`${API}/reviews/`,{
             method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({id,movie_title,rating,review})
+            headers:{'Content-Type':'application/json', Authorization: `Bearer ${getToken()}`},
+            body:JSON.stringify({movie_id,movie_title,rating,review})
         });
-        const data=await repsonse.json();
-        if(!repsonse.ok) throw new Error(data.error);
-        return await getAllReviews();
+        const data=await response.json();
+        if (!response.ok) throw new Error(data.error || "Request failed");
+        return await data;
     }catch{
         throw new Error("couldn't reach backend");
     }
@@ -16,13 +19,13 @@ export async function createReview(id,movie_title,rating,review){
 
 export async function getAllReviews(){
     try{
-        const repsonse=await fetch(`${API}/reviews/`,{
+        const response=await fetch(`${API}/reviews/`,{
             method:'GET',
             // headers:{'Content-Type':'application/json'},
         })
-        const data=await repsonse.json();
-        if(!repsonse.ok) throw new Error(data.error);
-        return data.data?? {byIds:{},allIds:[]};
+        const data=await response.json();
+        if (!response.ok) throw new Error(data.error || "Request failed");
+        return await data;
         
     }catch{
         throw new Error("couldn't reach backend");
@@ -33,12 +36,12 @@ export async function updateReviews(id,movie_id,movie_title,rating,review){
     try{
         const response=await fetch(`${API}/reviews/${id}`,{
             method:'PATCH',
-            headers:{'Content-Type':'application/json'},
+            headers:{'Content-Type':'application/json', Authorization: `Bearer ${getToken()}`},
             body:JSON.stringify({movie_id,movie_title,rating,review})
         })
         const data=await response.json();
-        if(!response.ok) throw new Error(data.error);
-        return await getAllReviews();
+        if (!response.ok) throw new Error(data.error || "Request failed");
+        return await data;
     }catch{
         throw new Error("couldn't reach backend");
     }
@@ -49,12 +52,11 @@ export async function deleteReviews(id){
     try{
         const response=await fetch(`${API}/reviews/${id}`,{
             method:'DELETE',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({id})
+            headers:{'Content-Type':'application/json', Authorization: `Bearer ${getToken()}`}
         })
         const data=await response.json();
-        if(!response.ok) throw new Error(data.error);
-        return await getAllReviews();
+        if (!response.ok) throw new Error(data.error || "Request failed");
+        return await data;
     }catch{
         throw new Error("couldn't reach backend");
     }

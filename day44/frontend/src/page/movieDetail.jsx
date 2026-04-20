@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import MovieDetailService from "../service/movieDetail";
 import Streaming from "../components/streaming";
 export default function MovieDetail(){
-    const {movieId,type}=useParams();
+    const {movieId}=useParams();
     const [movie,setMovie]=useState(null);
     const [loading,setLoading]=useState(true);
     const [error,setError]=useState(null);
@@ -19,10 +19,9 @@ export default function MovieDetail(){
                     id:data.id,
                     title:data.title || data.name,
                     poster_path:data.poster_path,
-                    backdro_patghp: data.backdrop_path,
+                    backdrop_path: data.backdrop_path,
                     rating: data.vote_average,
                     overview: data.overview,
-                    type: data.media_type || (data.first_air_date ? "tv" : "movie")
                 }
                 setMovie(normalized);
             }catch(err){
@@ -33,7 +32,7 @@ export default function MovieDetail(){
         }
 
         load();
-    },[movieId,type]);
+    },[movieId]);
 
     if(loading) {
         return (
@@ -52,8 +51,7 @@ export default function MovieDetail(){
     if (!movie) return null;
     return (
        <Streaming movie={movie}
-       movieId={movieId}
-       type={type}
+            movieId={movieId}
        />
     )
 }

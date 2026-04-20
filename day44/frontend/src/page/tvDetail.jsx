@@ -17,7 +17,16 @@ export default function TvDetail(){
                 setLoading(true);
                 setError(false);
                 const data=await tvSeries(movieId);
-                setTv(data);
+                const normalized={
+                    id:data.id,
+                    title:data.title || data.name,
+                    poster_path:data.poster_path,
+                    backdrop_path: data.backdrop_path,
+                    rating: data.vote_average,
+                    overview: data.overview,
+                }
+
+                setTv(normalized);
                 setSeasons(data.seasons);
             }catch(err){
                 setError("failed to load tv series");

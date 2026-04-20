@@ -27,6 +27,7 @@ export async function getAllReviews(movieId){
         })
         const data=await response.json();
         if (!response.ok) throw new Error(data.error || "Request failed");
+        console.log("get reviews",data,movieId);
         return await data;
         
     }catch{

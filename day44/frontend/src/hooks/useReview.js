@@ -2,16 +2,24 @@ import { createReview, deleteReviews, getAllReviews, updateReviews } from "../se
 
 export default function useReview(state,dispatch){
     
-    async function hydrate() {
+    async function hydrate(movie_id) {
         dispatch({
             type:"HYDRATE_REVIEW_REQUEST"
         })
         try{
-            const data=await getAllReviews();
-            console.log(data);
+            const data=await getAllReviews(movie_id);
+            const normalized={
+                byIds:{},
+                allIds:[]
+            }
+            data.data.forEach(r => {
+                normalized.byIds[r.id]=r;
+                normalized.allIds.push(r.id);
+            });
+            console.log("normalized",normalized);
             dispatch({
                 type:"HYDRATE_REVIEW_SUCCESS",
-                payload:data??{byIds:{},allIds:[]}
+                payload:normalized
             })
         }catch(err){
             dispatch({
@@ -29,7 +37,7 @@ export default function useReview(state,dispatch){
             const payload=await createReview(movie_id,movie_title,rating,review);
             dispatch({
                 type:"CREATE_REVIEW_SUCCESS",
-                payload
+                payload:payload
             })
         }catch(err){
             dispatch({
@@ -43,7 +51,8 @@ export default function useReview(state,dispatch){
                 type:"UPDATE_REVIEW_REQUEST"
             })
         try{
-            const payload=await updateReviews(id,movie_id,movie_title,rating,review)
+            const res=await updateReviews(id,movie_id,movie_title,rating,review);
+            const payload=res.data ?? res;
             dispatch({
                 type:"UPDATE_REVIEW_SUCCESS",
                 payload
@@ -64,7 +73,7 @@ export default function useReview(state,dispatch){
             const payload=await deleteReviews(id);
                 dispatch({
                     type:"DELETE_REVIEW_SUCCESS",
-                    payload
+                    payload:id
                 })
         }catch(err){
             dispatch({

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Comment from "./comment";
-export default function StreamingTv({movie,movieId,type,selectedEpisode,selectedNum}){
+export default function StreamingTv({movie,movieId,selectedEpisode,selectedNum}){
     const [comment,setComment]=useState(false);
     if(!movie || !movieId) return null;
     if (!selectedNum || !selectedEpisode) {
@@ -45,7 +45,7 @@ export default function StreamingTv({movie,movieId,type,selectedEpisode,selected
                     </p>
 
                     <div className="text-sm text-gray-500">
-                        Rating: <span className="font-medium">{movie.vote_average}</span>
+                        Rating: <span className="font-medium">{movie.rating}</span>
                     </div>
                 </div> 
             </div>

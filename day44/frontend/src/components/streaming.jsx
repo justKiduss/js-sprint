@@ -1,4 +1,4 @@
-export default function Streaming({movie,movieId,type}){
+export default function Streaming({movie,movieId}){
     const src= `https://vsembed.ru/embed/movie/${movieId}`;
     return(
 

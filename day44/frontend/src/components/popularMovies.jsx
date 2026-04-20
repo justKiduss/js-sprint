@@ -44,7 +44,7 @@ export default function PopularMovies(){
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     {movies.map((movie) => (
                         <div key={movie.id} className="flex flex-col">
-                            <Link to={`/movie/${movie.id}`}>
+                            <Link to={`/${movie.media_type || "tv"}/${movie.id}`}>
                                 <img
                                     src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                                     alt={movie.title || movie.name}

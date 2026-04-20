@@ -20,12 +20,11 @@ export default function useReview(state,dispatch){
             })
         }
     }
-
     async function create(movie_id,movie_title,rating,review){
         dispatch({
             type:"CREATE_REVIEW_REQUEST"
         })
-        console.log(movie_id,movie_title,rating,review);
+        console.log("creating a review",movie_id,movie_title,rating,review);
         try{
             const payload=await createReview(movie_id,movie_title,rating,review);
             dispatch({

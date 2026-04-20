@@ -1,20 +1,30 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import MovieDetailService from "../service/movieDetail";
+import Streaming from "../components/streaming";
 export default function MovieDetail(){
-    const {movieId}=useParams();
+    const {movieId,type}=useParams();
     const [movie,setMovie]=useState(null);
     const [loading,setLoading]=useState(true);
     const [error,setError]=useState(null);
 
     useEffect(()=>{
+
         async function load(){
             try{
                 setLoading(true);
                 setError(null);
-
-                const data=await MovieDetailService(movieId);
-                setMovie(data);
+              const data=await MovieDetailService(movieId);
+              const normalized={
+                    id:data.id,
+                    title:data.title || data.name,
+                    poster_path:data.poster_path,
+                    backdro_patghp: data.backdrop_path,
+                    rating: data.vote_average,
+                    overview: data.overview,
+                    type: data.media_type || (data.first_air_date ? "tv" : "movie")
+                }
+                setMovie(normalized);
             }catch(err){
                 setError("failed to load movie")
             }finally{
@@ -23,7 +33,7 @@ export default function MovieDetail(){
         }
 
         load();
-    },[movieId]);
+    },[movieId,type]);
 
     if(loading) {
         return (
@@ -41,38 +51,9 @@ export default function MovieDetail(){
     }
     if (!movie) return null;
     return (
-        <div className="max-w-5xl mx-auto p-4 space-y-6">
-
-      {/* Video Section */}
-      <div className="w-full aspect-video bg-black rounded-lg overflow-hidden shadow">
-        <iframe
-          src={`https://vsembed.ru/embed/movie/${movieId}`}
-          className="w-full h-full"
-          allowFullScreen
-        />
-      </div>
-
-      {/* Movie Info */}
-      <div className="flex flex-col md:flex-row gap-6">
-
-        <img
-          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-          alt={movie.title}
-          className="w-64 rounded-lg shadow"
-        />
-
-        <div className="space-y-3">
-          <h1 className="text-2xl font-bold">{movie.title}</h1>
-
-          <p className="text-gray-600 leading-relaxed">
-            {movie.overview}
-          </p>
-
-          <div className="text-sm text-gray-500">
-            Rating: <span className="font-medium">{movie.vote_average}</span>
-          </div>
-        </div>
-      </div>
-    </div>
+       <Streaming movie={movie}
+       movieId={movieId}
+       type={type}
+       />
     )
 }

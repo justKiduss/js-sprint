@@ -10,20 +10,16 @@ import PopularMovies from "./popularMovies";
 export default function DashBoard(){
     const {query}=useOutletContext();
     console.log("Current search term:", query);
-    const [state,dispatch]=useReducer(ReviewReducer,{byIds:{},allIds:[]})
     const movies=useMovies(query);
-    const reviews=useReview(state,dispatch);
     // console.log(reviews.hydrate);
-    useEffect(()=>{
-        reviews.hydrate();
-    },[])
+   
     return(
         <>  
             <TrendingMovies/>
             <PopularMovies/>
-            {movies.data.length > 0 &&
-                <MovieList movies={movies} reviews={reviews} reviewState={state} query={query}/>
-            }
+            {/* {movies.data.length > 0 &&
+                <MovieList movies={movies} query={query}/>
+            } */}
         </>
     )
 }

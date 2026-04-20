@@ -11,7 +11,7 @@ export async function createReview(movie_id,movie_title,rating,review){
         });
         const data=await response.json();
         if (!response.ok) throw new Error(data.error || "Request failed");
-        console.log(data.data);
+        console.log("createing review",data.data);
         return await data.data;
 
     }catch{
@@ -19,9 +19,9 @@ export async function createReview(movie_id,movie_title,rating,review){
     }
 }
 
-export async function getAllReviews(){
+export async function getAllReviews(movieId){
     try{
-        const response=await fetch(`${API}/reviews/`,{
+        const response=await fetch(`${API}/reviews/movie/${movieId}`,{
             method:'GET',
             // headers:{'Content-Type':'application/json'},
         })

@@ -11,7 +11,7 @@ export async function Movie(){
 
 export async function SearchMovie(query){
     try{
-        const movie=await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${APIKEY}&query=${query}`);
+        const movie=await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${APIKEY}&query=${query}&language=en-US`);
         return await movie.json();
     }catch{
         throw new Error("error while fetching");
@@ -34,7 +34,29 @@ export async function popularMovies(){
         const data=await movie.json();
         return data.results;
     }catch{
-        throw new Error("error while fegtching");
+        throw new Error("error while fetching");
+    }
+}
+
+export async function tvSeries(id){
+    try{
+        const tv=await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${APIKEY}`);
+        const data=await tv.json();
+        if(!tv.ok) throw new Error("failed");
+        return data;
+    }catch{
+        throw new Error("Error while fetching")
+    }
+}
+
+export async function tvSeriesEpisodes(tvId,season){
+    try{
+        const res=await fetch(`https://api.themoviedb.org/3/tv/${tvId}/season/${season}?api_key=${APIKEY}`);
+        const data=await res.json();
+        if(!res.ok) throw new Error("failed");
+        return data.episodes;
+    }catch{
+        throw new Error("error while fetching");
     }
 }
 

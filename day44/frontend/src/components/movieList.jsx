@@ -48,7 +48,7 @@ export default function MovieList({ movies, reviews, reviewState,query}) {
           key={movie.id}
           className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
         >
-          <Link to={`/movie/${movie.id}`}>
+          <Link to={`/${movie.media_type || "movie"}/${movie.id}`}>
             <img
               src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
               alt={movie.original_title}

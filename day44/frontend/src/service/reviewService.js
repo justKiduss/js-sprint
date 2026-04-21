@@ -27,8 +27,8 @@ export async function getAllReviews(movieId){
         })
         const data=await response.json();
         if (!response.ok) throw new Error(data.error || "Request failed");
-        console.log("get reviews",data,movieId);
-        return await data;
+        console.log("get reviews",data.data,movieId);
+        return await data.data;
         
     }catch{
         throw new Error("couldn't reach backend");
@@ -44,7 +44,7 @@ export async function updateReviews(id,movie_id,movie_title,rating,review){
         })
         const data=await response.json();
         if (!response.ok) throw new Error(data.error || "Request failed");
-        return await data;
+        return await data.data;
     }catch{
         throw new Error("couldn't reach backend");
     }
@@ -59,7 +59,7 @@ export async function deleteReviews(id){
         })
         const data=await response.json();
         if (!response.ok) throw new Error(data.error || "Request failed");
-        return await data;
+        return await data.data;
     }catch{
         throw new Error("couldn't reach backend");
     }

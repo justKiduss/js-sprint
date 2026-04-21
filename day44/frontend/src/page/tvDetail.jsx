@@ -3,13 +3,13 @@ import { useParams } from "react-router-dom";
 import { tvSeries, tvSeriesEpisodes } from "../service/movieService";
 import StreamingTv from "../components/streamingTv";
 export default function TvDetail(){
-    const {movieId,type}=useParams();
+    const {movieId}=useParams();
     const [error,setError]=useState(false);
     const [loading,setLoading]=useState(true);
     const [seasons,setSeasons]=useState([]);
     const [episodes,setEpisodes]=useState([]);
-    const [selectedSeason,setselectedSeason]=useState(null);
-    const [selectedEpisode,setSelectedEpisode]=useState(null);
+    const [selectedSeason,setselectedSeason]=useState(1);
+    const [selectedEpisode,setSelectedEpisode]=useState(1);
     const [tv,setTv]=useState(null);
     useEffect(()=>{
         async function load(){
@@ -54,6 +54,36 @@ export default function TvDetail(){
         episodeload();
     },[movieId,selectedSeason])
 
+    useEffect(()=>{
+        if(tv&&selectedSeason && selectedEpisode){
+            const history=JSON.parse(localStorage.getItem("continue_watching")||"[]")
+            const watchHistory={
+                movieId,
+                title:tv.title,
+                season:selectedSeason,
+                episode:selectedEpisode,
+                poster:tv.poster_path,
+                type:'tv',
+                timestamp:Date.now()
+            };
+
+            const updated=[watchHistory,...history.filter(item=>item.movieId !== movieId)].slice(0,10);
+            localStorage.setItem('continue_watching',JSON.stringify(updated));
+        }
+    },[selectedSeason,selectedEpisode,tv,movieId])
+    useEffect(() => {
+            const history = JSON.parse(localStorage.getItem('continue_watching') || "[]");
+            const saved = history.find(item => item.movieId === movieId);
+
+            if (saved) {
+                setselectedSeason(saved.season);
+                setSelectedEpisode(saved.episode);
+            } else {
+                setselectedSeason(1);
+                setSelectedEpisode(1);
+            }
+    }, [movieId]);
+
     if(loading) {
         return (
             <div className="flex items-center justify-center h-screen">
@@ -68,6 +98,8 @@ export default function TvDetail(){
         </div>
         );
     }
+    // const ContinueWatching=localStorage.setItem("continue",JSON.parse())
+
 
     return(
 
@@ -78,7 +110,41 @@ export default function TvDetail(){
                     selectedNum={selectedSeason} 
                     movie={tv}
                 />
-                <div>
+
+                {/* Seasons Row */}
+                <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
+                {seasons.map((season) => (
+                    <button 
+                    key={season.id} 
+                    className={`px-4 py-2 rounded-full whitespace-nowrap transition ${
+                        selectedSeason === season.season_number ? "bg-blue-600 text-white" : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                    }`}
+                    onClick={() => {
+                        setselectedSeason(season.season_number);
+                        setSelectedEpisode(1); // Reset episode when season changes!
+                    }}
+                    >
+                    {season.name}
+                    </button>
+                ))}
+                </div>
+
+                {/* Episode Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {episodes.map((ep) => (
+                    <button 
+                    key={ep.id} 
+                    className={`p-3 rounded-lg text-left border ${
+                        selectedEpisode === ep.episode_number ? "border-blue-500 bg-blue-500/10" : "border-gray-800 bg-gray-900"
+                    }`}
+                    onClick={() => setSelectedEpisode(ep.episode_number)}
+                    >
+                    <span className="text-xs text-gray-500 block">Episode {ep.episode_number}</span>
+                    <span className="font-medium text-sm">{ep.name}</span>
+                    </button>
+                ))}
+                </div>
+                {/* <div>
                     {seasons.map((season)=>(
                         <button key={season.id} className="bg-black text-white px-3 py-1 rounded"
                             onClick={()=>setselectedSeason(season.season_number)}>
@@ -88,11 +154,15 @@ export default function TvDetail(){
                 </div>
                 <div>
                     {episodes.map((ep) => (
-                        <button key={ep.id} className="p-2 border-b bg-black text-white flex-col" onClick={()=>setSelectedEpisode(ep.episode_number)}>
+                        <button key={ep.id} className={`p-2 border-b text-left transition-colors ${
+                            selectedEpisode === ep.episode_number 
+                            ? "bg-blue-600 text-white" 
+                            : "bg-black text-white hover:bg-gray-800"
+                            }`} onClick={()=>setSelectedEpisode(ep.episode_number)}>
                             Episode {ep.episode_number}: {ep.name}
                         </button>
                     ))}
-                </div>
+                </div> */}
             </div>
         </>
     )

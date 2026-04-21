@@ -12,7 +12,7 @@ export default function useReview(state,dispatch){
                 byIds:{},
                 allIds:[]
             }
-            data.data.forEach(r => {
+            data.forEach(r => {
                 normalized.byIds[r.id]=r;
                 normalized.allIds.push(r.id);
             });

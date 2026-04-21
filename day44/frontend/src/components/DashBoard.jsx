@@ -6,20 +6,14 @@ import { useEffect,useReducer } from "react";
 import { useOutletContext } from "react-router-dom";
 import TrendingMovies from "./trendingMovies";
 import PopularMovies from "./popularMovies";
+import ContinueWatching from "./continueWatching";
 
-export default function DashBoard(){
-    const {query}=useOutletContext();
-    console.log("Current search term:", query);
-    const movies=useMovies(query);
-    // console.log(reviews.hydrate);
-   
+export default function DashBoard(){   
     return(
         <>  
+            <ContinueWatching/>
             <TrendingMovies/>
             <PopularMovies/>
-            {/* {movies.data.length > 0 &&
-                <MovieList movies={movies} query={query}/>
-            } */}
         </>
     )
 }

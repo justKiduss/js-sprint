@@ -6,9 +6,10 @@ import {Menu} from "lucide-react"
 export default function Layout() {
   const [query,setQuery]=useState("");
   const [isOpen,setisOpen]=useState(false);
-
+  const [dropDown,setDropDown]=useState(false)
   function handleSearch(e){
     setQuery(e.target.value);
+    setDropDown(true);
   }
   function handleSubmit(e){
     e.preventDefault();
@@ -44,6 +45,7 @@ export default function Layout() {
         placeholder="Search..."
         value={query}
         onChange={handleSearch}
+        onFocus={()=>setDropDown(true)}
       />
       {query && (
         <button 
@@ -55,33 +57,37 @@ export default function Layout() {
     </form>
 
     {/* The "absolute" class here makes it float OVER the trending movies */}
-    {query.trim().length > 0 && (
+    {query.trim().length > 0 && dropDown &&(
       <div className="absolute top-full left-0 w-full bg-white border mt-1 rounded shadow-2xl z-50 max-h-96 overflow-y-auto">
         {movies.status === 'loading' && <div className="p-4 text-sm text-gray-500">Searching...</div>}
         
         {movies.data?.length > 0 ? (
-          movies.data.map((movie) => (
-            <Link
-              key={movie.id}
-              to={`/${movie.media_type}/${movie.id}`}
-              onClick={() => setQuery("")}
-              className="flex items-center gap-3 p-3 hover:bg-gray-50 border-b last:border-0 transition-colors"
-            >
-              <img 
-                src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`} 
-                alt="" 
-                className="w-10 h-14 object-cover rounded shadow-sm"
-              />
-              <div className="flex flex-col">
-                <span className="text-sm font-bold text-gray-800">{movie.title||movie.name}</span>
-                <span className="text-xs text-gray-500">{movie.release_date?.split('-')[0]}</span>
-              </div>
-            </Link>
+          movies.data.slice(0,5).map((movie) => (
+              <Link
+                key={movie.id}
+                to={`/${movie.media_type}/${movie.id}`}
+                onClick={() => setQuery("")}
+                className="flex items-center gap-3 p-3 hover:bg-gray-50 border-b last:border-0 transition-colors"
+              >
+                <img 
+                  src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`} 
+                  alt="" 
+                  className="w-10 h-14 object-cover rounded shadow-sm"
+                />
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-gray-800">{movie.title||movie.name}</span>
+                  <span className="text-xs text-gray-500">{movie.release_date?.split('-')[0]}</span>
+                </div>
+              </Link>
           ))
         ) : (
           movies.status !== 'loading' && <div className="p-4 text-sm text-gray-400">No results found</div>
         )}
+         <Link to="/search" onClick={()=>setDropDown(false)}>
+                <button className="flex justify-center items-center w-full">more results</button>
+          </Link>
       </div>
+     
         )}
       </div>
     </div>

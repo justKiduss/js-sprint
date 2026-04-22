@@ -1,8 +1,9 @@
 const APIKEY=process.env.REACT_APP_APIKEY;
-export async function Movie(){
+export async function Movie(page){
     try{
-        const movie= await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${APIKEY}&language=en-US&page=1`);
-            if(!movie) throw new Error("server responden with a error");
+        // https://api.themoviedb.org/3/movie/top_rated?api_key=${APIKEY}&language=en-US&page=1
+        const movie= await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${APIKEY}&page=${page}`);
+            if(!movie.ok) throw new Error("server responden with a error");
             return await movie.json(); 
     }catch{
         throw new Error("Error while fetching");
@@ -55,6 +56,17 @@ export async function tvSeriesEpisodes(tvId,season){
         const data=await res.json();
         if(!res.ok) throw new Error("failed");
         return data.episodes;
+    }catch{
+        throw new Error("error while fetching");
+    }
+}
+
+export async function seriesDiscovery(page){
+    try{
+        const res=await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${APIKEY}&language=en-US&sort_by=popularity.desc&page=${page}`);
+        const data=await res.json();
+        if(!res.ok) throw new Error('failed');
+        return data;
     }catch{
         throw new Error("error while fetching");
     }

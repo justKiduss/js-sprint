@@ -144,25 +144,6 @@ export default function TvDetail(){
                     </button>
                 ))}
                 </div>
-                {/* <div>
-                    {seasons.map((season)=>(
-                        <button key={season.id} className="bg-black text-white px-3 py-1 rounded"
-                            onClick={()=>setselectedSeason(season.season_number)}>
-                            {season.name}
-                        </button>
-                    ))}
-                </div>
-                <div>
-                    {episodes.map((ep) => (
-                        <button key={ep.id} className={`p-2 border-b text-left transition-colors ${
-                            selectedEpisode === ep.episode_number 
-                            ? "bg-blue-600 text-white" 
-                            : "bg-black text-white hover:bg-gray-800"
-                            }`} onClick={()=>setSelectedEpisode(ep.episode_number)}>
-                            Episode {ep.episode_number}: {ep.name}
-                        </button>
-                    ))}
-                </div> */}
             </div>
         </>
     )

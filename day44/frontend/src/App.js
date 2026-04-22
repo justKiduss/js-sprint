@@ -6,6 +6,9 @@ import SignUpPage from "./page/signupPage";
 import DashBoard from "./components/DashBoard";
 import MovieDetail from "./page/movieDetail";
 import TvDetail from "./page/tvDetail";
+import Search from "./components/search";
+import Movie from "./page/movie";
+import Series from "./page/series";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -30,8 +33,19 @@ const router = createBrowserRouter([
       {
         path: "tv/:movieId",
         element: <TvDetail/> 
+      },
+      {
+        path:"/search",
+        element:<Search/>
+      },
+      {
+        path:"/movies",
+        element:<Movie/>
+      },
+      {
+        path:"/series",
+        element:<Series/>
       }
-
     ],
   },
 ]);

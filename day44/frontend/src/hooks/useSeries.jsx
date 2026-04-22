@@ -1,8 +1,8 @@
 import MovieReducer from "../reducer/movieReducer";
-import { Movie, SearchMovie } from "../service/movieService";
+import { seriesDiscovery } from "../service/movieService";
 import { useReducer,useEffect } from "react"
 
-export default function useMovies(query,page=1){
+export default function useSeries(page){
     const [state,dispatch]=useReducer(MovieReducer,{status:'idle',data:[],error:null});
 
     useEffect(()=>{
@@ -10,7 +10,7 @@ export default function useMovies(query,page=1){
         dispatch({type:"LOADING"});
         const fetchedMovie=async ()=>{
             try{
-                const movies=query?await SearchMovie(query):await Movie(page);
+                const movies=await seriesDiscovery(page);
                 if(!ignore){
                     dispatch({
                         type:"SUCCESS",
@@ -30,6 +30,6 @@ export default function useMovies(query,page=1){
         return()=>{
             ignore=true;
         }
-    },[query,page])
+    },[page])
     return state;
 }
